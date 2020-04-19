@@ -8,6 +8,8 @@ public class Evool extends Thread {
             Math.pow(2,30);
             System.out.println("hahalolo");
             System.out.println("no s");
+            System.out.println("haha");
+            System.out.println("no cos");
         }
     }
 }
