@@ -1,8 +1,14 @@
 package GUI;
 
+import javafx.application.Application;
+import javafx.geometry.HPos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 
 public class ChessBoard {
 
