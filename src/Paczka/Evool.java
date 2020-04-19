@@ -7,7 +7,7 @@ public class Evool extends Thread {
         for(int i = 0; i < 100000000; i++) {
             Math.pow(2,30);
             System.out.println("hahalolo");
-            System.out.println("no cos");
+            System.out.println("no s");
         }
     }
 }
