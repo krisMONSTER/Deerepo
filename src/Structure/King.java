@@ -18,4 +18,25 @@ public class King extends Piece{
 		}
 		return false;
 	}
+
+	boolean is_move_valid(int a, int b) {
+		if(is_move_possible(a,b)) {
+			return Board.what_on_field(a, b) != (colour ? 2 : 1);
+		}
+		/*else if(!is_moved){
+			if(b == y) {
+				if(a == x+2){
+					if(Piece piece = Board.get_piece()){
+
+					}
+				}
+				else if(a == x-2){
+
+				}
+			}
+		}*/
+		else {
+			return false;
+		}
+	}
 }

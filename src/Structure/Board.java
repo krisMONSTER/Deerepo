@@ -161,8 +161,9 @@ public class Board {
 	public static boolean is_check_on_field(int a, int b, boolean base_colour) {
 		for (Piece piece : piece_list) {
 			if (piece.get_colour() != base_colour) {
-
-
+				if(piece.endangers_filed(a, b)){
+					return true;
+				}
 			}
 		}
 		return false;

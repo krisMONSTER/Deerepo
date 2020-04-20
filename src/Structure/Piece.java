@@ -47,7 +47,11 @@ abstract public class Piece {
 			return false;
 		}
 	}
-	
+
+	public boolean endangers_filed(int a, int b){
+		return is_move_possible(a, b);
+	}
+
 	public void set_data_changes(int a, int b, Data_changes data_changes) {
 		if(!Board.is_field_free(a, b))
 			data_changes.put_remove(a, b);
