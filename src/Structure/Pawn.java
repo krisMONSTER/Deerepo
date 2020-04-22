@@ -55,7 +55,7 @@ public class Pawn extends Piece{
 		return false;
 	}
 
-	public boolean endangers_filed(int a, int b){
+	public boolean endangers_field(int a, int b){
 		if(is_move_possible(a, b)){
 			return a != x;
 		}

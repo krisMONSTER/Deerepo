@@ -38,8 +38,10 @@ abstract public class Piece {
 	public boolean get_en_passant() {
 		return false;
 	}
+
+	public boolean get_castling_readiness(){ return false; }
 	
-	boolean is_move_valid(int a, int b) {
+	public boolean is_move_valid(int a, int b) {
 		if(is_move_possible(a,b)) {
 			return Board.what_on_field(a, b) != (colour ? 2 : 1);
 		}
@@ -48,7 +50,7 @@ abstract public class Piece {
 		}
 	}
 
-	public boolean endangers_filed(int a, int b){
+	public boolean endangers_field(int a, int b){
 		return is_move_possible(a, b);
 	}
 

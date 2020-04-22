@@ -1,5 +1,7 @@
 package Structure;
 
+import GUI.AlertBox;
+
 import java.util.List;
 import java.util.ArrayList;
 
@@ -8,18 +10,18 @@ public class Board {
 	static {
 		//pawns
 		for(int i=0;i<8;i++) {
-			piece_list.add(new Pawn(i,3,true));
+			piece_list.add(new Pawn(i,1,true));
 			piece_list.add(new Pawn(i,6,false));
 		}
 		//knights
 		piece_list.add(new Knight(1,0,true));
 		piece_list.add(new Knight(1,7,false));
-		piece_list.add(new Knight(6,0,true));
+		piece_list.add(new Knight(6,2,true));
 		piece_list.add(new Knight(6,7,false));
 		//bishops
 		piece_list.add(new Bishop(2,0,true));
 		piece_list.add(new Bishop(2,7,false));
-		piece_list.add(new Bishop(5,0,true));
+		piece_list.add(new Bishop(5,2,true));
 		piece_list.add(new Bishop(5,7,false));
 		//rooks
 		piece_list.add(new Rook(0,0,true));
@@ -27,7 +29,7 @@ public class Board {
 		piece_list.add(new Rook(7,0,true));
 		piece_list.add(new Rook(7,7,false));
 		//queens
-		piece_list.add(new Queen(3,0,true));
+		piece_list.add(new Queen(3,2,true));
 		piece_list.add(new Queen(3,7,false));
 		//kings
 		piece_list.add(new King(4,0,true));
@@ -122,15 +124,28 @@ public class Board {
 	public static void execute_data_changes(Data_changes data_changes) {
 		Piece_for_utilization en_passant = data_changes.get_en_passant();
 		if(en_passant!=null) {
-			get_piece(en_passant.get_x(), en_passant.get_y()).set_en_passant(true);
+			Piece piece;
+			if( ( piece = get_piece(en_passant.get_x(), en_passant.get_y()) ) != null){
+				piece.set_en_passant(true);
+			}
+			else{
+				AlertBox.display("Error","Data execution error (en_passant)");
+				System.exit(1);
+			}
 		}
 		
 		List<Moved_piece> moved_pieces = data_changes.get_moved_pieces();
 		for (Moved_piece moved_piece : moved_pieces) {
-			Piece piece = get_piece(moved_piece.get_x(), moved_piece.get_y());
-			piece.set_x(moved_piece.get_new_x());
-			piece.set_y(moved_piece.get_new_y());
-			//cos tam graficzengo
+			Piece piece;
+			if( ( piece = get_piece(moved_piece.get_x(), moved_piece.get_y()) ) != null){
+				piece.set_x(moved_piece.get_new_x());
+				piece.set_y(moved_piece.get_new_y());
+				//cos tam graficzengo
+			}
+			else{
+				AlertBox.display("Error","Data execution error (moved_pieces)");
+				System.exit(1);
+			}
 		}
 		
 		List<Piece_for_utilization> remove_pieces = data_changes.get_remove_pieces();
@@ -149,7 +164,7 @@ public class Board {
 		}
 	}
 	
-	public static void reset_en_passant(boolean base_colour) {
+	public static void find_and_reset_en_passant(boolean base_colour) {
 		for (Piece piece : piece_list) {
 			if (piece.get_colour() == base_colour && piece.get_en_passant()) {
 				piece.set_en_passant(false);
@@ -161,7 +176,7 @@ public class Board {
 	public static boolean is_check_on_field(int a, int b, boolean base_colour) {
 		for (Piece piece : piece_list) {
 			if (piece.get_colour() != base_colour) {
-				if(piece.endangers_filed(a, b)){
+				if(piece.endangers_field(a, b)){
 					return true;
 				}
 			}

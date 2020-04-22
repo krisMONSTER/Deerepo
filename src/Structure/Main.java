@@ -1,10 +1,17 @@
 package Structure;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+
 import java.util.Scanner;
 
-public class Main {
+public class Main extends Application{
 	private static Scanner sc = new Scanner(System.in);
 	public static void main(String[] args) {
+		launch(args);
+	}
+
+	public void start(Stage stage) throws Exception {
 		System.out.println("Wybierz kolor");
 		System.out.println("true - biale");
 		System.out.println("false - czarne");
@@ -15,7 +22,6 @@ public class Main {
 			Player.set_colour(kolorek=!kolorek);
 			Player.reset_en_passant();
 			Board.display();
-			System.out.println(Board.is_check_on_field(5, 4, true));
 			int x,y;
 			byte tmp;
 			do {

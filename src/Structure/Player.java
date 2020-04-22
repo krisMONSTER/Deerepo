@@ -10,7 +10,7 @@ public class Player {
 	}
 	
 	public static void reset_en_passant() {
-		Board.reset_en_passant(colour);
+		Board.find_and_reset_en_passant(colour);
 	}
 	
 	public static boolean pick(int x, int y) {

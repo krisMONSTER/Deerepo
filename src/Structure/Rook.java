@@ -1,10 +1,14 @@
 package Structure;
 
 public class Rook extends Piece{
-	private boolean is_moved = false;
+	private boolean castling_ready = true;
 	
 	public Rook(int a, int b, boolean c) {
 		super(a,b,c);
+	}
+
+	public boolean get_castling_readiness(){
+		return castling_ready;
 	}
 
 	public boolean is_move_possible(int a, int b) {
