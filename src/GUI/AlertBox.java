@@ -21,7 +21,7 @@ public class AlertBox {
         alert.initModality(Modality.APPLICATION_MODAL);
         //blokuje mozliwosc interakcji z innymi oknami, dopoki nie zostanie obsluzone to konkretne okno
         alertstage = (Stage) alert.getDialogPane().getScene().getWindow();
-        //alertstage.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png")));
+        alertstage.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png")));
         alert.showAndWait();
 
     }
