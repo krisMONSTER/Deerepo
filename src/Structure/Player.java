@@ -26,15 +26,15 @@ public class Player {
 		}
 	}
 	
-	public static Piece get_picked() {
+	public static Piece get_picked_piece() {
 		return picked_piece;
 	}
 	
-	public static boolean is_move_valid_with_picked(int x, int y) {
+	public static boolean is_move_valid(int x, int y) {
 		return picked_piece.is_move_valid(x, y);
 	}
 	
-	public static void set_data_changes_with_picked(int x, int y) {
+	public static void set_data_changes(int x, int y) {
 		picked_piece.set_data_changes(x, y, data_changes);
 		Board.execute_data_changes(data_changes);
 		//send data_changes to user

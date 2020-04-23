@@ -6,7 +6,11 @@ public class King extends Piece{
 	public King(int a, int b, boolean c) {
 		super(a,b,c);
 	}
-	
+
+	public void reset_castling_readiness(){
+		castling_ready = false;
+	}
+
 	public boolean is_move_possible(int a, int b) {
 		if(a == x+1 || a == x-1) {
 			return b == y + 1 ||
@@ -56,11 +60,15 @@ public class King extends Piece{
 	public void set_data_changes(int a, int b, Data_changes data_changes) {
 		if(!Board.is_field_free(a, b))
 			data_changes.put_remove(a, b);
+		if(castling_ready)
+			data_changes.put_castling(x, y);
 		data_changes.put_move(x, y, a, b);
 		if(a == x+2){
+			data_changes.put_castling(7, y);
 			data_changes.put_move(7, y, a-1, b);
 		}
 		else if(a == x-2){
+			data_changes.put_castling(0, y);
 			data_changes.put_move(0, y, a+1, b);
 		}
 	}

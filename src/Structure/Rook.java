@@ -7,6 +7,10 @@ public class Rook extends Piece{
 		super(a,b,c);
 	}
 
+	public void reset_castling_readiness(){
+		castling_ready = false;
+	}
+
 	public boolean get_castling_readiness(){
 		return castling_ready;
 	}
@@ -31,4 +35,11 @@ public class Rook extends Piece{
 		return false;
 	}
 
+	public void set_data_changes(int a, int b, Data_changes data_changes) {
+		if(!Board.is_field_free(a, b))
+			data_changes.put_remove(a, b);
+		if(castling_ready)
+			data_changes.put_castling(x, y);
+		data_changes.put_move(x, y, a, b);
+	}
 }

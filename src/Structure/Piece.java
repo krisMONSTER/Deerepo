@@ -22,6 +22,8 @@ abstract public class Piece {
 	}
 	
 	public void set_en_passant(boolean x) {}
+
+	public void reset_castling_readiness() {}
 	
 	public int get_x() {
 		return x;

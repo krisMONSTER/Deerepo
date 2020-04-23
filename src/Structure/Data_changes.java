@@ -37,6 +37,7 @@ class Piece_coordinates extends Piece_position {
 public class Data_changes {
 	private Piece add_piece;
 	private Piece_position en_passant;
+	private List<Piece_position> castling = new ArrayList<>();
 	private List<Piece_coordinates> moved_pieces = new ArrayList<>();
 	private List<Piece_position> remove_pieces = new ArrayList<>();
 	
@@ -48,6 +49,10 @@ public class Data_changes {
 	public void put_en_passant(int x, int y) {
 		en_passant = new Piece_position(x,y);
 	}
+
+	public void put_castling(int x, int y){
+		castling.add(new Piece_position(x,y));
+	}
 	
 	public void put_remove(int x, int y) {
 		remove_pieces.add(new Piece_position(x,y));
@@ -56,27 +61,32 @@ public class Data_changes {
 	public void put_move(int a, int b, int c, int d) {
 		moved_pieces.add(new Piece_coordinates(a,b,c,d));
 	}
-	
-	public List<Piece_coordinates> get_moved_pieces(){
-		return moved_pieces;
-	}
-	
-	public List<Piece_position> get_remove_pieces(){
-		return remove_pieces;
-	}
-	
+
 	public Piece get_add_piece(){
 		return add_piece;
 	}
-	
+
 	public Piece_position get_en_passant() {
 		return en_passant;
+	}
+
+	public List<Piece_position> get_castling(){
+		return castling;
+	}
+
+	public List<Piece_position> get_remove_pieces(){
+		return remove_pieces;
+	}
+
+	public List<Piece_coordinates> get_moved_pieces(){
+		return moved_pieces;
 	}
 	
 	public void reset_data_changes() {
 		add_piece = null;
 		en_passant = null;
-		moved_pieces = new ArrayList<>();
+		castling = new ArrayList<>();
 		remove_pieces = new ArrayList<>();
+		moved_pieces = new ArrayList<>();
 	}
 }

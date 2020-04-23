@@ -15,12 +15,12 @@ public class Board {
 		//knights
 		piece_list.add(new Knight(1,0,true));
 		piece_list.add(new Knight(1,7,false));
-		piece_list.add(new Knight(6,2,true));
+		piece_list.add(new Knight(6,0,true));
 		piece_list.add(new Knight(6,7,false));
 		//bishops
-		piece_list.add(new Bishop(2,2,true));
+		piece_list.add(new Bishop(2,0,true));
 		piece_list.add(new Bishop(2,7,false));
-		piece_list.add(new Bishop(5,2,true));
+		piece_list.add(new Bishop(5,0,true));
 		piece_list.add(new Bishop(5,7,false));
 		//rooks
 		piece_list.add(new Rook(0,0,true));
@@ -28,7 +28,7 @@ public class Board {
 		piece_list.add(new Rook(7,0,true));
 		piece_list.add(new Rook(7,7,false));
 		//queens
-		piece_list.add(new Queen(3,2,true));
+		piece_list.add(new Queen(3,0,true));
 		piece_list.add(new Queen(3,7,false));
 		//kings
 		piece_list.add(new King(4,0,true));
@@ -52,15 +52,15 @@ public class Board {
 		 3 - wyczysc wczesniej zaznaczone pole i zaznacz (x,y)
 		 4 - wyczysc wczesniej zaznaczone pole
 		 */
-		if(Player.get_picked()==null) {
+		if(Player.get_picked_piece()==null) {
 			if(Player.pick(x, y))
 				return 1;
 			else
 				return 0;
 		}
 		else {
-			if(Player.is_move_valid_with_picked(x, y)) {
-				Player.set_data_changes_with_picked(x, y);
+			if(Player.is_move_valid(x, y)) {
+				Player.set_data_changes(x, y);
 				return 2;
 			}
 			else {
@@ -122,19 +122,18 @@ public class Board {
 	
 	public static void execute_data_changes(Data_changes data_changes) {
 		//Obiekt, w ktorym sa dane o pozycji figury, ktora uzyla en passant
-		Piece_position en_passant = data_changes.get_en_passant();
-		if(en_passant!=null) {
-			Objects.requireNonNull(get_piece(en_passant.get_x(), en_passant.get_y())).set_en_passant(true);
+		Piece_position en_passant_inclusion = data_changes.get_en_passant();
+		if(en_passant_inclusion!=null) {
+			Objects.requireNonNull(get_piece(en_passant_inclusion.get_x(), en_passant_inclusion.get_y())).set_en_passant(true);
 		}
 
-		//Lista obiektow, w ktorych sa dane o przemieszczeniu
-		List<Piece_coordinates> pieces_to_move = data_changes.get_moved_pieces();
-		for (Piece_coordinates piece_to_move : pieces_to_move) {
-			Piece piece = get_piece(piece_to_move.get_x(), piece_to_move.get_y());
-			assert piece != null;
-			piece.set_x(piece_to_move.get_new_x());
-			piece.set_y(piece_to_move.get_new_y());
-			//cos tam graficzengo
+		//Lista obiektow, w ktorych sa dane o pozycjach figur,
+		//w ktorych usuwana jest gotowosc do castlingu
+		List<Piece_position> castling_exclusions = data_changes.get_castling();
+		if(!castling_exclusions.isEmpty()) {
+			for (Piece_position castling_exclusion : castling_exclusions) {
+				Objects.requireNonNull(get_piece(castling_exclusion.get_x(), castling_exclusion.get_y())).reset_castling_readiness();
+			}
 		}
 
 		//Lista obiektow, w ktorych sa dane o pozycjach figur do usuniecia
@@ -145,6 +144,16 @@ public class Board {
 				piece_list.remove(piece);
 				//cos tam graficzengo
 			}
+		}
+
+		//Lista obiektow, w ktorych sa dane o przemieszczeniu
+		List<Piece_coordinates> pieces_to_move = data_changes.get_moved_pieces();
+		for (Piece_coordinates piece_to_move : pieces_to_move) {
+			Piece piece = get_piece(piece_to_move.get_x(), piece_to_move.get_y());
+			assert piece != null;
+			piece.set_x(piece_to_move.get_new_x());
+			piece.set_y(piece_to_move.get_new_y());
+			//cos tam graficzengo
 		}
 
 		//Piece - klasa abstrakcyjna, nadrzedna wzgledem reszty figur
