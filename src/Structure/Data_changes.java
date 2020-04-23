@@ -35,58 +35,58 @@ class Piece_coordinates extends Piece_position {
 }
 
 public class Data_changes {
-	private Piece add_piece;
-	private Piece_position en_passant;
-	private List<Piece_position> castling = new ArrayList<>();
-	private List<Piece_coordinates> moved_pieces = new ArrayList<>();
-	private List<Piece_position> remove_pieces = new ArrayList<>();
+	private Piece piece_addition;
+	private Piece_position en_passant_inclusion;
+	private List<Piece_position> castling_exclusions = new ArrayList<>();
+	private List<Piece_coordinates> pieces_to_move = new ArrayList<>();
+	private List<Piece_position> pieces_to_remove = new ArrayList<>();
 	
-	public void put_exchange(int x, int y, Piece add) {
-		remove_pieces.add(new Piece_position(x,y));
-		add_piece = add;
-	}
-	
-	public void put_en_passant(int x, int y) {
-		en_passant = new Piece_position(x,y);
-	}
-
-	public void put_castling(int x, int y){
-		castling.add(new Piece_position(x,y));
+	public void put_promotion_move(int x, int y, Piece add) {
+		pieces_to_remove.add(new Piece_position(x,y));
+		piece_addition = add;
 	}
 	
-	public void put_remove(int x, int y) {
-		remove_pieces.add(new Piece_position(x,y));
+	public void put_en_passant_inclusion(int x, int y) {
+		en_passant_inclusion = new Piece_position(x,y);
+	}
+
+	public void put_castling_exclusion(int x, int y){
+		castling_exclusions.add(new Piece_position(x,y));
 	}
 	
-	public void put_move(int a, int b, int c, int d) {
-		moved_pieces.add(new Piece_coordinates(a,b,c,d));
+	public void put_piece_removal(int x, int y) {
+		pieces_to_remove.add(new Piece_position(x,y));
+	}
+	
+	public void put_piece_movement(int a, int b, int c, int d) {
+		pieces_to_move.add(new Piece_coordinates(a,b,c,d));
 	}
 
-	public Piece get_add_piece(){
-		return add_piece;
+	public Piece get_piece_addition(){
+		return piece_addition;
 	}
 
-	public Piece_position get_en_passant() {
-		return en_passant;
+	public Piece_position get_en_passant_inclusion() {
+		return en_passant_inclusion;
 	}
 
-	public List<Piece_position> get_castling(){
-		return castling;
+	public List<Piece_position> get_castling_exclusions(){
+		return castling_exclusions;
 	}
 
-	public List<Piece_position> get_remove_pieces(){
-		return remove_pieces;
+	public List<Piece_position> get_pieces_to_remove(){
+		return pieces_to_remove;
 	}
 
-	public List<Piece_coordinates> get_moved_pieces(){
-		return moved_pieces;
+	public List<Piece_coordinates> get_pieces_to_move(){
+		return pieces_to_move;
 	}
 	
 	public void reset_data_changes() {
-		add_piece = null;
-		en_passant = null;
-		castling = new ArrayList<>();
-		remove_pieces = new ArrayList<>();
-		moved_pieces = new ArrayList<>();
+		piece_addition = null;
+		en_passant_inclusion = null;
+		castling_exclusions = new ArrayList<>();
+		pieces_to_remove = new ArrayList<>();
+		pieces_to_move = new ArrayList<>();
 	}
 }

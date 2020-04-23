@@ -58,7 +58,7 @@ abstract public class Piece {
 
 	public void set_data_changes(int a, int b, Data_changes data_changes) {
 		if(!Board.is_field_free(a, b))
-			data_changes.put_remove(a, b);
-		data_changes.put_move(x, y, a, b);
+			data_changes.put_piece_removal(a, b);
+		data_changes.put_piece_movement(x, y, a, b);
 	}
 }

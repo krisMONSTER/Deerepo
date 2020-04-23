@@ -122,14 +122,14 @@ public class Board {
 	
 	public static void execute_data_changes(Data_changes data_changes) {
 		//Obiekt, w ktorym sa dane o pozycji figury, ktora uzyla en passant
-		Piece_position en_passant_inclusion = data_changes.get_en_passant();
+		Piece_position en_passant_inclusion = data_changes.get_en_passant_inclusion();
 		if(en_passant_inclusion!=null) {
 			Objects.requireNonNull(get_piece(en_passant_inclusion.get_x(), en_passant_inclusion.get_y())).set_en_passant(true);
 		}
 
 		//Lista obiektow, w ktorych sa dane o pozycjach figur,
 		//w ktorych usuwana jest gotowosc do castlingu
-		List<Piece_position> castling_exclusions = data_changes.get_castling();
+		List<Piece_position> castling_exclusions = data_changes.get_castling_exclusions();
 		if(!castling_exclusions.isEmpty()) {
 			for (Piece_position castling_exclusion : castling_exclusions) {
 				Objects.requireNonNull(get_piece(castling_exclusion.get_x(), castling_exclusion.get_y())).reset_castling_readiness();
@@ -137,7 +137,7 @@ public class Board {
 		}
 
 		//Lista obiektow, w ktorych sa dane o pozycjach figur do usuniecia
-		List<Piece_position> pieces_to_remove = data_changes.get_remove_pieces();
+		List<Piece_position> pieces_to_remove = data_changes.get_pieces_to_remove();
 		if(!pieces_to_remove.isEmpty()) {
 			for (Piece_position piece_to_remove : pieces_to_remove) {
 				Piece piece = get_piece(piece_to_remove.get_x(), piece_to_remove.get_y());
@@ -147,7 +147,7 @@ public class Board {
 		}
 
 		//Lista obiektow, w ktorych sa dane o przemieszczeniu
-		List<Piece_coordinates> pieces_to_move = data_changes.get_moved_pieces();
+		List<Piece_coordinates> pieces_to_move = data_changes.get_pieces_to_move();
 		for (Piece_coordinates piece_to_move : pieces_to_move) {
 			Piece piece = get_piece(piece_to_move.get_x(), piece_to_move.get_y());
 			assert piece != null;
@@ -158,7 +158,7 @@ public class Board {
 
 		//Piece - klasa abstrakcyjna, nadrzedna wzgledem reszty figur
 		//Obiekt, w ktorym przechowywany jest nowa figura do dodania
-		Piece piece_to_add = data_changes.get_add_piece();
+		Piece piece_to_add = data_changes.get_piece_addition();
 		if(piece_to_add!=null) {
 			piece_list.add(piece_to_add);
 			//cos tam graficznego

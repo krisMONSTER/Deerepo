@@ -59,17 +59,17 @@ public class King extends Piece{
 
 	public void set_data_changes(int a, int b, Data_changes data_changes) {
 		if(!Board.is_field_free(a, b))
-			data_changes.put_remove(a, b);
+			data_changes.put_piece_removal(a, b);
 		if(castling_ready)
-			data_changes.put_castling(x, y);
-		data_changes.put_move(x, y, a, b);
+			data_changes.put_castling_exclusion(x, y);
+		data_changes.put_piece_movement(x, y, a, b);
 		if(a == x+2){
-			data_changes.put_castling(7, y);
-			data_changes.put_move(7, y, a-1, b);
+			data_changes.put_castling_exclusion(7, y);
+			data_changes.put_piece_movement(7, y, a-1, b);
 		}
 		else if(a == x-2){
-			data_changes.put_castling(0, y);
-			data_changes.put_move(0, y, a+1, b);
+			data_changes.put_castling_exclusion(0, y);
+			data_changes.put_piece_movement(0, y, a+1, b);
 		}
 	}
 }
