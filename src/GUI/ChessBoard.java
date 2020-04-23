@@ -83,11 +83,11 @@ public class ChessBoard  {
 
         //Ustawienie krolowych
         field[0][3].setGraphic(new ImageView(QueenB));
-        field[7][4].setGraphic(new ImageView(QueenW));
+        field[7][3].setGraphic(new ImageView(QueenW));
 
         //Ustawienie kroli
         field[0][4].setGraphic(new ImageView(KingB));
-        field[7][3].setGraphic(new ImageView(KingW));
+        field[7][4].setGraphic(new ImageView(KingW));
 
 
         for (int i = 0; i < size; i++) {
