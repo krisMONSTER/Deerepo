@@ -3,10 +3,10 @@ package Structure;
 import java.util.List;
 import java.util.ArrayList;
 
-class Piece_for_utilization{
+class Piece_position {
 	protected int x;
 	protected int y;
-	Piece_for_utilization(int a, int b){
+	Piece_position(int a, int b){
 		x = a;
 		y = b;
 	}
@@ -18,10 +18,10 @@ class Piece_for_utilization{
 	}
 }
 
-class Moved_piece extends Piece_for_utilization{
+class Piece_coordinates extends Piece_position {
 	private int new_x;
 	private int new_y;
-	Moved_piece(int a, int b, int c, int d){
+	Piece_coordinates(int a, int b, int c, int d){
 		super(a,b);
 		new_x = c;
 		new_y = d;
@@ -36,32 +36,32 @@ class Moved_piece extends Piece_for_utilization{
 
 public class Data_changes {
 	private Piece add_piece;
-	private Piece_for_utilization en_passant;
-	private List<Moved_piece> moved_pieces = new ArrayList<>();
-	private List<Piece_for_utilization> remove_pieces = new ArrayList<>();
+	private Piece_position en_passant;
+	private List<Piece_coordinates> moved_pieces = new ArrayList<>();
+	private List<Piece_position> remove_pieces = new ArrayList<>();
 	
 	public void put_exchange(int x, int y, Piece add) {
-		remove_pieces.add(new Piece_for_utilization(x,y));
+		remove_pieces.add(new Piece_position(x,y));
 		add_piece = add;
 	}
 	
 	public void put_en_passant(int x, int y) {
-		en_passant = new Piece_for_utilization(x,y);
+		en_passant = new Piece_position(x,y);
 	}
 	
 	public void put_remove(int x, int y) {
-		remove_pieces.add(new Piece_for_utilization(x,y));
+		remove_pieces.add(new Piece_position(x,y));
 	}
 	
 	public void put_move(int a, int b, int c, int d) {
-		moved_pieces.add(new Moved_piece(a,b,c,d));
+		moved_pieces.add(new Piece_coordinates(a,b,c,d));
 	}
 	
-	public List<Moved_piece> get_moved_pieces(){
+	public List<Piece_coordinates> get_moved_pieces(){
 		return moved_pieces;
 	}
 	
-	public List<Piece_for_utilization> get_remove_pieces(){
+	public List<Piece_position> get_remove_pieces(){
 		return remove_pieces;
 	}
 	
@@ -69,7 +69,7 @@ public class Data_changes {
 		return add_piece;
 	}
 	
-	public Piece_for_utilization get_en_passant() {
+	public Piece_position get_en_passant() {
 		return en_passant;
 	}
 	

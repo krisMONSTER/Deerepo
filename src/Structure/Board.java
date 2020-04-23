@@ -1,9 +1,8 @@
 package Structure;
 
-import GUI.AlertBox;
-
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Board {
 	private static List<Piece> piece_list = new ArrayList<>();
@@ -19,7 +18,7 @@ public class Board {
 		piece_list.add(new Knight(6,2,true));
 		piece_list.add(new Knight(6,7,false));
 		//bishops
-		piece_list.add(new Bishop(2,0,true));
+		piece_list.add(new Bishop(2,2,true));
 		piece_list.add(new Bishop(2,7,false));
 		piece_list.add(new Bishop(5,2,true));
 		piece_list.add(new Bishop(5,7,false));
@@ -122,44 +121,37 @@ public class Board {
 	}
 	
 	public static void execute_data_changes(Data_changes data_changes) {
-		Piece_for_utilization en_passant = data_changes.get_en_passant();
+		//Obiekt, w ktorym sa dane o pozycji figury, ktora uzyla en passant
+		Piece_position en_passant = data_changes.get_en_passant();
 		if(en_passant!=null) {
-			Piece piece;
-			if( ( piece = get_piece(en_passant.get_x(), en_passant.get_y()) ) != null){
-				piece.set_en_passant(true);
-			}
-			else{
-				AlertBox.display("Error","Data execution error (en_passant)");
-				System.exit(1);
-			}
+			Objects.requireNonNull(get_piece(en_passant.get_x(), en_passant.get_y())).set_en_passant(true);
 		}
-		
-		List<Moved_piece> moved_pieces = data_changes.get_moved_pieces();
-		for (Moved_piece moved_piece : moved_pieces) {
-			Piece piece;
-			if( ( piece = get_piece(moved_piece.get_x(), moved_piece.get_y()) ) != null){
-				piece.set_x(moved_piece.get_new_x());
-				piece.set_y(moved_piece.get_new_y());
-				//cos tam graficzengo
-			}
-			else{
-				AlertBox.display("Error","Data execution error (moved_pieces)");
-				System.exit(1);
-			}
+
+		//Lista obiektow, w ktorych sa dane o przemieszczeniu
+		List<Piece_coordinates> pieces_to_move = data_changes.get_moved_pieces();
+		for (Piece_coordinates piece_to_move : pieces_to_move) {
+			Piece piece = get_piece(piece_to_move.get_x(), piece_to_move.get_y());
+			assert piece != null;
+			piece.set_x(piece_to_move.get_new_x());
+			piece.set_y(piece_to_move.get_new_y());
+			//cos tam graficzengo
 		}
-		
-		List<Piece_for_utilization> remove_pieces = data_changes.get_remove_pieces();
-		if(!remove_pieces.isEmpty()) {
-			for (Piece_for_utilization remove_piece : remove_pieces) {
-				Piece piece = get_piece(remove_piece.get_x(), remove_piece.get_y());
+
+		//Lista obiektow, w ktorych sa dane o pozycjach figur do usuniecia
+		List<Piece_position> pieces_to_remove = data_changes.get_remove_pieces();
+		if(!pieces_to_remove.isEmpty()) {
+			for (Piece_position piece_to_remove : pieces_to_remove) {
+				Piece piece = get_piece(piece_to_remove.get_x(), piece_to_remove.get_y());
 				piece_list.remove(piece);
 				//cos tam graficzengo
 			}
 		}
-		
-		Piece add_piece = data_changes.get_add_piece();
-		if(add_piece!=null) {
-			piece_list.add(add_piece);
+
+		//Piece - klasa abstrakcyjna, nadrzedna wzgledem reszty figur
+		//Obiekt, w ktorym przechowywany jest nowa figura do dodania
+		Piece piece_to_add = data_changes.get_add_piece();
+		if(piece_to_add!=null) {
+			piece_list.add(piece_to_add);
 			//cos tam graficznego
 		}
 	}

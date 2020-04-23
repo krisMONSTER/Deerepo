@@ -1,5 +1,7 @@
 package Structure;
 
+import java.util.Objects;
+
 public class Pawn extends Piece{
 	private boolean en_passant;
 	public Pawn(int a, int b, boolean c) {
@@ -47,7 +49,7 @@ public class Pawn extends Piece{
 				}
 				else if(Board.is_field_free(a, b)) {
 					if(Board.what_on_field(a, y) == (colour?1:2)) {
-						return Board.get_piece(a, y).get_en_passant();
+						return Objects.requireNonNull(Board.get_piece(a, y)).get_en_passant();
 					}
 				}
 			}

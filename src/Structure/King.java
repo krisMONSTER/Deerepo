@@ -19,13 +19,13 @@ public class King extends Piece{
 		return false;
 	}
 
-	private boolean is_castling_line_on_check(int start, int end, int y){
+	private boolean is_line_check_free(int start, int end, int y){
 		for(;start<=end;start++){
 			if(Board.is_check_on_field(start, y, colour)){
-				return true;
+				return false;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	public boolean is_move_valid(int a, int b) {
@@ -37,7 +37,7 @@ public class King extends Piece{
 				if(Board.what_on_field(7,y) == (colour ? 2 : 1)){
 					Piece piece = Board.get_piece(7,y);
 					if(piece instanceof Rook && piece.get_castling_readiness()){
-						return !is_castling_line_on_check(x, a, y) && Board.is_space_free(x+1, 6, y, false);
+						return is_line_check_free(x, a, y) && Board.is_space_free(5, 6, y, false);
 					}
 				}
 			}
@@ -45,7 +45,7 @@ public class King extends Piece{
 				if(Board.what_on_field(0,y) == (colour ? 2 : 1)){
 					Piece piece = Board.get_piece(0,y);
 					if(piece instanceof Rook && piece.get_castling_readiness()){
-						return !is_castling_line_on_check(a, x, y) && Board.is_space_free(1, x-1, y, false);
+						return is_line_check_free(a, x, y) && Board.is_space_free(1, 3, y, false);
 					}
 				}
 			}

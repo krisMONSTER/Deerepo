@@ -10,8 +10,7 @@ public class Main extends Application{
 	public static void main(String[] args) {
 		launch(args);
 	}
-
-	public void start(Stage stage) throws Exception {
+	public void start(Stage stage) {
 		System.out.println("Wybierz kolor");
 		System.out.println("true - biale");
 		System.out.println("false - czarne");
