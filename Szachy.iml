@@ -11,5 +11,6 @@
     <orderEntry type="library" name="javafx14" level="application" />
     <orderEntry type="library" name="javafx14" level="application" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="javafx.web" level="project" />
   </component>
 </module>
