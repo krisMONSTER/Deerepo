@@ -68,12 +68,12 @@ public class Pawn extends Piece{
 
 	public void set_data_changes(int a, int b, Data_changes data_changes) {
 		if(!Board.is_field_free(a, b))
-			data_changes.put_remove(a, b);
+			data_changes.put_piece_removal(a, b);
 		else if(a!=x)
-			data_changes.put_remove(a, y);
+			data_changes.put_piece_removal(a, y);
 		else if(Math.abs(b-y)>1)
-			data_changes.put_en_passant(x, y);
-		data_changes.put_move(x, y, a, b);
+			data_changes.put_en_passant_inclusion(x, y);
+		data_changes.put_piece_movement(x, y, a, b);
 	}
 	
 }
