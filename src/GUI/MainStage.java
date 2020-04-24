@@ -18,6 +18,7 @@ public class MainStage extends Application{
 
     Stage window;
     Scene scene1, scene2;
+    GridPane Board=new GridPane();
     public static void main(String[] args) {
         launch(args);
     }
@@ -66,12 +67,14 @@ public class MainStage extends Application{
         //Layout 2
         BorderPane border = new BorderPane(); // dzieli scenę na funkcjonalne części
         VBox layout2=new VBox(20);
-        GridPane Board=new GridPane();
+
 
         layout2.getChildren().add(button2);
         border.setTop(layout2);
 
-        ChessBoard.BlankSpace(Board, 8);
+        GridPane Board=new GridPane();
+        ChessBoard board=new ChessBoard();
+        board.BlankSpace(Board, 8);
         border.setCenter(Board);
         scene2 = new Scene(border,600,600);
 
