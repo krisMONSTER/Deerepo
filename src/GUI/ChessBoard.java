@@ -1,21 +1,20 @@
 package GUI;
 
-import javafx.application.Application;
-import javafx.geometry.HPos;
+import Structure.Board;
+import Structure.Player;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.VPos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
+import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.awt.event.MouseListener;
+import java.util.Scanner;
+
 
 public class ChessBoard  {
 
@@ -31,69 +30,85 @@ public class ChessBoard  {
     static Image QueenW = new Image(ChessBoard.class.getResourceAsStream("img/QueenW_icon.png"));
     static Image RookB = new Image(ChessBoard.class.getResourceAsStream("img/RookB_icon.png"));
     static Image RookW = new Image(ChessBoard.class.getResourceAsStream("img/RookW_icon.png"));
+    public static Button[][] board = new Button[8][8];
 
 
-
-
-    Insets buttonMargin = new Insets(0, 0, 0, 0);
-
-    public static void BlankSpace(GridPane Board,Button[][] field, int size)
+    public static void BlankSpace(GridPane Board,int size)
     {
 
-        for(int row=0; row<size; row++)
+        //x - wiersz, y - kolumna
+        for(int x=0; x<size; x++)
         {
-            for(int col=0;col<size;col++)
+            for(int y=0;y<size;y++)
             {
                 String color;
-                field[row][col]=new Button();
+                board[x][y]=new Button();
 
-                if((row+col)%2==0) color="#FFF2BC"; //"biale pola"
+                if((x+y)%2==0) color="#FFF2BC"; //"biale pola"
                 else color="#513A28"; //"czarne" pola
 
-                field[row][col].setStyle("-fx-background-color: " + color + ";-fx-border-color: black; -fx-padding: 0");
-                Board.add(field[row][col], col, row);
-                field[row][col].setPrefSize(52, 52);
+                board[x][y].setStyle("-fx-background-color: " + color + ";-fx-border-color: black; -fx-padding: 0");
+                Board.add(board[x][y], y, x);
+                board[x][y].setPrefSize(52, 52);
             }
         }
 
         //Ustawienie pionków
-        for (int col = 0; col < 8; col++) {
-            field[1][col].setGraphic(new ImageView(PawnB));
+        for (int y = 0; y < 8; y++) {
+            board[1][y].setGraphic(new ImageView(PawnB));
         }
-        for (int col = 0; col < 8; col++) {
-            field[6][col].setGraphic(new ImageView(PawnW));
+        for (int y = 0; y < 8; y++) {
+            board[6][y].setGraphic(new ImageView(PawnW));
         }
         //Ustawienie wież
-        field[0][0].setGraphic(new ImageView(RookB));
-        field[0][7].setGraphic(new ImageView(RookB));
-        field[7][0].setGraphic(new ImageView(RookW));
-        field[7][7].setGraphic(new ImageView(RookW));
+        board[0][0].setGraphic(new ImageView(RookB));
+        board[0][7].setGraphic(new ImageView(RookB));
+        board[7][0].setGraphic(new ImageView(RookW));
+        board[7][7].setGraphic(new ImageView(RookW));
 
         //Ustawienie skoczków
-        field[0][1].setGraphic(new ImageView(KnightB));
-        field[0][6].setGraphic(new ImageView(KnightB));
-        field[7][1].setGraphic(new ImageView(KnightW));
-        field[7][6].setGraphic(new ImageView(KnightW));
+        board[0][1].setGraphic(new ImageView(KnightB));
+        board[0][6].setGraphic(new ImageView(KnightB));
+        board[7][1].setGraphic(new ImageView(KnightW));
+        board[7][6].setGraphic(new ImageView(KnightW));
 
         //Ustawienie gońców
-        field[0][2].setGraphic(new ImageView(BishopB));
-        field[0][5].setGraphic(new ImageView(BishopB));
-        field[7][2].setGraphic(new ImageView(BishopW));
-        field[7][5].setGraphic(new ImageView(BishopW));
+        board[0][2].setGraphic(new ImageView(BishopB));
+        board[0][5].setGraphic(new ImageView(BishopB));
+        board[7][2].setGraphic(new ImageView(BishopW));
+        board[7][5].setGraphic(new ImageView(BishopW));
 
         //Ustawienie krolowych
-        field[0][3].setGraphic(new ImageView(QueenB));
-        field[7][3].setGraphic(new ImageView(QueenW));
+        board[0][3].setGraphic(new ImageView(QueenB));
+        board[7][3].setGraphic(new ImageView(QueenW));
 
         //Ustawienie kroli
-        field[0][4].setGraphic(new ImageView(KingB));
-        field[7][4].setGraphic(new ImageView(KingW));
+        board[0][4].setGraphic(new ImageView(KingB));
+        board[7][4].setGraphic(new ImageView(KingW));
 
 
         for (int i = 0; i < size; i++) {
             Board.setHgap(0); // przestrzenie między polami szachownicy
             Board.setVgap(0);
         }
+
+        // Mechanizm i aplikacja działają jednocześnie
+        Game game = new Game();
+        Thread watek_gry = new Thread(game);
+        watek_gry.start();
+
     }
+
+    //Usuwanie pionka z planszy
+    public static void piece_remove(int x, int y) {
+        board[x][y].setGraphic(null);
+    }
+
+    //Ustawianie pionka na nowym miejscu
+    public static void make_move(int x, int y)
+    {
+        board[x][y].setGraphic(new ImageView(PawnB));
+    }
+
 }
 

@@ -22,7 +22,7 @@ public class MainStage extends Application{
         launch(args);
     }
 
-    public void start(Stage primaryStage) throws FileNotFoundException{
+    public void start(Stage primaryStage){
 
 
         window=primaryStage;
@@ -71,7 +71,7 @@ public class MainStage extends Application{
         layout2.getChildren().add(button2);
         border.setTop(layout2);
 
-        ChessBoard.BlankSpace(Board, new Button[8][8], 8);
+        ChessBoard.BlankSpace(Board, 8);
         border.setCenter(Board);
         scene2 = new Scene(border,600,600);
 
