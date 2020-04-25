@@ -5,7 +5,10 @@ import Structure.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -30,10 +33,9 @@ public class ChessBoard  {
     static Image QueenW = new Image(ChessBoard.class.getResourceAsStream("img/QueenW_icon.png"));
     static Image RookB = new Image(ChessBoard.class.getResourceAsStream("img/RookB_icon.png"));
     static Image RookW = new Image(ChessBoard.class.getResourceAsStream("img/RookW_icon.png"));
-    public static Button[][] board = new Button[8][8];
+    Label[][] board=new Label[8][8];
 
-
-    public static void BlankSpace(GridPane Board,int size)
+    public void BlankSpace(GridPane Board,int size)
     {
 
         //x - wiersz, y - kolumna
@@ -42,7 +44,7 @@ public class ChessBoard  {
             for(int y=0;y<size;y++)
             {
                 String color;
-                board[x][y]=new Button();
+                board[x][y]=new Label();
 
                 if((x+y)%2==0) color="#FFF2BC"; //"biale pola"
                 else color="#513A28"; //"czarne" pola
@@ -87,6 +89,8 @@ public class ChessBoard  {
         board[7][4].setGraphic(new ImageView(KingW));
 
 
+
+
         for (int i = 0; i < size; i++) {
             Board.setHgap(0); // przestrzenie między polami szachownicy
             Board.setVgap(0);
@@ -99,16 +103,15 @@ public class ChessBoard  {
 
     }
 
-    //Usuwanie pionka z planszy
-    public static void piece_remove(int x, int y) {
-        board[x][y].setGraphic(null);
+    private Node getNodeFromGridPane(GridPane Board, int col, int row) {
+        for (Node node : Board.getChildren()) {
+            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                return node;
+            }
+        }
+        return null;
     }
 
-    //Ustawianie pionka na nowym miejscu
-    public static void make_move(int x, int y)
-    {
-        board[x][y].setGraphic(new ImageView(PawnB));
-    }
 
 }
 
