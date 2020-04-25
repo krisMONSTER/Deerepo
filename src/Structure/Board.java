@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Board {
 	private static List<Piece> piece_list = new ArrayList<>();
-	private static Structure.player player;
+	private static Player player;
 	static {
 		//pawns
 		for(int i=0;i<8;i++) {
@@ -34,7 +34,7 @@ public class Board {
 		piece_list.add(new King(4,7,false));
 	}
 
-	public static void setPlayer(Structure.player player) {
+	public static void setPlayer(Player player) {
 		Board.player = player;
 	}
 

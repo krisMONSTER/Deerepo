@@ -1,23 +1,17 @@
 package Structure;
 
-public class player {
+public class Player {
+	private String name;
 	private boolean colour;
 	private Piece pickedPiece;
 	private DataChanges dataChanges = new DataChanges();
 
-	public player(boolean colour){
+	public Player(String name, boolean colour){
+		this.name = name;
 		this.colour = colour;
 	}
 
-	public void setColour(boolean color) {
-		colour = color;
-	}
-
 	public boolean getColour() { return colour; }
-
-	public void resetEnPassant() {
-		Board.findAndResetEnPassant(colour);
-	}
 	
 	public boolean pick(int x, int y) {
 		pickedPiece = Board.getPiece(x,y);

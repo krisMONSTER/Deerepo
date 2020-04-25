@@ -7,9 +7,9 @@ import java.util.Scanner;
 
 public class Main extends Application{
 	private static Scanner sc = new Scanner(System.in);
-	private static player white = new player(true);
-	private static player black = new player(false);
-	private static player current = black;
+	private static Player white = new Player("BornToFight", true);
+	private static Player black = new Player("Deer", false);
+	private static Player current = black;
 	public static void main(String[] args) {
 		launch(args);
 	}

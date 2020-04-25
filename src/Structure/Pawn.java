@@ -74,6 +74,8 @@ public class Pawn extends Piece{
 		else if(Math.abs(b-y)>1)
 			dataChanges.putAlteration(new Alteration(x, y, TypeOfAlter.enPassantInclusion));
 		dataChanges.putAlteration(new Alteration(x, y, a, b));
+		if(b == 7 || b == 0)
+			dataChanges.putAlteration(new Alteration(a, b, new Queen(a,b,colour)));
 	}
 	
 }
