@@ -11,6 +11,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -42,6 +44,9 @@ public class ChessBoard {
     GridPane Board; //Pane, na którym jest plansza
     boolean is_picked; //Info dla EventHandlera czy przypadkiem nie wybrano juz jakiegos pionka
     ImageView picked_piece; //Ikona wybranego pionka
+    Lighting light = new Lighting();
+
+
 
     public ChessBoard(GridPane Board) {
         this.Board = Board;
@@ -123,10 +128,12 @@ public class ChessBoard {
             if(is_picked==false) {
                 if(board[ustal_wiersz-1][ustal_kolumne-1].getGraphic()==null) return;
                 picked_piece = (ImageView) board[ustal_wiersz-1][ustal_kolumne-1].getGraphic();
+                board[ustal_wiersz-1][ustal_kolumne-1].getGraphic().setEffect(light);
                 is_picked = true;
             }
             else{
                 board[ustal_wiersz-1][ustal_kolumne-1].setGraphic(picked_piece);
+                board[ustal_wiersz-1][ustal_kolumne-1].getGraphic().setEffect(null);
                 is_picked = false;
             }
         };
