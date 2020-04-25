@@ -15,10 +15,10 @@ public class Game extends Thread {
         System.out.println("false - czarne");
         boolean kolorek = sc.nextBoolean();
         sc.nextLine();
-        Player.set_colour(kolorek);
+        Player.setColour(kolorek);
         while(true) {
-            Player.set_colour(kolorek = !kolorek);
-            Player.reset_en_passant();
+            Player.setColour(kolorek = !kolorek);
+            Player.resetEnPassant();
             Board.display();
             int x, y;
             byte tmp;
@@ -29,7 +29,7 @@ public class Game extends Thread {
                 System.out.print("Podaj y:");
                 y = sc.nextInt();
                 sc.nextLine();
-                tmp = Board.click_on_board(x, y);
+                tmp = Board.clickOnBoard(x, y);
                 System.out.println(tmp);
             } while (tmp != 2);
             //send_info();

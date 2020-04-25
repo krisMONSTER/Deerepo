@@ -9,24 +9,24 @@ public class Pawn extends Piece{
 		en_passant = false;
 	}
 	
-	public boolean get_en_passant() {
+	public boolean getEnPassant() {
 		return en_passant;
 	}
 	
-	public void set_en_passant(boolean x) {
+	public void setEnPassant(boolean x) {
 		en_passant = x;
 	}
 	
-	public boolean is_move_possible(int a, int b) {
+	public boolean isMovePossible(int a, int b) {
 		if(a == x) {
 			if(colour) {
-				if( b == y+2 && Board.is_field_free(x, y+1) && y == 1 ) {
+				if( b == y+2 && Board.isFieldFree(x, y+1) && y == 1 ) {
 					return true;
 				}
 				return b == y + 1;
 			}
 			else {
-				if( b == y-2 && Board.is_field_free(x, y-1) && y == 6 ) {
+				if( b == y-2 && Board.isFieldFree(x, y-1) && y == 6 ) {
 					return true;
 				}
 				return b == y - 1;
@@ -38,18 +38,18 @@ public class Pawn extends Piece{
 		return false;
 	}
 	
-	public boolean is_move_valid(int a, int b) {
-		if(is_move_possible(a,b)) {
+	public boolean isMoveValid(int a, int b) {
+		if(isMovePossible(a,b)) {
 			if(a == x) {
-				return Board.is_field_free(a, b);
+				return Board.isFieldFree(a, b);
 			}
 			else {
-				if(Board.what_on_field(a, b) == (colour?1:2)) {
+				if(Board.whatOnField(a, b) == (colour?1:2)) {
 					return true;
 				}
-				else if(Board.is_field_free(a, b)) {
-					if(Board.what_on_field(a, y) == (colour?1:2)) {
-						return Objects.requireNonNull(Board.get_piece(a, y)).get_en_passant();
+				else if(Board.isFieldFree(a, b)) {
+					if(Board.whatOnField(a, y) == (colour?1:2)) {
+						return Objects.requireNonNull(Board.getPiece(a, y)).getEnPassant();
 					}
 				}
 			}
@@ -57,8 +57,8 @@ public class Pawn extends Piece{
 		return false;
 	}
 
-	public boolean endangers_field(int a, int b){
-		if(is_move_possible(a, b)){
+	public boolean endangersField(int a, int b){
+		if(isMovePossible(a, b)){
 			return a != x;
 		}
 		else {
@@ -66,14 +66,14 @@ public class Pawn extends Piece{
 		}
 	}
 
-	public void set_data_changes(int a, int b, Data_changes data_changes) {
-		if(!Board.is_field_free(a, b))
-			data_changes.put_piece_removal(a, b);
+	public void setDataChanges(int a, int b, DataChanges dataChanges) {
+		if(!Board.isFieldFree(a, b))
+			dataChanges.putAlteration(new Alteration(a, b, TypeOfAlter.capture));
 		else if(a!=x)
-			data_changes.put_piece_removal(a, y);
+			dataChanges.putAlteration(new Alteration(a, y, TypeOfAlter.capture));
 		else if(Math.abs(b-y)>1)
-			data_changes.put_en_passant_inclusion(x, y);
-		data_changes.put_piece_movement(x, y, a, b);
+			dataChanges.putAlteration(new Alteration(x, y, TypeOfAlter.enPassantInclusion));
+		dataChanges.putAlteration(new Alteration(x, y, a, b));
 	}
 	
 }

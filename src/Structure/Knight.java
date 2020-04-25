@@ -4,7 +4,7 @@ public class Knight extends Piece{
 	public Knight(int a, int b, boolean c) {
 		super(a,b,c);
 	}
-	public boolean is_move_possible(int a, int b) {
+	public boolean isMovePossible(int a, int b) {
 		if(a == x - 2 || a == x + 2) {
 			return b == y + 1 || b == y - 1;
 		}
