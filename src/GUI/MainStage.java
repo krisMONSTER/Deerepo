@@ -72,12 +72,19 @@ public class MainStage extends Application{
         layout2.getChildren().add(button2);
         border.setTop(layout2);
 
+        //Plansza
         GridPane Board=new GridPane();
-        ChessBoard board=new ChessBoard();
-        board.BlankSpace(Board, 8);
+        ChessBoard board=new ChessBoard(Board);
+        board.BlankSpace(8);
+        board.InitChessBoard();
+        board.moving_on_chessboard();
         border.setCenter(Board);
         scene2 = new Scene(border,600,600);
 
+        //Uruchomienie gry w konsoli
+        Game game = new Game();
+        Thread watek_gry = new Thread(game);
+        watek_gry.start();
 
 
         window.setScene(scene1);

@@ -3,8 +3,10 @@ package GUI;
 import Structure.Board;
 import Structure.Player;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
@@ -15,11 +17,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.util.Scanner;
 
 
-public class ChessBoard  {
+public class ChessBoard {
 
     static Image BishopB = new Image(ChessBoard.class.getResourceAsStream("img/BishopB_icon.png"));
     static Image BishopW = new Image(ChessBoard.class.getResourceAsStream("img/BishopW_icon.png"));
@@ -33,32 +37,49 @@ public class ChessBoard  {
     static Image QueenW = new Image(ChessBoard.class.getResourceAsStream("img/QueenW_icon.png"));
     static Image RookB = new Image(ChessBoard.class.getResourceAsStream("img/RookB_icon.png"));
     static Image RookW = new Image(ChessBoard.class.getResourceAsStream("img/RookW_icon.png"));
-    Label[][] board=new Label[8][8];
 
-    public void BlankSpace(GridPane Board,int size)
-    {
+    Label[][] board = new Label[8][8]; //Pola planszy
+    GridPane Board; //Pane, na którym jest plansza
+    boolean is_picked; //Info dla EventHandlera czy przypadkiem nie wybrano juz jakiegos pionka
+    ImageView picked_piece; //Ikona wybranego pionka
+
+    public ChessBoard(GridPane Board) {
+        this.Board = Board;
+    }
+
+    //wyswietla pusta plansze
+    public void BlankSpace(int size) {
 
         //x - wiersz, y - kolumna
-        for(int x=0; x<size; x++)
-        {
-            for(int y=0;y<size;y++)
-            {
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
                 String color;
-                board[x][y]=new Label();
+                board[x][y] = new Label();
 
-                if((x+y)%2==0) color="#FFF2BC"; //"biale pola"
-                else color="#513A28"; //"czarne" pola
+                if ((x + y) % 2 == 0) color = "#FFF2BC"; //"biale pola"
+                else color = "#513A28"; //"czarne" pola
 
                 board[x][y].setStyle("-fx-background-color: " + color + ";-fx-border-color: black; -fx-padding: 0");
                 Board.add(board[x][y], y, x);
-                board[x][y].setPrefSize(52, 52);
+                board[x][y].setPrefSize(50, 50);
             }
         }
+
+            Board.setHgap(0); // przestrzenie między polami szachownicy
+            Board.setVgap(0);
+            Board.setPrefSize(400,400);
+
+    }
+
+    //wyswietla pionki na planszy
+
+    public void InitChessBoard() {
 
         //Ustawienie pionków
         for (int y = 0; y < 8; y++) {
             board[1][y].setGraphic(new ImageView(PawnB));
         }
+
         for (int y = 0; y < 8; y++) {
             board[6][y].setGraphic(new ImageView(PawnW));
         }
@@ -88,29 +109,31 @@ public class ChessBoard  {
         board[0][4].setGraphic(new ImageView(KingB));
         board[7][4].setGraphic(new ImageView(KingW));
 
-
-
-
-        for (int i = 0; i < size; i++) {
-            Board.setHgap(0); // przestrzenie między polami szachownicy
-            Board.setVgap(0);
-        }
-
-        // Mechanizm i aplikacja działają jednocześnie
-        Game game = new Game();
-        Thread watek_gry = new Thread(game);
-        watek_gry.start();
-
     }
 
-    private Node getNodeFromGridPane(GridPane Board, int col, int row) {
-        for (Node node : Board.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                return node;
+    //Obsluga przesuwania pionkow po planszy
+
+    public void moving_on_chessboard()
+    {
+        EventHandler<MouseEvent> eventHandler = e -> {
+            int ustal_kolumne;
+            int ustal_wiersz;
+            ustal_kolumne=(int)((e.getX()/50)+1);
+            ustal_wiersz=(int)((e.getY()/50+1));
+            if(is_picked==false) {
+                if(board[ustal_wiersz-1][ustal_kolumne-1].getGraphic()==null) return;
+                picked_piece = (ImageView) board[ustal_wiersz-1][ustal_kolumne-1].getGraphic();
+                is_picked = true;
             }
-        }
-        return null;
+            else{
+                board[ustal_wiersz-1][ustal_kolumne-1].setGraphic(picked_piece);
+                is_picked = false;
+            }
+        };
+
+        Board.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
     }
+
 
 
 }
