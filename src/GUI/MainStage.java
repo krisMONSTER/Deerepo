@@ -74,7 +74,8 @@ public class MainStage extends Application{
         ChessBoard board=new ChessBoard(Board);
         board.BlankSpace(8);
         board.InitChessBoard();
-        board.moving_on_chessboard();
+        Connection connection=new Connection(board);
+        connection.moving_on_chessboard();
         border.setCenter(Board);
         scene2 = new Scene(border,600,600);
 
