@@ -1,44 +1,44 @@
 package Structure;
 
 public class Player {
-	private static boolean colour;
-	private static Piece picked_piece;
-	private static Data_changes data_changes = new Data_changes();
-	
-	public static void set_colour(boolean color) {
-		colour = color;
+	private String name;
+	private boolean colour;
+	private Piece pickedPiece;
+	private DataChanges dataChanges = new DataChanges();
+
+	public Player(String name, boolean colour){
+		this.name = name;
+		this.colour = colour;
 	}
+
+	public boolean getColour() { return colour; }
 	
-	public static void reset_en_passant() {
-		Board.find_and_reset_en_passant(colour);
-	}
-	
-	public static boolean pick(int x, int y) {
-		picked_piece = Board.get_piece(x,y);
-		if(picked_piece == null)
+	public boolean pick(int x, int y) {
+		pickedPiece = Board.getPiece(x,y);
+		if(pickedPiece == null)
 			return false;
-		else if(picked_piece.get_colour() == colour) {
+		else if(pickedPiece.getColour() == colour) {
 			return true;
 		}
 		else {
-			picked_piece = null;
+			pickedPiece = null;
 			return false;
 		}
 	}
 	
-	public static Piece get_picked_piece() {
-		return picked_piece;
+	public Piece getPickedPiece() {
+		return pickedPiece;
 	}
 	
-	public static boolean is_move_valid(int x, int y) {
-		return picked_piece.is_move_valid(x, y);
+	public boolean isMoveValid(int x, int y) {
+		return pickedPiece.isMoveValid(x, y);
 	}
 	
-	public static void set_data_changes(int x, int y) {
-		picked_piece.set_data_changes(x, y, data_changes);
-		Board.execute_data_changes(data_changes);
+	public void setDataChanges(int x, int y) {
+		pickedPiece.setDataChanges(x, y, dataChanges);
+		Board.executeDataChanges(dataChanges);
 		//send data_changes to user
-		data_changes.reset_data_changes();
-		picked_piece=null;
+		dataChanges.resetDataChanges();
+		pickedPiece =null;
 	}
 }

@@ -11,54 +11,54 @@ abstract public class Piece {
 		colour = c;
 	}
 	
-	abstract public boolean is_move_possible(int a, int b);
+	abstract public boolean isMovePossible(int a, int b);
 	
-	public void set_x(int a) {
+	public void setX(int a) {
 		x = a;
 	}
 	
-	public void set_y(int a) {
+	public void setY(int a) {
 		y = a;
 	}
 	
-	public void set_en_passant(boolean x) {}
+	public void setEnPassant(boolean x) {}
 
-	public void reset_castling_readiness() {}
+	public void resetCastlingReadiness() {}
 	
-	public int get_x() {
+	public int getX() {
 		return x;
 	}
 	
-	public int get_y() {
+	public int getY() {
 		return y;
 	}
 	
-	public boolean get_colour() {
+	public boolean getColour() {
 		return colour;
 	}
 	
-	public boolean get_en_passant() {
+	public boolean getEnPassant() {
 		return false;
 	}
 
-	public boolean get_castling_readiness(){ return false; }
+	public boolean getCastlingReadiness(){ return false; }
 	
-	public boolean is_move_valid(int a, int b) {
-		if(is_move_possible(a,b)) {
-			return Board.what_on_field(a, b) != (colour ? 2 : 1);
+	public boolean isMoveValid(int a, int b) {
+		if(isMovePossible(a,b)) {
+			return Board.whatOnField(a, b) != (colour ? 2 : 1);
 		}
 		else {
 			return false;
 		}
 	}
 
-	public boolean endangers_field(int a, int b){
-		return is_move_possible(a, b);
+	public boolean endangersField(int a, int b){
+		return isMovePossible(a, b);
 	}
 
-	public void set_data_changes(int a, int b, Data_changes data_changes) {
-		if(!Board.is_field_free(a, b))
-			data_changes.put_piece_removal(a, b);
-		data_changes.put_piece_movement(x, y, a, b);
+	public void setDataChanges(int a, int b, DataChanges dataChanges) {
+		if(!Board.isFieldFree(a, b))
+			dataChanges.putAlteration(new Alteration(a, b, TypeOfAlter.capture));
+		dataChanges.putAlteration(new Alteration(x, y, a, b));
 	}
 }

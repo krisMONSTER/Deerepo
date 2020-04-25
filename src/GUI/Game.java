@@ -8,19 +8,18 @@ import java.util.Scanner;
 public class Game extends Thread {
 
     private static Scanner sc = new Scanner(System.in);
+    private static Player white = new Player("BornToFight",true);
+    private static Player black = new Player("Deer",false);
+    private static Player current = black;
 
     public void run(){
-        System.out.println("Wybierz kolor");
-        System.out.println("true - biale");
-        System.out.println("false - czarne");
-        boolean kolorek = sc.nextBoolean();
-        sc.nextLine();
-        Player.set_colour(kolorek);
+        System.out.println("Zaczynaja biale!");
         while(true) {
-            Player.set_colour(kolorek = !kolorek);
-            Player.reset_en_passant();
+            if(current==white) current = black;
+            else current = white;
+            Board.setPlayer(current);
             Board.display();
-            int x, y;
+            int x,y;
             byte tmp;
             do {
                 System.out.print("Podaj x:");
@@ -29,10 +28,10 @@ public class Game extends Thread {
                 System.out.print("Podaj y:");
                 y = sc.nextInt();
                 sc.nextLine();
-                tmp = Board.click_on_board(x, y);
+                tmp = Board.clickOnBoard(x, y);
                 System.out.println(tmp);
-            } while (tmp != 2);
-            //send_info();
+            }while(tmp!=2);
+            Board.findAndResetEnPassant(!current.getColour());
         }
     }
 }
