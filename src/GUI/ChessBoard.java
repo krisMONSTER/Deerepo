@@ -1,22 +1,10 @@
 package GUI;
 
-import Structure.Board;
-import Structure.Player;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-
-import java.awt.event.MouseListener;
-import java.util.Scanner;
 
 
 public class ChessBoard  {

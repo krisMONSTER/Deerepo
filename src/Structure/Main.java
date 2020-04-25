@@ -7,19 +7,18 @@ import java.util.Scanner;
 
 public class Main extends Application{
 	private static Scanner sc = new Scanner(System.in);
+	private static player white = new player(true);
+	private static player black = new player(false);
+	private static player current = black;
 	public static void main(String[] args) {
 		launch(args);
 	}
 	public void start(Stage stage) {
-		System.out.println("Wybierz kolor");
-		System.out.println("true - biale");
-		System.out.println("false - czarne");
-		boolean kolorek = sc.nextBoolean();
-		sc.nextLine();
-		Player.setColour(kolorek);
+		System.out.println("Zaczynaja biale!");
 		while(true) {
-			Player.setColour(kolorek=!kolorek);
-			Player.resetEnPassant();
+			if(current==white) current = black;
+			else current = white;
+			Board.setPlayer(current);
 			Board.display();
 			int x,y;
 			byte tmp;
@@ -33,7 +32,7 @@ public class Main extends Application{
 				tmp = Board.clickOnBoard(x, y);
 				System.out.println(tmp);
 			}while(tmp!=2);
-			//send_info();
+			Board.findAndResetEnPassant(!current.getColour());
 		}
 	}
 }

@@ -1,26 +1,25 @@
 package GUI;
 
 import Structure.Board;
-import Structure.Player;
+import Structure.player;
 
 import java.util.Scanner;
 
 public class Game extends Thread {
 
     private static Scanner sc = new Scanner(System.in);
+    private static player white = new player(true);
+    private static player black = new player(false);
+    private static player current = black;
 
     public void run(){
-        System.out.println("Wybierz kolor");
-        System.out.println("true - biale");
-        System.out.println("false - czarne");
-        boolean kolorek = sc.nextBoolean();
-        sc.nextLine();
-        Player.setColour(kolorek);
+        System.out.println("Zaczynaja biale!");
         while(true) {
-            Player.setColour(kolorek = !kolorek);
-            Player.resetEnPassant();
+            if(current==white) current = black;
+            else current = white;
+            Board.setPlayer(current);
             Board.display();
-            int x, y;
+            int x,y;
             byte tmp;
             do {
                 System.out.print("Podaj x:");
@@ -31,8 +30,8 @@ public class Game extends Thread {
                 sc.nextLine();
                 tmp = Board.clickOnBoard(x, y);
                 System.out.println(tmp);
-            } while (tmp != 2);
-            //send_info();
+            }while(tmp!=2);
+            Board.findAndResetEnPassant(!current.getColour());
         }
     }
 }

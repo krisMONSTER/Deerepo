@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class Board {
 	private static List<Piece> piece_list = new ArrayList<>();
+	private static Structure.player player;
 	static {
 		//pawns
 		for(int i=0;i<8;i++) {
@@ -32,7 +33,11 @@ public class Board {
 		piece_list.add(new King(4,0,true));
 		piece_list.add(new King(4,7,false));
 	}
-	
+
+	public static void setPlayer(Structure.player player) {
+		Board.player = player;
+	}
+
 	public static Piece getPiece(int x, int y) {
 		for (Piece piece : piece_list) {
 			if (x == piece.getX() && y == piece.getY()) {
@@ -49,21 +54,20 @@ public class Board {
 		 2 - wyczysc wczesniej zaznaczone pole i ruch na (x,y)
 		 3 - wyczysc wczesniej zaznaczone pole i zaznacz (x,y)
 		 4 - wyczysc wczesniej zaznaczone pole
-		 to juz w sumie niewazne
 		 */
-		if(Player.getPickedPiece()==null) {
-			if(Player.pick(x, y))
+		if(player.getPickedPiece()==null) {
+			if(player.pick(x, y))
 				return 1;
 			else
 				return 0;
 		}
 		else {
-			if(Player.isMoveValid(x, y)) {
-				Player.setDataChanges(x, y);
+			if(player.isMoveValid(x, y)) {
+				player.setDataChanges(x, y);
 				return 2;
 			}
 			else {
-				if(Player.pick(x, y))
+				if(player.pick(x, y))
 					return 3;
 				else
 					return 4;
