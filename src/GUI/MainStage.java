@@ -79,9 +79,9 @@ public class MainStage extends Application{
         scene2 = new Scene(border,600,600);
 
         //Uruchomienie gry w konsoli
-        //Game game = new Game();
-        //Thread watek_gry = new Thread(game);
-        //watek_gry.start();
+        Game game = new Game();
+        Thread watek_gry = new Thread(game);
+        watek_gry.start();
 
 
         window.setScene(scene1);
