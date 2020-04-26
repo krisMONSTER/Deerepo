@@ -2,6 +2,7 @@ package Structure;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
 enum TypeOfAlter {
 	move,
@@ -11,7 +12,7 @@ enum TypeOfAlter {
 	castlingExclusion
 }
 
-class Alteration{
+class Alteration implements Serializable {
 	private int x, y, newX, newY;
 	private Piece newPiece;
 	private TypeOfAlter typeOfAlter;
@@ -29,6 +30,19 @@ class Alteration{
 		this(x, y, TypeOfAlter.promotion);
 		this.newPiece = newPiece;
 	}
+
+	@Override
+	public String toString() {
+		return "Alteration{" +
+				"x=" + x +
+				", y=" + y +
+				", newX=" + newX +
+				", newY=" + newY +
+				", newPiece=" + newPiece +
+				", typeOfAlter=" + typeOfAlter +
+				'}';
+	}
+
 	public int getX() {
 		return x;
 	}
@@ -49,7 +63,7 @@ class Alteration{
 	}
 }
 
-public class DataChanges {
+public class DataChanges implements Serializable {
 	List<Alteration> alterationList = new ArrayList<>();
 
 	public void putAlteration(Alteration alteration){
@@ -62,5 +76,16 @@ public class DataChanges {
 
 	public void resetDataChanges(){
 		alterationList = new ArrayList<>();
+	}
+
+	public void test() {
+		alterationList.add(new Alteration(1, 1, TypeOfAlter.move));
+	}
+
+	@Override
+	public String toString() {
+		return "DataChanges{" +
+				"alterationList=" + alterationList +
+				'}';
 	}
 }

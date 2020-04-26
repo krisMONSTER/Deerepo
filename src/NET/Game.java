@@ -13,6 +13,15 @@ public class Game {
         Socket s = ss.accept();
         System.out.println("Gracz dolaczyl do sesji");
 
+        try {
+            ObjectInputStream is = new ObjectInputStream(s.getInputStream());
+            DataChanges dc = (DataChanges)is.readObject();
+            System.out.println("server: " + dc);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
 //        InputStreamReader in = new InputStreamReader(s.getInputStream());
 //        BufferedReader bf = new BufferedReader(in);
 
@@ -22,6 +31,9 @@ public class Game {
 //        PrintWriter pr = new PrintWriter(s.getOutputStream());
 //        pr.println("Serwer wysyla odpowiedz");
 //        pr.flush();
+
+
+
     }
 
     public static void client(String ip, int port) throws IOException {
@@ -29,6 +41,14 @@ public class Game {
         System.out.println("Laczenie...");
         Socket s = new Socket(ip, port);
         System.out.println("Nawiazano polaczenie.");
+
+        DataChanges dc = new DataChanges();
+        dc.test();
+
+        ObjectOutputStream os = new ObjectOutputStream(s.getOutputStream());
+
+        System.out.println("client: " + dc);
+        os.writeObject(dc);
 
 //        PrintWriter pr = new PrintWriter(s.getOutputStream());
 //        pr.println("Klient wysyla zapytanie");
