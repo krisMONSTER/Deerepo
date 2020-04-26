@@ -47,14 +47,6 @@ public class Board {
 		return null;
 	}
 
-	enum clickResult{
-		nothing,
-		pick,
-		move,
-		repick,
-		clear
-	}
-
 	public static clickResult clickOnBoard(int x, int y) {
 		/*
 		 0 - nic nie rob
