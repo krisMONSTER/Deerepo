@@ -43,6 +43,9 @@ public class ChessBoard {
     private Label[][] board = new Label[8][8]; //Pola planszy
     private GridPane Board; //Pane, na którym jest plansza
 
+    Label piece;
+    ImageView piece_image; //Ikona wybranego pionka
+
 
     public ChessBoard(GridPane Board) {
         this.Board = Board;
@@ -111,7 +114,6 @@ public class ChessBoard {
         //Ustawienie kroli
         board[0][4].setGraphic(new ImageView(KingB));
         board[7][4].setGraphic(new ImageView(KingW));
-
     }
 }
 
