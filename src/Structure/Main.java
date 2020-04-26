@@ -21,7 +21,7 @@ public class Main extends Application{
 			Board.setPlayer(current);
 			Board.display();
 			int x,y;
-			byte tmp;
+			clickResult tmp;
 			do {
 				System.out.print("Podaj x:");
 				x = sc.nextInt();
@@ -31,7 +31,7 @@ public class Main extends Application{
 				sc.nextLine();
 				tmp = Board.clickOnBoard(x, y);
 				System.out.println(tmp);
-			}while(tmp!=2);
+			}while(tmp!=clickResult.move);
 			Board.findAndResetEnPassant(!current.getColour());
 		}
 	}

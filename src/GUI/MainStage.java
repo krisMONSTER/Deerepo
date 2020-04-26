@@ -1,4 +1,5 @@
 package GUI;
+import Structure.*;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,7 +16,8 @@ public class MainStage extends Application{
 
     Stage window;
     Scene scene1, scene2;
-    GridPane Board=new GridPane();
+    public static GridPane gridPane =new GridPane();
+    public static Label[][] board = new Label[8][8];
     public static void main(String[] args) {
         launch(args);
     }
@@ -73,22 +75,22 @@ public class MainStage extends Application{
 
 
         //Plansza
-        GridPane Board=new GridPane();
-        ChessBoard board=new ChessBoard(Board);
-        board.BlankSpace(8);
-        board.InitChessBoard();
-        Move move =new Move(board);
-        move.execute_move_mouse(); //Wykonywanie ruchu na planszy poprzez wybor pionka na planszy
+        ChessBoard.BlankSpace(8);
+        ChessBoard.InitChessBoard();
+
+
+        //Move.execute_move(); //Wykonywanie ruchu
+        Move.execute_move_mouse(); //Wykonywanie ruchow po kliknieciu na plansze losowo
         //move.execute_move_console(); //Wykonywanie ruchu na planszy po podaniu wczesniejszych wartosci w konsoli
         //move.execute_move_on_data_changes(3,1,3,3); //Wykonywanie ruchu na planszy po wprowadzeniu wartosci do funkcji
-        border.setCenter(Board);
+        border.setCenter(gridPane);
         scene2 = new Scene(border,600,600);
 
 
         //Uruchomienie gry w konsoli
-        Game game = new Game();
-        Thread watek_gry = new Thread(game);
-        watek_gry.start();
+        //Game game = new Game();
+        //Thread watek_gry = new Thread(game);
+        //watek_gry.start();
 
 
         window.setScene(scene1);

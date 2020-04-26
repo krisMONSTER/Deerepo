@@ -1,28 +1,10 @@
 package GUI;
 
-import Structure.Board;
-import Structure.Player;
-import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.effect.Glow;
-import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionAdapter;
-import java.util.Scanner;
+import static GUI.MainStage.board;
 
 
 public class ChessBoard {
@@ -40,21 +22,13 @@ public class ChessBoard {
     static Image RookB = new Image(ChessBoard.class.getResourceAsStream("img/RookB_icon.png"));
     static Image RookW = new Image(ChessBoard.class.getResourceAsStream("img/RookW_icon.png"));
 
-    private Label[][] board = new Label[8][8]; //Pola planszy
-    private GridPane Board; //Pane, na którym jest plansza
 
     Label piece;
     ImageView piece_image; //Ikona wybranego pionka
 
 
-    public ChessBoard(GridPane Board) {
-        this.Board = Board;
-    }
-    public GridPane getBoard() { return Board; }
-    public Label[][] getboard() { return board; }
-
     //wyswietla pusta plansze
-    public void BlankSpace(int size) {
+    public static void BlankSpace(int size) {
 
         //x - wiersz, y - kolumna
         for (int x = 0; x < size; x++) {
@@ -66,20 +40,20 @@ public class ChessBoard {
                 else color = "#513A28"; //"czarne" pola
 
                 board[x][y].setStyle("-fx-background-color: " + color + ";-fx-border-color: black; -fx-padding: 0");
-                Board.add(board[x][y], y, x);
+                MainStage.gridPane.add(board[x][y], y, x);
                 board[x][y].setPrefSize(50, 50);
             }
         }
 
-            Board.setHgap(0); // przestrzenie między polami szachownicy
-            Board.setVgap(0);
-            Board.setPrefSize(400,400);
+        MainStage.gridPane.setHgap(0); // przestrzenie między polami szachownicy
+        MainStage.gridPane.setVgap(0);
+        MainStage.gridPane.setPrefSize(400,400);
 
     }
 
     //wyswietla pionki na planszy
 
-    public void InitChessBoard() {
+    public static void InitChessBoard() {
 
         //Ustawienie pionków
         for (int y = 0; y < 8; y++) {

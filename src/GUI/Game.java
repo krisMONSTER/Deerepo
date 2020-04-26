@@ -2,6 +2,7 @@ package GUI;
 
 import Structure.Board;
 import Structure.Player;
+import Structure.clickResult;
 
 import java.util.Scanner;
 
@@ -20,7 +21,7 @@ public class Game extends Thread {
             Board.setPlayer(current);
             Board.display();
             int x,y;
-            byte tmp;
+            Structure.clickResult tmp;
             do {
                 System.out.print("Podaj x:");
                 x = sc.nextInt();
@@ -30,7 +31,7 @@ public class Game extends Thread {
                 sc.nextLine();
                 tmp = Board.clickOnBoard(x, y);
                 System.out.println(tmp);
-            }while(tmp!=2);
+            }while(tmp!= clickResult.move);
             Board.findAndResetEnPassant(!current.getColour());
         }
     }
