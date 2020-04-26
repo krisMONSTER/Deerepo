@@ -46,8 +46,16 @@ public class Board {
 		}
 		return null;
 	}
-	
-	public static byte clickOnBoard(int x, int y) {
+
+	enum clickResult{
+		nothing,
+		pick,
+		move,
+		repick,
+		clear
+	}
+
+	public static clickResult clickOnBoard(int x, int y) {
 		/*
 		 0 - nic nie rob
 		 1 - zaznacz pole (x,y)
@@ -57,20 +65,20 @@ public class Board {
 		 */
 		if(player.getPickedPiece()==null) {
 			if(player.pick(x, y))
-				return 1;
+				return clickResult.pick;
 			else
-				return 0;
+				return clickResult.nothing;
 		}
 		else {
 			if(player.isMoveValid(x, y)) {
 				player.setDataChanges(x, y);
-				return 2;
+				return clickResult.move;
 			}
 			else {
 				if(player.pick(x, y))
-					return 3;
+					return clickResult.repick;
 				else
-					return 4;
+					return clickResult.clear;
 			}
 		}
 	}
