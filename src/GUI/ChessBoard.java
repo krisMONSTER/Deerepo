@@ -11,6 +11,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Glow;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -38,14 +40,18 @@ public class ChessBoard {
     static Image RookB = new Image(ChessBoard.class.getResourceAsStream("img/RookB_icon.png"));
     static Image RookW = new Image(ChessBoard.class.getResourceAsStream("img/RookW_icon.png"));
 
-    Label[][] board = new Label[8][8]; //Pola planszy
-    GridPane Board; //Pane, na którym jest plansza
-    boolean is_picked; //Info dla EventHandlera czy przypadkiem nie wybrano juz jakiegos pionka
-    ImageView picked_piece; //Ikona wybranego pionka
+    private Label[][] board = new Label[8][8]; //Pola planszy
+    private GridPane Board; //Pane, na którym jest plansza
+
+    Label piece;
+    ImageView piece_image; //Ikona wybranego pionka
+
 
     public ChessBoard(GridPane Board) {
         this.Board = Board;
     }
+    public GridPane getBoard() { return Board; }
+    public Label[][] getboard() { return board; }
 
     //wyswietla pusta plansze
     public void BlankSpace(int size) {
@@ -108,33 +114,6 @@ public class ChessBoard {
         //Ustawienie kroli
         board[0][4].setGraphic(new ImageView(KingB));
         board[7][4].setGraphic(new ImageView(KingW));
-
     }
-
-    //Obsluga przesuwania pionkow po planszy
-
-    public void moving_on_chessboard()
-    {
-        EventHandler<MouseEvent> eventHandler = e -> {
-            int ustal_kolumne;
-            int ustal_wiersz;
-            ustal_kolumne=(int)((e.getX()/50)+1);
-            ustal_wiersz=(int)((e.getY()/50+1));
-            if(is_picked==false) {
-                if(board[ustal_wiersz-1][ustal_kolumne-1].getGraphic()==null) return;
-                picked_piece = (ImageView) board[ustal_wiersz-1][ustal_kolumne-1].getGraphic();
-                is_picked = true;
-            }
-            else{
-                board[ustal_wiersz-1][ustal_kolumne-1].setGraphic(picked_piece);
-                is_picked = false;
-            }
-        };
-
-        Board.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
-    }
-
-
-
 }
 
