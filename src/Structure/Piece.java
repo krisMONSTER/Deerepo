@@ -1,6 +1,8 @@
 package Structure;
 
 abstract public class Piece {
+
+
 	protected int x; // position x
 	protected int y; // position y
 	protected boolean colour; // black = 0, white = 1
