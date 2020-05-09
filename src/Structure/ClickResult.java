@@ -1,6 +1,6 @@
 package Structure;
 
-public enum clickResult {
+public enum ClickResult {
     nothing,
     pick,
     move,

@@ -3,8 +3,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Board {
-	private static List<Piece> piece_list = new ArrayList<>();
+	private static final List<Piece> piece_list = new ArrayList<>();
 	private static Player player;
+	//TU TRZEBA ZROBIC METODE KTORA RESETUJE POZYCJE ZAMIAST TEGO NA DOLE
 	static {
 		//pawns
 		for(int i=0;i<8;i++) {
@@ -12,12 +13,12 @@ public class Board {
 			piece_list.add(new Pawn(i,6,false));
 		}
 		//knights
-		piece_list.add(new Knight(1,0,true));
+		//piece_list.add(new Knight(1,0,true));
 		piece_list.add(new Knight(1,7,false));
 		piece_list.add(new Knight(6,0,true));
 		piece_list.add(new Knight(6,7,false));
 		//bishops
-		piece_list.add(new Bishop(2,0,true));
+		//piece_list.add(new Bishop(2,0,true));
 		piece_list.add(new Bishop(2,7,false));
 		piece_list.add(new Bishop(5,0,true));
 		piece_list.add(new Bishop(5,7,false));
@@ -27,7 +28,7 @@ public class Board {
 		piece_list.add(new Rook(7,0,true));
 		piece_list.add(new Rook(7,7,false));
 		//queens
-		piece_list.add(new Queen(3,0,true));
+		//piece_list.add(new Queen(3,0,true));
 		piece_list.add(new Queen(3,7,false));
 		//kings
 		piece_list.add(new King(4,0,true));
@@ -47,7 +48,7 @@ public class Board {
 		return null;
 	}
 
-	public static clickResult clickOnBoard(int x, int y) {
+	public static ClickResult clickOnBoard(int x, int y) {
 		/*
 		 0 - nic nie rob
 		 1 - zaznacz pole (x,y)
@@ -57,20 +58,20 @@ public class Board {
 		 */
 		if(player.getPickedPiece()==null) {
 			if(player.pick(x, y))
-				return clickResult.pick;
+				return ClickResult.pick;
 			else
-				return clickResult.nothing;
+				return ClickResult.nothing;
 		}
 		else {
 			if(player.isMoveValid(x, y)) {
-				player.setDataChanges(x, y);
-				return clickResult.move;
+				player.makeChanges(x, y);
+				return ClickResult.move;
 			}
 			else {
 				if(player.pick(x, y))
-					return clickResult.repick;
+					return ClickResult.repick;
 				else
-					return clickResult.clear;
+					return ClickResult.clear;
 			}
 		}
 	}
@@ -127,27 +128,25 @@ public class Board {
 		List<Alteration> alterationList = dataChanges.getAlterationList();
 		for(Alteration alteration : alterationList){
 			Piece alteredPiece = getPiece(alteration.getX(), alteration.getY());
-			switch (alteration.getTypeOfAlter()){
-				case move:
+			switch (alteration.getTypeOfAlter()) {
+				case move -> {
 					assert alteredPiece != null;
 					alteredPiece.setX(alteration.getNewX());
 					alteredPiece.setY(alteration.getNewY());
-					break;
-				case capture:
-					piece_list.remove(alteredPiece);
-					break;
-				case promotion:
+				}
+				case remove -> piece_list.remove(alteredPiece);
+				case promotion -> {
 					piece_list.remove(alteredPiece);
 					piece_list.add(alteration.getNewPiece());
-					break;
-				case enPassantInclusion:
+				}
+				case enPassantInclusion -> {
 					assert alteredPiece != null;
 					alteredPiece.setEnPassant(true);
-					break;
-				case castlingExclusion:
+				}
+				case castlingExclusion -> {
 					assert alteredPiece != null;
 					alteredPiece.resetCastlingReadiness();
-					break;
+				}
 			}
 		}
 	}

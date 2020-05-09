@@ -1,13 +1,7 @@
 package GUI;
 
-import Structure.Board;
-import Structure.Player;
-import Structure.clickResult;
-
-import java.util.Scanner;
-
 public class Game extends Thread {
-
+/*
     private static Scanner sc = new Scanner(System.in);
     private static Player white = new Player("BornToFight",true);
     private static Player black = new Player("Deer",false);
@@ -34,5 +28,5 @@ public class Game extends Thread {
             }while(tmp!= clickResult.move);
             Board.findAndResetEnPassant(!current.getColour());
         }
-    }
+    }*/
 }

@@ -1,7 +1,7 @@
 package GUI;
 
 import Structure.Board;
-import Structure.clickResult;
+import Structure.ClickResult;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Lighting;
@@ -100,30 +100,30 @@ public class Move {
 
             //czy juz zostal wybrany pionek, jesli nie to zaznacza go
 
-                Structure.clickResult tmp;
+                ClickResult tmp;
                 tmp = Board.clickOnBoard(7-find_col, find_row);
-                if(tmp== clickResult.nothing) return;
+                if(tmp== ClickResult.nothing) return;
 
-                else if(tmp==clickResult.pick) { //rusza
+                else if(tmp== ClickResult.pick) { //rusza
                 piece = board[find_row - 1][find_col - 1];
                 piece_image = (ImageView) board[find_row - 1][find_col - 1].getGraphic();
                 board[find_row - 1][find_col - 1].getGraphic().setEffect(light);
                 is_picked = true;
                 }
 
-                else if(tmp==clickResult.clear) {  // odznacza pionek
+                else if(tmp== ClickResult.clear) {  // odznacza pionek
                     piece.getGraphic().setEffect(null);
                     is_picked = false;
                 }
 
-                else if(tmp==clickResult.repick) // zmienia zaznaczenie
+                else if(tmp== ClickResult.repick) // zmienia zaznaczenie
                 {
                     piece.getGraphic().setEffect(null);
                     piece=board[find_row - 1][find_col - 1];
                     piece_image = (ImageView) board[find_row - 1][find_col - 1].getGraphic();
                     board[find_row - 1][find_col - 1].getGraphic().setEffect(light);
                 }
-                else if(tmp==clickResult.move) { // rusza
+                else if(tmp== ClickResult.move) { // rusza
                     piece.setGraphic(null);
                     board[find_row-1][find_col-1].setGraphic(piece_image);
                     board[find_row-1][find_col-1].getGraphic().setEffect(null);

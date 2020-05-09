@@ -35,11 +35,19 @@ public class Rook extends Piece{
 		return false;
 	}
 
-	public void setDataChanges(int a, int b, DataChanges dataChanges) {
-		if(!Board.isFieldFree(a, b))
-			dataChanges.putAlteration(new Alteration(a, b, TypeOfAlter.capture));
+	public void setDataChanges(int a, int b, DataChanges dataChanges, ToDisplay toDisplay) {
+		toDisplay.addCoordinates(new int[]{x,y});
+		toDisplay.addCoordinates(new int[]{a,b});
+
 		if(castling_ready)
 			dataChanges.putAlteration(new Alteration(x, y, TypeOfAlter.castlingExclusion));
+		if(!Board.isFieldFree(a, b)) {
+			dataChanges.putAlteration(new Alteration(a, b, TypeOfAlter.remove));
+			toDisplay.setTypeOfAction(TypeOfAction.capture);
+		}
+		else {
+			toDisplay.setTypeOfAction(TypeOfAction.move);
+		}
 		dataChanges.putAlteration(new Alteration(x, y, a, b));
 	}
 }
