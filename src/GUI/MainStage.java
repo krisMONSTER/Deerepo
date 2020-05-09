@@ -28,6 +28,7 @@ public class MainStage extends Application{
         Label label1 = new Label("Zagrajmy w szachy!");
         window.setTitle("Chess_Project");
         window.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png")));
+        window.setResizable(false);
 
 
         //Button 1 Rozpoczynanie gry
