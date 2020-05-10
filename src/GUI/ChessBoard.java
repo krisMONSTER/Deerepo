@@ -27,6 +27,7 @@ public class ChessBoard {
     final static Font FIELD_FONT=new Font("Arial",10);
     final static String WHITE_FIELD="#ead5a0";
     final static String BLACK_FIELD="#b6935e";
+    final static String PICKED_FIELD="";
 
 
     Label piece;

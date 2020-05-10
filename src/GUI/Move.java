@@ -5,6 +5,7 @@ import Structure.ClickResult;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Lighting;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -17,6 +18,7 @@ public class Move {
     static boolean is_picked; //Info dla EventHandlera czy przypadkiem nie wybrano juz jakiegos pionka
     static Label piece;
     static ImageView piece_image; //Ikona wybranego pionka
+    static String previous_field_color;
     static Lighting light = new Lighting();
     static Scanner in = new Scanner (System.in);
 
@@ -44,6 +46,7 @@ public class Move {
             }
             //jesli zostal wybrany wczesniej pionek to przenosi go na nowe miejsce
             else{
+                MoveAnimation.move_animation(piece.getGraphic(),board[find_row-1][find_col-1].getLayoutX(),board[find_row-1][find_col-1].getLayoutY());
                 piece.setGraphic(null);
                 board[find_row-1][find_col-1].setGraphic(piece_image);
                 board[find_row-1][find_col-1].getGraphic().setEffect(null);

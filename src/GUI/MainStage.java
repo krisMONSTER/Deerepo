@@ -1,14 +1,13 @@
 package GUI;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 
@@ -20,6 +19,8 @@ public class MainStage extends Application{
     public static GridPane gridPane =new GridPane();
     public static GridPane markings = new GridPane();
     public static Label[][] board = new Label[8][8];
+    public static BackgroundImage scene1_background = new BackgroundImage(new Image(MainStage.class.getResourceAsStream("img/scene1_background.png")),BackgroundRepeat.REPEAT,
+            BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, new BackgroundSize(400, 400, false, false, false, false));
     public static void main(String[] args) {
         launch(args);
     }
@@ -61,7 +62,9 @@ public class MainStage extends Application{
         VBox layout1 = new VBox(20); // układa obiekty "w kolumnie"
         layout1.getChildren().addAll(label1, button1, button3,button4);
         layout1.setAlignment(Pos.CENTER);
-        scene1 = new Scene(layout1, 300,300);
+        layout1.setBackground(new Background(scene1_background));
+        scene1 = new Scene(layout1, 400,400);
+
 
 
         //Button2 Przycisk powrotu do glownego menu
@@ -69,11 +72,24 @@ public class MainStage extends Application{
         button2.setStyle("-fx-background-color: black;-fx-border-color: white;-fx-text-fill:white;");
         button2.setOnAction(e -> window.setScene(scene1));
 
+        //Button5 Przycisk do restartu szachownicy
+        Button button5=new Button("Restart");
+        button5.setStyle("-fx-background-color: white;-fx-border-color: black;");
+        button5.setOnAction(e->
+        {
+            ChessBoard.BlankSpace(8);
+            ChessBoard.InitChessBoard();
+            ChessBoardMarkings.Add_Fields_Markings();
+            window.setScene(scene2);
+        });
+
+
 
         //Layout 2
          // dzieli scenę na funkcjonalne części
-        VBox layout2=new VBox(20);
-        layout2.getChildren().add(button2);
+        HBox layout2=new HBox(20);
+        layout2.getChildren().addAll(button2,button5);
+        layout2.setSpacing(0);
         border.setTop(layout2);
 
 
@@ -83,14 +99,14 @@ public class MainStage extends Application{
         ChessBoardMarkings.Add_Fields_Markings();
         markings.add(gridPane,1,1,8,8);
         border.setCenter(markings);
-
+        BorderPane.setMargin(markings,new Insets(20,25,20,25));
 
         //Move.execute_move(); //Wykonywanie ruchu
         Move.execute_move_mouse(); //Wykonywanie ruchow po kliknieciu na plansze losowo
         //move.execute_move_console(); //Wykonywanie ruchu na planszy po podaniu wczesniejszych wartosci w konsoli
         //move.execute_move_on_data_changes(3,1,3,3); //Wykonywanie ruchu na planszy po wprowadzeniu wartosci do funkcji
 
-        scene2 = new Scene(border,600,600);
+        scene2 = new Scene(border,495,520);
 
 
         //Uruchomienie gry w konsoli
