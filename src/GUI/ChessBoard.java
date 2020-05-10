@@ -3,6 +3,7 @@ package GUI;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
 import static GUI.MainStage.board;
@@ -34,6 +35,8 @@ public class ChessBoard {
 
     //wyswietla pusta plansze
     public static void BlankSpace(int size) {
+
+
 
         //x - wiersz, y - kolumna
         for (int x = 0; x < size; x++) {

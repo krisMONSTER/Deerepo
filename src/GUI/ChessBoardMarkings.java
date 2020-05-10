@@ -4,6 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 
 import static GUI.MainStage.gridPane;
+import static GUI.MainStage.markings;
 
 public class ChessBoardMarkings {
 
@@ -13,10 +14,10 @@ public class ChessBoardMarkings {
     {
 
         for(int i=0; i<8;i++) {
-            gridPane.add(newRowLabel(i),0, i + 1, 1, 1);
-            gridPane.add(newRowLabel(i),9, i + 1, 1, 1);
-            gridPane.add(newColLabel(i),i+1, 0, 1, 1);
-            gridPane.add(newColLabel(i),i+1, 9, 1, 1);
+            markings.add(newRowLabel(i),0, i + 1, 1, 1);
+            markings.add(newRowLabel(i),9, i + 1, 1, 1);
+            markings.add(newColLabel(i),i+1, 0, 1, 1);
+            markings.add(newColLabel(i),i+1, 9, 1, 1);
         }
 
     }

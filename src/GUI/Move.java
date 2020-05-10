@@ -32,7 +32,7 @@ public class Move {
 
             //Okreslanie kolumny i wiersza w ktorym znajduje sie pionek, poprzez wspolrzedne miejsca klikniecia myszka
             find_col=(int)((e.getX()/50)+1);
-            find_row=(int)((e.getY()/50+1));
+            find_row=(int)((e.getY()/50)+1);
 
             //czy juz zostal wybrany pionek, jesli nie to zaznacza go
             if(is_picked==false) {
@@ -96,7 +96,7 @@ public class Move {
 
             //Okreslanie kolumny i wiersza w ktorym znajduje sie pionek, poprzez wspolrzedne miejsca klikniecia myszka
             find_col=(int)((e.getX()/50)+1);
-            find_row=(int)((e.getY()/50+1));
+            find_row=(int)((e.getY()/50)+1);
 
             //czy juz zostal wybrany pionek, jesli nie to zaznacza go
 

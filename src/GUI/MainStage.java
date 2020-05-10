@@ -18,6 +18,7 @@ public class MainStage extends Application{
     Scene scene1, scene2;
     public static BorderPane border = new BorderPane(); //Okno z plansza
     public static GridPane gridPane =new GridPane();
+    public static GridPane markings = new GridPane();
     public static Label[][] board = new Label[8][8];
     public static void main(String[] args) {
         launch(args);
@@ -80,13 +81,15 @@ public class MainStage extends Application{
         ChessBoard.BlankSpace(8);
         ChessBoard.InitChessBoard();
         ChessBoardMarkings.Add_Fields_Markings();
+        markings.add(gridPane,1,1,8,8);
+        border.setCenter(markings);
 
 
         //Move.execute_move(); //Wykonywanie ruchu
         Move.execute_move_mouse(); //Wykonywanie ruchow po kliknieciu na plansze losowo
         //move.execute_move_console(); //Wykonywanie ruchu na planszy po podaniu wczesniejszych wartosci w konsoli
         //move.execute_move_on_data_changes(3,1,3,3); //Wykonywanie ruchu na planszy po wprowadzeniu wartosci do funkcji
-        border.setCenter(gridPane);
+
         scene2 = new Scene(border,600,600);
 
 
