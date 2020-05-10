@@ -46,7 +46,7 @@ public class Move {
             }
             //jesli zostal wybrany wczesniej pionek to przenosi go na nowe miejsce
             else{
-                MoveAnimation.move_animation(piece.getGraphic(),board[find_row-1][find_col-1].getLayoutX(),board[find_row-1][find_col-1].getLayoutY());
+                MoveAnimation.move_animation(piece.getGraphic(),piece.getLayoutX(), piece.getLayoutY(),board[find_row-1][find_col-1].getLayoutX(),board[find_row-1][find_col-1].getLayoutY());
                 piece.setGraphic(null);
                 board[find_row-1][find_col-1].setGraphic(piece_image);
                 board[find_row-1][find_col-1].getGraphic().setEffect(null);
