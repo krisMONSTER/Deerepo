@@ -3,6 +3,7 @@ package GUI;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Font;
 
 import static GUI.MainStage.board;
 
@@ -21,6 +22,10 @@ public class ChessBoard {
     static Image QueenW = new Image(ChessBoard.class.getResourceAsStream("img/QueenW_icon.png"));
     static Image RookB = new Image(ChessBoard.class.getResourceAsStream("img/RookB_icon.png"));
     static Image RookW = new Image(ChessBoard.class.getResourceAsStream("img/RookW_icon.png"));
+    final static int FIELD_SIZE=50;
+    final static Font FIELD_FONT=new Font("Arial",10);
+    final static String WHITE_FIELD="#ead5a0";
+    final static String BLACK_FIELD="#b6935e";
 
 
     Label piece;
@@ -36,18 +41,20 @@ public class ChessBoard {
                 String color;
                 board[x][y] = new Label();
 
-                if ((x + y) % 2 == 0) color = "#FFF2BC"; //"biale pola"
-                else color = "#513A28"; //"czarne" pola
+
+                if ((x + y) % 2 == 0) color = WHITE_FIELD; //"biale pola"
+                else color = BLACK_FIELD; //"czarne" pola
 
                 board[x][y].setStyle("-fx-background-color: " + color + ";-fx-border-color: black; -fx-padding: 0");
-                MainStage.gridPane.add(board[x][y], y, x);
-                board[x][y].setPrefSize(50, 50);
+                MainStage.gridPane.add(board[x][y], y+1,x+1);
+                board[x][y].setPrefSize(FIELD_SIZE, FIELD_SIZE);
+                board[x][y].setGraphicTextGap(0);
             }
         }
 
         MainStage.gridPane.setHgap(0); // przestrzenie między polami szachownicy
         MainStage.gridPane.setVgap(0);
-        MainStage.gridPane.setPrefSize(400,400);
+        MainStage.gridPane.setPrefSize(FIELD_SIZE*8,FIELD_SIZE*8);
 
     }
 
@@ -88,6 +95,9 @@ public class ChessBoard {
         //Ustawienie kroli
         board[0][4].setGraphic(new ImageView(KingB));
         board[7][4].setGraphic(new ImageView(KingW));
+
     }
+
+
 }
 

@@ -1,5 +1,5 @@
 package GUI;
-import Structure.*;
+
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,6 +16,7 @@ public class MainStage extends Application{
 
     Stage window;
     Scene scene1, scene2;
+    public static BorderPane border = new BorderPane(); //Okno z plansza
     public static GridPane gridPane =new GridPane();
     public static Label[][] board = new Label[8][8];
     public static void main(String[] args) {
@@ -69,7 +70,7 @@ public class MainStage extends Application{
 
 
         //Layout 2
-        BorderPane border = new BorderPane(); // dzieli scenę na funkcjonalne części
+         // dzieli scenę na funkcjonalne części
         VBox layout2=new VBox(20);
         layout2.getChildren().add(button2);
         border.setTop(layout2);
@@ -78,6 +79,7 @@ public class MainStage extends Application{
         //Plansza
         ChessBoard.BlankSpace(8);
         ChessBoard.InitChessBoard();
+        ChessBoardMarkings.Add_Fields_Markings();
 
 
         //Move.execute_move(); //Wykonywanie ruchu
