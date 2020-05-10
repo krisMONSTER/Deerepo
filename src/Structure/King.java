@@ -57,19 +57,35 @@ public class King extends Piece{
 		return false;
 	}
 
-	public void setDataChanges(int a, int b, DataChanges dataChanges) {
-		if(!Board.isFieldFree(a, b))
-			dataChanges.putAlteration(new Alteration(a, b, TypeOfAlter.capture));
+	public void setDataChanges(int a, int b, DataChanges dataChanges, ToDisplay toDisplay) {
+		toDisplay.addCoordinates(new int[]{x,y});
+		toDisplay.addCoordinates(new int[]{a,b});
+
 		if(castling_ready)
 			dataChanges.putAlteration(new Alteration(x, y, TypeOfAlter.castlingExclusion));
+		if(!Board.isFieldFree(a, b)){
+			dataChanges.putAlteration(new Alteration(a, b, TypeOfAlter.remove));
+			toDisplay.setTypeOfAction(TypeOfAction.capture);
+		}
+		else {
+			toDisplay.setTypeOfAction(TypeOfAction.move);
+		}
 		dataChanges.putAlteration(new Alteration(x, y, a, b));
 		if(a == x+2){
 			dataChanges.putAlteration(new Alteration(7, y, TypeOfAlter.castlingExclusion));
 			dataChanges.putAlteration(new Alteration(7, y, a-1, b));
+
+			toDisplay.setTypeOfAction(TypeOfAction.castling);
+			toDisplay.addCoordinates(new int[]{7,y});
+			toDisplay.addCoordinates(new int[]{a-1,b});
 		}
 		else if(a == x-2){
 			dataChanges.putAlteration(new Alteration(0, y, TypeOfAlter.castlingExclusion));
 			dataChanges.putAlteration(new Alteration(0, y, a+1, b));
+
+			toDisplay.setTypeOfAction(TypeOfAction.castling);
+			toDisplay.addCoordinates(new int[]{0,y});
+			toDisplay.addCoordinates(new int[]{a+1,b});
 		}
 	}
 }

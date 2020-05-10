@@ -3,18 +3,18 @@ package Structure;
 import java.util.Objects;
 
 public class Pawn extends Piece{
-	private boolean en_passant;
+	private boolean enPassant;
 	public Pawn(int a, int b, boolean c) {
 		super(a,b,c);
-		en_passant = false;
+		enPassant = false;
 	}
 	
 	public boolean getEnPassant() {
-		return en_passant;
+		return enPassant;
 	}
 	
 	public void setEnPassant(boolean x) {
-		en_passant = x;
+		enPassant = x;
 	}
 	
 	public boolean isMovePossible(int a, int b) {
@@ -66,16 +66,36 @@ public class Pawn extends Piece{
 		}
 	}
 
-	public void setDataChanges(int a, int b, DataChanges dataChanges) {
-		if(!Board.isFieldFree(a, b))
-			dataChanges.putAlteration(new Alteration(a, b, TypeOfAlter.capture));
-		else if(a!=x)
-			dataChanges.putAlteration(new Alteration(a, y, TypeOfAlter.capture));
-		else if(Math.abs(b-y)>1)
+	public void setDataChanges(int a, int b, DataChanges dataChanges, ToDisplay toDisplay) {
+		toDisplay.addCoordinates(new int[]{x,y});
+		toDisplay.addCoordinates(new int[]{a,b});
+
+		if(!Board.isFieldFree(a, b)) {
+			dataChanges.putAlteration(new Alteration(a, b, TypeOfAlter.remove));
+			toDisplay.setTypeOfAction(TypeOfAction.capture);
+		}
+		else if(a!=x) {
+			dataChanges.putAlteration(new Alteration(a, y, TypeOfAlter.remove));
+			toDisplay.addCoordinates(new int[]{a,y});
+			toDisplay.setTypeOfAction(TypeOfAction.enPassant);
+		}
+		else if(Math.abs(b-y)>1) {
 			dataChanges.putAlteration(new Alteration(x, y, TypeOfAlter.enPassantInclusion));
+			toDisplay.setTypeOfAction(TypeOfAction.move);
+		}
+		else {
+			toDisplay.setTypeOfAction(TypeOfAction.move);
+		}
 		dataChanges.putAlteration(new Alteration(x, y, a, b));
-		if(b == 7 || b == 0)
-			dataChanges.putAlteration(new Alteration(a, b, new Queen(a,b,colour)));
+		if(b == 7 || b == 0) {
+			dataChanges.putAlteration(new Alteration(a, b, new Queen(a, b, colour)));
+			if(!Board.isFieldFree(a, b)){
+				toDisplay.setTypeOfAction(TypeOfAction.promotionToQueenWithCapture);
+			}
+			else{
+				toDisplay.setTypeOfAction(TypeOfAction.promotionToQueen);
+			}
+		}
 	}
 	
 }

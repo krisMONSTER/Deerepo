@@ -6,16 +6,19 @@ import java.io.Serializable;
 
 enum TypeOfAlter {
 	move,
-	capture,
+	remove,
 	promotion,
 	enPassantInclusion,
 	castlingExclusion
 }
 
 class Alteration implements Serializable {
-	private int x, y, newX, newY;
+	private final int x;
+	private final int y;
+	private int newX;
+	private int newY;
 	private Piece newPiece;
-	private TypeOfAlter typeOfAlter;
+	private final TypeOfAlter typeOfAlter;
 	Alteration(int x, int y, TypeOfAlter typeOfAlter){
 		this.x = x;
 		this.y = y;
@@ -72,10 +75,6 @@ public class DataChanges implements Serializable {
 
 	public List<Alteration> getAlterationList(){
 		return alterationList;
-	}
-
-	public void resetDataChanges(){
-		alterationList = new ArrayList<>();
 	}
 
 	public void test() {

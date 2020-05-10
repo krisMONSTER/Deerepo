@@ -20,7 +20,6 @@ public class Game {
         int port;
         wybor = scan.nextInt();
         scan.nextLine();
-
         switch(wybor) {
             case 1:
 //                System.out.println("Pod jakim portem otworzyc?");
