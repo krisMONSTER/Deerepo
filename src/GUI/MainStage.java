@@ -1,5 +1,7 @@
 package GUI;
 
+import Structure.StructureTaskOffline;
+import Structure.ToDisplay;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,17 +12,25 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.util.concurrent.ArrayBlockingQueue;
+
 
 public class MainStage extends Application{
 
     Stage window;
     Scene scene1, scene2;
+
     public static BorderPane border = new BorderPane(); //Okno z plansza
     public static GridPane gridPane =new GridPane();
     public static GridPane markings = new GridPane();
     public static Label[][] board = new Label[8][8];
     public static BackgroundImage scene1_background = new BackgroundImage(new Image(MainStage.class.getResourceAsStream("img/scene1_background.png")),BackgroundRepeat.REPEAT,
             BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, new BackgroundSize(400, 400, false, false, false, false));
+
+    private final ArrayBlockingQueue<int[]> clickCommand = new ArrayBlockingQueue<>(1); //do synchronizacji z mechanizmem
+    private final ArrayBlockingQueue<ToDisplay> display = new ArrayBlockingQueue<>(1);
+    private static ToDisplay toDisplay;
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -36,7 +46,12 @@ public class MainStage extends Application{
 
         //Button 1 Rozpoczynanie gry
         Button button1=new Button("Rozpocznij gre");
-        button1.setOnAction(e-> window.setScene(scene2));
+        Move move=new Move(clickCommand, display);
+        button1.setOnAction(e-> {
+            window.setScene(scene2);
+            StructureTaskOffline t = new StructureTaskOffline(clickCommand, display);
+            move.execute_move(t);
+        });
         button1.setStyle("-fx-background-color: white;-fx-border-color: black;");
         // wyrażenie lambda - znacznie skraca kod, dostępne od Java 8
 
@@ -102,7 +117,7 @@ public class MainStage extends Application{
         BorderPane.setMargin(markings,new Insets(20,25,20,25));
 
         //Move.execute_move(); //Wykonywanie ruchu
-        Move.execute_move_mouse(); //Wykonywanie ruchow po kliknieciu na plansze losowo
+        //Move.execute_move_mouse(); //Wykonywanie ruchow po kliknieciu na plansze losowo
         //move.execute_move_console(); //Wykonywanie ruchu na planszy po podaniu wczesniejszych wartosci w konsoli
         //move.execute_move_on_data_changes(3,1,3,3); //Wykonywanie ruchu na planszy po wprowadzeniu wartosci do funkcji
 

@@ -1,9 +1,9 @@
 package GUI;
 import javafx.animation.PathTransition;
 
+
 import javafx.scene.Node;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+
 
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -22,18 +22,16 @@ public class MoveAnimation {
     {
         MoveAnimation.pawn=piece;
         MoveAnimation.move_to =new MoveTo(move_fromx,move_fromy);
-        line_to=new LineTo(move_tox,move_toy);
+        line_to.setX(move_tox);
+        line_to.setY(move_toy);
         path.getElements().add(MoveAnimation.move_to);
         path.getElements().add(line_to);
-        pathTransition.setDuration(Duration.millis(1000));
+        pathTransition.setDuration(Duration.millis(10000));
         pathTransition.setNode(pawn);
         pathTransition.setAutoReverse(false);
+        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
         pathTransition.setCycleCount(1);
         pathTransition.play();
 
     }
-
-
-
-
 }

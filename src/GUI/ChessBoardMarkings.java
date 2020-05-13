@@ -23,7 +23,7 @@ public class ChessBoardMarkings {
     }
 
     private static Label newRowLabel(int i) {
-        Label l = new Label((i+1) + "");
+        Label l = new Label((8-i) + "");
         l.setStyle("-fx-background-color:" + MARKINGS_COLOR +";-fx-padding: 0;-fx-border-color: black;-fx-text-fill: black");
         l.setMinSize(20, 50);
         l.setAlignment(Pos.CENTER);
