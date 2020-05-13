@@ -21,7 +21,7 @@ public class StructureTaskOffline extends Thread{
         currentPlayer = black;
     }
 
-    private void sendDisplay(){
+    private void sendGuiDisplayData(){
         try {
             display.put(toDisplay);
         }catch (InterruptedException e){
@@ -30,13 +30,18 @@ public class StructureTaskOffline extends Thread{
         toDisplay = new ToDisplay();
     }
 
+    //game flow
     public void run(){
+        Board.setupBoard();
         while (true){
             if(currentPlayer==white) currentPlayer = black;
             else currentPlayer = white;
-            Board.setPlayer(currentPlayer);
+
+            //sprawdzanie stanu gry
+
             ClickResult clickResult;
             do {
+                //TO NA DOLE MOZE INACZEJ
                 int[] coordinates = null;
                 try {
                     coordinates = clickCommand.take();
@@ -44,18 +49,18 @@ public class StructureTaskOffline extends Thread{
                     //tu chyba bedzie jakies wyjscie z watku
                     e.printStackTrace();
                 }
-                clickResult = Board.clickOnBoard(Objects.requireNonNull(coordinates)[0], coordinates[1]);
+                clickResult = currentPlayer.performOnClick(Objects.requireNonNull(coordinates)[0], coordinates[1]);
                 switch (clickResult) {
                     case nothing -> {
                         toDisplay.setTypeOfAction(TypeOfAction.nothing);
-                        sendDisplay();
+                        sendGuiDisplayData();
                     }
                     case pick -> {
                         storedX = currentPlayer.getPickedPiece().getX();
                         storedY = currentPlayer.getPickedPiece().getY();
                         toDisplay.setTypeOfAction(TypeOfAction.pick);
                         toDisplay.addCoordinates(new int[]{storedX, storedY});
-                        sendDisplay();
+                        sendGuiDisplayData();
                     }
                     case repick -> {
                         toDisplay.setTypeOfAction(TypeOfAction.repick);
@@ -63,13 +68,14 @@ public class StructureTaskOffline extends Thread{
                         toDisplay.addCoordinates(new int[]{currentPlayer.getPickedPiece().getX(), currentPlayer.getPickedPiece().getY()});
                         storedX = currentPlayer.getPickedPiece().getX();
                         storedY = currentPlayer.getPickedPiece().getY();
-                        sendDisplay();
+                        sendGuiDisplayData();
                     }
                     case clear -> {
                         toDisplay.setTypeOfAction(TypeOfAction.clear);
                         toDisplay.addCoordinates(new int[]{storedX, storedY});
-                        sendDisplay();
+                        sendGuiDisplayData();
                     }
+                    case move -> currentPlayer.makeChanges(coordinates[0],coordinates[1]);
                 }
             }while(clickResult!=ClickResult.move);
         }

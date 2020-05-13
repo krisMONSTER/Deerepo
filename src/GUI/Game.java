@@ -1,6 +1,7 @@
 package GUI;
 
 public class Game extends Thread {
+    //zaremowalem zeby bledow nie bylo
 /*
     private static Scanner sc = new Scanner(System.in);
     private static Player white = new Player("BornToFight",true);

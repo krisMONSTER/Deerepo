@@ -54,6 +54,20 @@ abstract public class Piece {
 		}
 	}
 
+	public boolean isAbleToMove(){
+		for(int i = 1; i>=-1 && (y+i)>=0; i--){
+			if(y+i>7)
+				continue;
+			for(int ii = -1; ii<=1 && (x+ii)<=7; ii++){
+				if(x+ii<0)
+					continue;
+				if(isMoveValid(x+i,y+ii))
+					return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean endangersField(int a, int b){
 		return isMovePossible(a, b);
 	}

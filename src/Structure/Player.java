@@ -15,13 +15,7 @@ public class Player {
 		this.colour = colour;
 		this.display = display;
 	}
-
-	public boolean getColour() { return colour; }
-
-	public ToDisplay getToDisplay(){
-		return toDisplay;
-	}
-	
+	//ZAMIEN NA PRIVATE
 	public boolean pick(int x, int y) {
 		pickedPiece = Board.getPiece(x,y);
 		if(pickedPiece == null)
@@ -32,6 +26,26 @@ public class Player {
 		else {
 			pickedPiece = null;
 			return false;
+		}
+	}
+
+	public ClickResult performOnClick(int x, int y){
+		if(pickedPiece==null) {
+			if(pick(x, y))
+				return ClickResult.pick;
+			else
+				return ClickResult.nothing;
+		}
+		else {
+			if(pickedPiece.isMoveValid(x, y)) {
+				return ClickResult.move;
+			}
+			else {
+				if(pick(x, y))
+					return ClickResult.repick;
+				else
+					return ClickResult.clear;
+			}
 		}
 	}
 	
@@ -51,8 +65,9 @@ public class Player {
 		}catch (InterruptedException e){
 			e.printStackTrace();
 		}
-		//DODAJ TO DISPLAY DO DATA CHANGES
+		//DODAJ TODISPLAY DO DATA CHANGES
 		//send data_changes to player
+		Board.findAndResetEnPassant(!colour);
 		dataChanges = new DataChanges();
 		toDisplay = new ToDisplay();
 		pickedPiece = null;

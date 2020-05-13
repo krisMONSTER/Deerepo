@@ -3,22 +3,25 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Board {
-	private static final List<Piece> piece_list = new ArrayList<>();
+	private static List<Piece> piece_list;
+
+	//TO SIE POTEM WYWALI
 	private static Player player;
-	//TU TRZEBA ZROBIC METODE KTORA RESETUJE POZYCJE ZAMIAST TEGO NA DOLE
-	static {
+
+	public static void setupBoard(){
+		piece_list = new ArrayList<>();
 		//pawns
 		for(int i=0;i<8;i++) {
 			piece_list.add(new Pawn(i,1,true));
 			piece_list.add(new Pawn(i,6,false));
 		}
 		//knights
-		//piece_list.add(new Knight(1,0,true));
+		piece_list.add(new Knight(1,0,true));
 		piece_list.add(new Knight(1,7,false));
 		piece_list.add(new Knight(6,0,true));
 		piece_list.add(new Knight(6,7,false));
 		//bishops
-		//piece_list.add(new Bishop(2,0,true));
+		piece_list.add(new Bishop(2,0,true));
 		piece_list.add(new Bishop(2,7,false));
 		piece_list.add(new Bishop(5,0,true));
 		piece_list.add(new Bishop(5,7,false));
@@ -28,15 +31,11 @@ public class Board {
 		piece_list.add(new Rook(7,0,true));
 		piece_list.add(new Rook(7,7,false));
 		//queens
-		//piece_list.add(new Queen(3,0,true));
+		piece_list.add(new Queen(3,0,true));
 		piece_list.add(new Queen(3,7,false));
 		//kings
 		piece_list.add(new King(4,0,true));
 		piece_list.add(new King(4,7,false));
-	}
-
-	public static void setPlayer(Player player) {
-		Board.player = player;
 	}
 
 	public static Piece getPiece(int x, int y) {
@@ -47,7 +46,7 @@ public class Board {
 		}
 		return null;
 	}
-
+	//TO TEZ SIE POTEM WYWALI
 	public static ClickResult clickOnBoard(int x, int y) {
 		/*
 		 0 - nic nie rob
@@ -64,7 +63,7 @@ public class Board {
 		}
 		else {
 			if(player.isMoveValid(x, y)) {
-				player.makeChanges(x, y);
+				//player.makeChanges(x, y);
 				return ClickResult.move;
 			}
 			else {
@@ -170,7 +169,16 @@ public class Board {
 		}
 		return false;
 	}
-	
+
+	public static boolean checkBoardState() {
+		for(Piece piece : piece_list){
+			if(piece.isAbleToMove()){
+				return false;
+			}
+		}
+		return true;
+	}
+
 	//to na dole bedzie do wywalenia
 	
 	public static void display() {
