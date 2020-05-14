@@ -198,7 +198,7 @@ public class Move {
                         board[7-(newking[1])][newking[0]].setGraphic(king);
 
                         rook=(ImageView)board[7-(oldrook[1])][oldrook[0]].getGraphic(); //Przestawienie wiezy
-                        board[7-(oldrook[1])][oldrook[0]].getGraphic().setEffect(null);
+                        //board[7-(oldrook[1])][oldrook[0]].getGraphic().setEffect(null);   <-- to jest chyba niepotrzebne
                         board[7-(oldrook[1])][oldrook[0]].setGraphic(null);
                         board[7-(newrook[1])][newrook[0]].setGraphic(rook);
                     }

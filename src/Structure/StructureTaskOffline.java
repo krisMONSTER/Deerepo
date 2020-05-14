@@ -38,7 +38,7 @@ public class StructureTaskOffline extends Thread{
             else currentPlayer = white;
 
             //sprawdzanie stanu gry
-
+            Board.display();
             ClickResult clickResult;
             do {
                 //TO NA DOLE MOZE INACZEJ
