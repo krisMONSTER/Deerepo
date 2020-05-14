@@ -121,58 +121,86 @@ public class Move {
                     {
                         return;
                     }
+
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.pick) //kiedy wybrano po raz pierwszy pionka
                     {
-                        piece = board[find_row - 1][find_col - 1];
-                        piece_image = (ImageView) board[find_row - 1][find_col - 1].getGraphic();
-                        board[find_row - 1][find_col - 1].getGraphic().setEffect(light);
+                        int [] pickpawn = toDisplay.getCoordinates().get(0);
+                        board[7-(pickpawn[1])][pickpawn[0]].getGraphic().setEffect(light);
                     }
+
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.repick) //kiedy podjeto decyzje o wyborze innego pionka
                     {
-                        piece.getGraphic().setEffect(null);
-                        piece=board[find_row - 1][find_col - 1];
-                        piece_image=(ImageView) board[find_row - 1][find_col - 1].getGraphic();
-                        board[find_row - 1][find_col - 1].getGraphic().setEffect(light);
+                        int [] pickedpawn = toDisplay.getCoordinates().get(0);
+                        int [] newpawn = toDisplay.getCoordinates().get(1);
+                        board[7-(pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
+                        board[7-(newpawn[1])][newpawn[0]].getGraphic().setEffect(light);
                     }
+
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.clear) //kiedy zrezygnowano z wyboru pionka
                     {
-                        piece=null;
-                        piece_image=null;
-                        board[find_row - 1][find_col - 1].getGraphic().setEffect(null);
+                        int [] pickedpawn = toDisplay.getCoordinates().get(0);
+                        board[7-(pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
                     }
+
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.move) //kiedy wybrano puste pole po wyborze pionka
                     {
-                        piece.setGraphic(null);
-                        board[find_row-1][find_col-1].setGraphic(piece_image);
-                        board[find_row-1][find_col-1].getGraphic().setEffect(null);
+                        ImageView oldgraphic;
+
+                        int [] oldplace = toDisplay.getCoordinates().get(0);
+                        int [] newplace = toDisplay.getCoordinates().get(1);
+                        oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
+                        board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
+                        board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
+                        board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
                     }
+
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.capture) //kiedy wybrano pole na ktorym znajduje sie pionek koloru przeciwnego
                     {
-                        piece.setGraphic(null);
-                        board[find_row-1][find_col-1].setGraphic(piece_image);
-                        board[find_row-1][find_col-1].getGraphic().setEffect(null);
+                        ImageView oldgraphic;
+
+                        int [] oldplace = toDisplay.getCoordinates().get(0);
+                        int [] newplace = toDisplay.getCoordinates().get(1);
+                        oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
+                        board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
+                        board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
+                        board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
                     }
+
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.enPassant) //bicie w przelocie
                     {
-                        piece.setGraphic(null);
-                        board[find_row-1][find_col-1].setGraphic(piece_image);
-                        board[find_row-1][find_col-1].getGraphic().setEffect(null);
-                        int [] cptrpawn = toDisplay.getCoordinates().get(1);
-                        board[7-(cptrpawn[1]+1)][cptrpawn[0]].setGraphic(null);
+                        ImageView oldgraphic;
+                        System.out.println("enpaso");
+                        int [] oldplace = toDisplay.getCoordinates().get(0);
+                        int [] newplace = toDisplay.getCoordinates().get(1);
+                        int [] cptrdpawn = toDisplay.getCoordinates().get(2);
+
+                        oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
+                        board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
+                        board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
+                        board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
+                        board[7-(cptrdpawn[1])][cptrdpawn[0]].setGraphic(null);
+
                     }
+
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.castling)
                     {
+                        ImageView king;
                         ImageView rook;
-                        piece.setGraphic(null);
-                        board[find_row-1][find_col-1].setGraphic(piece_image);
-                        board[find_row-1][find_col-1].getGraphic().setEffect(null);
+
+                        int [] oldking = toDisplay.getCoordinates().get(0);
+                        int [] newking = toDisplay.getCoordinates().get(1);
                         int [] oldrook = toDisplay.getCoordinates().get(2);
-                        rook=(ImageView)board[7-(oldrook[1])][oldrook[0]].getGraphic();
-                        System.out.println(oldrook);
-                        board[7-(oldrook[1])][oldrook[0]].setGraphic(null);
                         int [] newrook = toDisplay.getCoordinates().get(3);
+
+                        king=(ImageView)board[7-(oldking[1])][oldking[0]].getGraphic(); //Przestawienie krola
+                        board[7-(oldking[1])][oldking[0]].getGraphic().setEffect(null);
+                        board[7-(oldking[1])][oldking[0]].setGraphic(null);
+                        board[7-(newking[1])][newking[0]].setGraphic(king);
+
+                        rook=(ImageView)board[7-(oldrook[1])][oldrook[0]].getGraphic(); //Przestawienie wiezy
+                        board[7-(oldrook[1])][oldrook[0]].getGraphic().setEffect(null);
+                        board[7-(oldrook[1])][oldrook[0]].setGraphic(null);
                         board[7-(newrook[1])][newrook[0]].setGraphic(rook);
-                        System.out.println(newrook);
                     }
 
             }catch (InterruptedException ex){
