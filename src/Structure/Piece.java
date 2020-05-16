@@ -12,7 +12,9 @@ abstract public class Piece {
 		y = b;
 		colour = c;
 	}
-	
+
+	abstract public boolean equals(Object o);
+
 	abstract public boolean isMovePossible(int a, int b);
 	
 	public void setX(int a) {

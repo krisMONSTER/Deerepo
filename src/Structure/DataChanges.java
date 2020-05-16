@@ -67,7 +67,12 @@ class Alteration implements Serializable {
 }
 
 public class DataChanges implements Serializable {
-	List<Alteration> alterationList = new ArrayList<>();
+	private final List<Alteration> alterationList = new ArrayList<>();
+	private ToDisplay toDisplay;
+
+	public void setToDisplay(ToDisplay toDisplay){
+		this.toDisplay = toDisplay;
+	}
 
 	public void putAlteration(Alteration alteration){
 		alterationList.add(alteration);

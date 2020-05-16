@@ -5,6 +5,15 @@ public class Knight extends Piece{
 		super(a,b,c);
 	}
 
+	public boolean equals(Object o) {
+		if (o == this) { return true; }
+		if (!(o instanceof Knight)) { return false; }
+		Knight c = (Knight) o;
+		return this.x == c.x &&
+				this.y == c.y &&
+				this.colour == c.colour;
+	}
+
 	public boolean isMovePossible(int a, int b) {
 		if(a == x - 2 || a == x + 2) {
 			return b == y + 1 || b == y - 1;

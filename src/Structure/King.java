@@ -7,6 +7,15 @@ public class King extends Piece{
 		super(a,b,c);
 	}
 
+	public boolean equals(Object o) {
+		if (o == this) { return true; }
+		if (!(o instanceof King)) { return false; }
+		King c = (King) o;
+		return this.x == c.x &&
+				this.y == c.y &&
+				this.colour == c.colour;
+	}
+
 	public void resetCastlingReadiness(){
 		castling_ready = false;
 	}

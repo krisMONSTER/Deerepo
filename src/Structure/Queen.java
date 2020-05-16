@@ -4,6 +4,15 @@ public class Queen extends Piece{
 	public Queen(int a, int b, boolean c) {
 		super(a,b,c);
 	}
+
+	public boolean equals(Object o) {
+		if (o == this) { return true; }
+		if (!(o instanceof Queen)) { return false; }
+		Queen c = (Queen) o;
+		return this.x == c.x &&
+				this.y == c.y &&
+				this.colour == c.colour;
+	}
 	
 	public boolean isMovePossible(int a, int b) {
 		if(a == x) {
