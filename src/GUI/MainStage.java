@@ -72,10 +72,23 @@ public class MainStage extends Application{
             closeProgram(); // uzywajac e.consume() przejmujemy kontrole nad tym co sie stanie np. uzywajac okreslonej metody
         });
 
+        //Button6
+        Button button6 = new Button("Hostuj grę");
+        button6.setOnAction(e -> {
+
+        });
+        button6.setStyle("-fx-background-color: black;-fx-border-color: white;-fx-text-fill:white;");
+
+        //Button7
+        Button button7 = new Button("Dołącz do gry");
+        button7.setOnAction(e -> {
+
+        });
+        button7.setStyle("-fx-background-color: white;-fx-border-color: black;");
 
         //Layout 1
         VBox layout1 = new VBox(20); // układa obiekty "w kolumnie"
-        layout1.getChildren().addAll(label1, button1, button3,button4);
+        layout1.getChildren().addAll(label1, button1, button3, button4, button6, button7);
         layout1.setAlignment(Pos.CENTER);
         layout1.setBackground(new Background(scene1_background));
         scene1 = new Scene(layout1, 400,400);
