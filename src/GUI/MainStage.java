@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -68,14 +69,21 @@ public class MainStage extends Application{
         button4.setStyle("-fx-background-color: white;-fx-border-color: black;");
         window.setOnCloseRequest(e->
         {
+
             e.consume(); // sama metoda setOnCloseRequest zamyka program niezależnie jakiej odpowiedzi użytkownik udzieli
             closeProgram(); // uzywajac e.consume() przejmujemy kontrole nad tym co sie stanie np. uzywajac okreslonej metody
         });
 
+        //Test promocji pionka
+        Button button6=new Button("Test promocji pionka");
+        button6.setOnAction(e->pawnPromotion()); //Funkcja jest na samym dole
+        button6.setStyle("-fx-background-color: black;-fx-border-color: white;-fx-text-fill:white;");
+
+
 
         //Layout 1
         VBox layout1 = new VBox(20); // układa obiekty "w kolumnie"
-        layout1.getChildren().addAll(label1, button1, button3,button4);
+        layout1.getChildren().addAll(label1, button1, button3,button4,button6);
         layout1.setAlignment(Pos.CENTER);
         layout1.setBackground(new Background(scene1_background));
         scene1 = new Scene(layout1, 400,400);
@@ -122,14 +130,6 @@ public class MainStage extends Application{
         //move.execute_move_on_data_changes(3,1,3,3); //Wykonywanie ruchu na planszy po wprowadzeniu wartosci do funkcji
 
         scene2 = new Scene(border,495,520);
-
-
-        //Uruchomienie gry w konsoli
-        //Game game = new Game();
-        //Thread watek_gry = new Thread(game);
-        //watek_gry.start();
-
-
         window.setScene(scene1);
         window.show();
     }
@@ -140,6 +140,16 @@ public class MainStage extends Application{
         Boolean answer;
         answer=ConfirmBox.display("Wyjscie z gry", "Czy na pewno chcesz opuscic gre?\nPrzecież jest super!");
         if(answer==true) window.close();
+    }
+
+    private void pawnPromotion()
+    {
+        ImageView pawn;
+        pawn=PromotionMenu.display("white");
+        if(pawn!=null)
+        {
+            System.out.println("Mam figure!");
+        }
     }
 
 }
