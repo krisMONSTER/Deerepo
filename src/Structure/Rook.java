@@ -7,6 +7,10 @@ public class Rook extends Piece{
 		super(a,b,c);
 	}
 
+	public Piece copy() {
+		return new Rook(x,y,colour);
+	}
+
 	public boolean equals(Object o) {
 		if (o == this) { return true; }
 		if (!(o instanceof Rook)) { return false; }
@@ -29,7 +33,7 @@ public class Rook extends Piece{
 			if(b>y) {
 				return Board.isSpaceFree(y + 1, b - 1, x, true);
 			}
-			else {
+			else if(b<y) {
 				return Board.isSpaceFree(b + 1, y - 1, x, true);
 			}
 		}
@@ -37,7 +41,7 @@ public class Rook extends Piece{
 			if(a>x) {
 				return Board.isSpaceFree(x + 1, a - 1, y, false);
 			}
-			else {
+			else if(a<x) {
 				return Board.isSpaceFree(a + 1, x - 1, y, false);
 			}
 		}

@@ -6,6 +6,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class StructureTaskOffline extends Thread{
     private final ArrayBlockingQueue<int[]> clickCommand;
     private final ArrayBlockingQueue<ToDisplay> display;
+    private final ArrayBlockingQueue<GameState> gameStates;
     private final Player white;
     private final Player black;
     private Player currentPlayer;
@@ -14,9 +15,10 @@ public class StructureTaskOffline extends Thread{
     private int storedX;
     private int storedY;
 
-    public StructureTaskOffline(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display){
+    public StructureTaskOffline(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates){
         this.clickCommand = clickCommand;
         this.display = display;
+        this.gameStates = gameStates;
         white = new Player(true);
         black = new Player(false);
         currentPlayer = black;
@@ -34,19 +36,23 @@ public class StructureTaskOffline extends Thread{
     //game flow
     public void run(){
         Board.setupBoard();
+        outer:
         while (true){
             if(currentPlayer==white) currentPlayer = black;
             else currentPlayer = white;
             Board.addCurrentBoardState();
-            GameState gameState = Board.checkBoardState();
-            if(gameState!=GameState.active){
-                //WYSLANIE GUI INFO
-                System.out.println("koniec gry");
-                break;
-            }
+            GameState gameState = Board.checkGameState();
             Board.display();
             ClickResult clickResult;
             do {
+                try{
+                    gameStates.put(gameState);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+                if(gameState!=GameState.active){
+                    break outer;
+                }
                 //TO NA DOLE MOZE INACZEJ
                 int[] coordinates = null;
                 try {
@@ -89,6 +95,8 @@ public class StructureTaskOffline extends Thread{
                     }
                 }
             }while(clickResult!=ClickResult.move);
+
         }
+        System.out.println("koniec watku struktury");
     }
 }

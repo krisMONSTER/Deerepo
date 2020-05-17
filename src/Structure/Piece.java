@@ -2,7 +2,6 @@ package Structure;
 
 abstract public class Piece {
 
-
 	protected int x; // position x
 	protected int y; // position y
 	protected boolean colour; // black = 0, white = 1
@@ -16,6 +15,8 @@ abstract public class Piece {
 	abstract public boolean equals(Object o);
 
 	abstract public boolean isMovePossible(int a, int b);
+
+	abstract public Piece copy();
 	
 	public void setX(int a) {
 		x = a;
@@ -63,7 +64,7 @@ abstract public class Piece {
 			for(int ii = -1; ii<=1 && (x+ii)<=7; ii++){
 				if(x+ii<0)
 					continue;
-				if(isMoveValid(x+i,y+ii))
+				if(isMoveValid(x+ii,y+i))
 					return true;
 			}
 		}

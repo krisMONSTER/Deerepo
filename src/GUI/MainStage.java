@@ -1,5 +1,6 @@
 package GUI;
 
+import Structure.GameState;
 import Structure.StructureTaskOffline;
 import Structure.ToDisplay;
 import javafx.application.Application;
@@ -29,6 +30,8 @@ public class MainStage extends Application{
 
     private final ArrayBlockingQueue<int[]> clickCommand = new ArrayBlockingQueue<>(1); //do synchronizacji z mechanizmem
     private final ArrayBlockingQueue<ToDisplay> display = new ArrayBlockingQueue<>(1);
+    private final ArrayBlockingQueue<GameState> tymczasowe = new ArrayBlockingQueue<>(1);
+    //DODALEM ZEBY BLEDOW NIE WYWALALO, NAZWIJ SE JAK CHCESZ
     private static ToDisplay toDisplay;
 
     public static void main(String[] args) {
@@ -49,7 +52,7 @@ public class MainStage extends Application{
         Move move=new Move(clickCommand, display);
         button1.setOnAction(e-> {
             window.setScene(scene2);
-            StructureTaskOffline t = new StructureTaskOffline(clickCommand, display);
+            StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, tymczasowe);
             move.execute_move(t);
         });
         button1.setStyle("-fx-background-color: white;-fx-border-color: black;");

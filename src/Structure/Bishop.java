@@ -5,6 +5,10 @@ public class Bishop extends Piece{
 		super(a,b,c);
 	}
 
+	public Piece copy() {
+		return new Bishop(x,y,colour);
+	}
+
 	public boolean equals(Object o) {
 		if (o == this) { return true; }
 		if (!(o instanceof Bishop)) { return false; }

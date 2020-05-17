@@ -3,6 +3,10 @@ package Structure;
 public class King extends Piece{
 	private boolean castling_ready = true;
 
+	public Piece copy() {
+		return new King(x,y,colour);
+	}
+
 	public King(int a, int b, boolean c) {
 		super(a,b,c);
 	}

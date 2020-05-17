@@ -1,5 +1,6 @@
 package Structure;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ class BoardState {
 }
 
 public class BoardStates {
-    private List<BoardState> boardStates = new LinkedList<>();
+    private List<BoardState> boardStates = new ArrayList<>();
     private int halfMoveClock = 0;
 
     public void incrementHalfMoveClock(){
@@ -48,19 +49,31 @@ public class BoardStates {
                 return;
             }
         }
-        boardStates.add(new BoardState(addedState));
+        List<Piece> clone = new ArrayList<>(addedState.size());
+        for(Piece piece : addedState){
+            clone.add(piece.copy());
+        }
+        boardStates.add(new BoardState(clone));
     }
 
     public void resetBoardStates(){
-        boardStates = new LinkedList<>();
+        boardStates = new ArrayList<>();
     }
 
     public boolean stackOfThreePresence(){
         for(BoardState boardState : boardStates){
-            if(boardState.getAmountofState()==3){
+            if(boardState.getAmountofState()>=3){
                 return true;
             }
         }
         return false;
+    }
+
+    public void test(){
+        System.out.println("halfMoveClock:"+halfMoveClock);
+        System.out.println("stackedStates:");
+        for(BoardState boardState : boardStates){
+            System.out.println(boardState.getAmountofState());
+        }
     }
 }

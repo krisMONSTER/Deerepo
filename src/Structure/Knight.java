@@ -5,6 +5,10 @@ public class Knight extends Piece{
 		super(a,b,c);
 	}
 
+	public Piece copy() {
+		return new Knight(x,y,colour);
+	}
+
 	public boolean equals(Object o) {
 		if (o == this) { return true; }
 		if (!(o instanceof Knight)) { return false; }

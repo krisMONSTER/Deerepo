@@ -10,6 +10,10 @@ public class Pawn extends Piece{
 		enPassant = false;
 	}
 
+	public Piece copy() {
+		return new Pawn(x,y,colour);
+	}
+
 	public boolean equals(Object o) {
 		if (o == this) { return true; }
 		if (!(o instanceof Pawn)) { return false; }
