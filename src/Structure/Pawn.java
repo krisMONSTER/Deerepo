@@ -4,9 +4,19 @@ import java.util.Objects;
 
 public class Pawn extends Piece{
 	private boolean enPassant;
+
 	public Pawn(int a, int b, boolean c) {
 		super(a,b,c);
 		enPassant = false;
+	}
+
+	public boolean equals(Object o) {
+		if (o == this) { return true; }
+		if (!(o instanceof Pawn)) { return false; }
+		Pawn c = (Pawn) o;
+		return this.x == c.x &&
+				this.y == c.y &&
+				this.colour == c.colour;
 	}
 	
 	public boolean getEnPassant() {

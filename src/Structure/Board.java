@@ -4,12 +4,14 @@ import java.util.ArrayList;
 
 public class Board {
 	private static List<Piece> piece_list;
+	private static BoardStates boardStates;
 
 	//TO SIE POTEM WYWALI
 	private static Player player;
 
 	public static void setupBoard(){
 		piece_list = new ArrayList<>();
+		boardStates = new BoardStates();
 		//pawns
 		for(int i=0;i<8;i++) {
 			piece_list.add(new Pawn(i,1,true));
@@ -124,19 +126,29 @@ public class Board {
 	}
 	
 	public static void executeDataChanges(DataChanges dataChanges) {
+		boardStates.incrementHalfMoveClock();
 		List<Alteration> alterationList = dataChanges.getAlterationList();
 		for(Alteration alteration : alterationList){
 			Piece alteredPiece = getPiece(alteration.getX(), alteration.getY());
 			switch (alteration.getTypeOfAlter()) {
 				case move -> {
 					assert alteredPiece != null;
+					if(alteredPiece instanceof Pawn){
+						boardStates.resetHalfMoveClock();
+						boardStates.resetBoardStates();
+					}
 					alteredPiece.setX(alteration.getNewX());
 					alteredPiece.setY(alteration.getNewY());
 				}
-				case remove -> piece_list.remove(alteredPiece);
+				case remove -> {
+					piece_list.remove(alteredPiece);
+					boardStates.resetHalfMoveClock();
+					boardStates.resetBoardStates();
+				}
 				case promotion -> {
 					piece_list.remove(alteredPiece);
 					piece_list.add(alteration.getNewPiece());
+					boardStates.resetBoardStates();
 				}
 				case enPassantInclusion -> {
 					assert alteredPiece != null;
@@ -170,13 +182,47 @@ public class Board {
 		return false;
 	}
 
-	public static boolean checkBoardState() {
-		for(Piece piece : piece_list){
-			if(piece.isAbleToMove()){
-				return false;
+	public static void addCurrentBoardState(){
+		boardStates.addState(new ArrayList<>(piece_list));
+	}
+
+	public static GameState checkBoardState() {
+		for(Piece king : piece_list){
+			if(king instanceof King){
+				boolean kingColour = king.getColour();
+				if(isCheckOnField(king.getX(),king.getY(),kingColour)){
+					if(!king.isAbleToMove()){
+						if(kingColour){
+							return GameState.blackWon;
+						}
+						else{
+							return GameState.whiteWon;
+						}
+					}
+				}
+				else{
+					boolean movePossible = false;
+					for(Piece piece : piece_list){
+						if(piece.getColour() == kingColour){
+							if(piece.isAbleToMove()){
+								movePossible = true;
+								break;
+							}
+						}
+					}
+					if(!movePossible){
+						return GameState.draw;
+					}
+				}
 			}
 		}
-		return true;
+		if(boardStates.getHalfMoveClock()>=100){
+			return GameState.draw;
+		}
+		if(boardStates.stackOfThreePresence()){
+			return GameState.draw;
+		}
+		return GameState.active;
 	}
 
 	//to na dole bedzie do wywalenia

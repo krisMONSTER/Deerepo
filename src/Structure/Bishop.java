@@ -4,7 +4,16 @@ public class Bishop extends Piece{
 	public Bishop(int a, int b, boolean c) {
 		super(a,b,c);
 	}
-	
+
+	public boolean equals(Object o) {
+		if (o == this) { return true; }
+		if (!(o instanceof Bishop)) { return false; }
+		Bishop c = (Bishop) o;
+		return this.x == c.x &&
+				this.y == c.y &&
+				this.colour == c.colour;
+	}
+
 	public boolean isMovePossible(int a, int b) {
 		if( Math.abs(a-x)==Math.abs(b-y) ) {
 			if( a>x && b>y ) {

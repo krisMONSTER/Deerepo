@@ -1,19 +1,12 @@
 package Structure;
 
-import java.util.concurrent.ArrayBlockingQueue;
 
 public class Player {
-	private final String name;
 	private final boolean colour;
 	private Piece pickedPiece;
-	private DataChanges dataChanges = new DataChanges();
-	private ToDisplay toDisplay = new ToDisplay();
-	private final ArrayBlockingQueue<ToDisplay> display;
 
-	public Player(String name, boolean colour, ArrayBlockingQueue<ToDisplay> display){
-		this.name = name;
+	public Player(boolean colour){
 		this.colour = colour;
-		this.display = display;
 	}
 	//ZAMIEN NA PRIVATE
 	public boolean pick(int x, int y) {
@@ -57,19 +50,10 @@ public class Player {
 		return pickedPiece.isMoveValid(x, y);
 	}
 	
-	public void makeChanges(int x, int y) {
+	public void makeChanges(int x, int y, DataChanges dataChanges, ToDisplay toDisplay) {
 		pickedPiece.setDataChanges(x, y, dataChanges, toDisplay);
-		Board.executeDataChanges(dataChanges);
-		try{
-			display.put(toDisplay);
-		}catch (InterruptedException e){
-			e.printStackTrace();
-		}
-		//DODAJ TODISPLAY DO DATA CHANGES
-		//send data_changes to player
-		Board.findAndResetEnPassant(!colour);
-		dataChanges = new DataChanges();
-		toDisplay = new ToDisplay();
+		dataChanges.setToDisplay(toDisplay);
 		pickedPiece = null;
+		Board.findAndResetEnPassant(!colour);
 	}
 }

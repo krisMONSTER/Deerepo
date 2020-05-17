@@ -9,6 +9,7 @@ public class StructureTaskOffline extends Thread{
     private final Player white;
     private final Player black;
     private Player currentPlayer;
+    private DataChanges dataChanges = new DataChanges();
     private ToDisplay toDisplay = new ToDisplay();
     private int storedX;
     private int storedY;
@@ -16,8 +17,8 @@ public class StructureTaskOffline extends Thread{
     public StructureTaskOffline(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display){
         this.clickCommand = clickCommand;
         this.display = display;
-        white = new Player("Mrs/Mr White", true, display);
-        black = new Player("Mrs/Mr Black", false, display);
+        white = new Player(true);
+        black = new Player(false);
         currentPlayer = black;
     }
 
@@ -36,9 +37,14 @@ public class StructureTaskOffline extends Thread{
         while (true){
             if(currentPlayer==white) currentPlayer = black;
             else currentPlayer = white;
-
-            //sprawdzanie stanu gry
-
+            Board.addCurrentBoardState();
+            GameState gameState = Board.checkBoardState();
+            if(gameState!=GameState.active){
+                //WYSLANIE GUI INFO
+                System.out.println("koniec gry");
+                break;
+            }
+            Board.display();
             ClickResult clickResult;
             do {
                 //TO NA DOLE MOZE INACZEJ
@@ -75,7 +81,12 @@ public class StructureTaskOffline extends Thread{
                         toDisplay.addCoordinates(new int[]{storedX, storedY});
                         sendGuiDisplayData();
                     }
-                    case move -> currentPlayer.makeChanges(coordinates[0],coordinates[1]);
+                    case move -> {
+                        currentPlayer.makeChanges(coordinates[0],coordinates[1],dataChanges,toDisplay);
+                        Board.executeDataChanges(dataChanges);
+                        sendGuiDisplayData();
+                        dataChanges = new DataChanges();
+                    }
                 }
             }while(clickResult!=ClickResult.move);
         }

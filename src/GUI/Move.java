@@ -136,13 +136,13 @@ public class Move {
                         board[7-(newpawn[1])][newpawn[0]].getGraphic().setEffect(light);
                     }
 
-                    else if(toDisplay.getTypeOfAction()==TypeOfAction.clear) //kiedy wybrano niedostepne pole
+                    else if(toDisplay.getTypeOfAction()==TypeOfAction.clear) //kiedy zrezygnowano z wyboru pionka
                     {
                         int [] pickedpawn = toDisplay.getCoordinates().get(0);
                         board[7-(pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
                     }
 
-                    else if(toDisplay.getTypeOfAction()==TypeOfAction.move) //kiedy wybrano dostepne pole po wyborze pionka
+                    else if(toDisplay.getTypeOfAction()==TypeOfAction.move) //kiedy wybrano puste pole po wyborze pionka
                     {
                         ImageView oldgraphic;
 
@@ -169,21 +169,20 @@ public class Move {
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.enPassant) //bicie w przelocie
                     {
                         ImageView oldgraphic;
-
+                        System.out.println("enpaso");
                         int [] oldplace = toDisplay.getCoordinates().get(0);
                         int [] newplace = toDisplay.getCoordinates().get(1);
                         int [] cptrdpawn = toDisplay.getCoordinates().get(2);
 
-                        oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic(); //przesuniecie pionka w nowe miejsce
+                        oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
                         board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                         board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
                         board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
-
-                        board[7-(cptrdpawn[1])][cptrdpawn[0]].setGraphic(null); //zbicie pionka
+                        board[7-(cptrdpawn[1])][cptrdpawn[0]].setGraphic(null);
 
                     }
 
-                    else if(toDisplay.getTypeOfAction()==TypeOfAction.castling) //roszada
+                    else if(toDisplay.getTypeOfAction()==TypeOfAction.castling)
                     {
                         ImageView king;
                         ImageView rook;
@@ -198,12 +197,11 @@ public class Move {
                         board[7-(oldking[1])][oldking[0]].setGraphic(null);
                         board[7-(newking[1])][newking[0]].setGraphic(king);
 
-                        rook=(ImageView)board[7-(oldrook[1])][oldrook[0]].getGraphic(); //Przestawienie wiez
-                        board[7-(oldrook[1])][oldrook[0]].getGraphic().setEffect(null);
+                        rook=(ImageView)board[7-(oldrook[1])][oldrook[0]].getGraphic(); //Przestawienie wiezy
+                        //board[7-(oldrook[1])][oldrook[0]].getGraphic().setEffect(null);   <-- to jest chyba niepotrzebne
                         board[7-(oldrook[1])][oldrook[0]].setGraphic(null);
                         board[7-(newrook[1])][newrook[0]].setGraphic(rook);
                     }
-
 
             }catch (InterruptedException ex){
                 ex.printStackTrace();
