@@ -3,26 +3,25 @@ package GUI;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 
 import static GUI.MainStage.board;
 
 
-public class ChessBoard {
+public class BoardInitialization {
 
-    static Image BishopB = new Image(ChessBoard.class.getResourceAsStream("img/BishopB_icon.png"));
-    static Image BishopW = new Image(ChessBoard.class.getResourceAsStream("img/BishopW_icon.png"));
-    static Image KingB = new Image(ChessBoard.class.getResourceAsStream("img/KingB_icon.png"));
-    static Image KingW = new Image(ChessBoard.class.getResourceAsStream("img/KingW_icon.png"));
-    static Image KnightB = new Image(ChessBoard.class.getResourceAsStream("img/KnightB_icon.png"));
-    static Image KnightW = new Image(ChessBoard.class.getResourceAsStream("img/KnightW_icon.png"));
-    static Image PawnB = new Image(ChessBoard.class.getResourceAsStream("img/PawnB_icon.png"));
-    static Image PawnW = new Image(ChessBoard.class.getResourceAsStream("img/PawnW_icon.png"));
-    static Image QueenB = new Image(ChessBoard.class.getResourceAsStream("img/QueenB_icon.png"));
-    static Image QueenW = new Image(ChessBoard.class.getResourceAsStream("img/QueenW_icon.png"));
-    static Image RookB = new Image(ChessBoard.class.getResourceAsStream("img/RookB_icon.png"));
-    static Image RookW = new Image(ChessBoard.class.getResourceAsStream("img/RookW_icon.png"));
+    static Image BishopB = new Image(BoardInitialization.class.getResourceAsStream("img/BishopB_icon.png"));
+    static Image BishopW = new Image(BoardInitialization.class.getResourceAsStream("img/BishopW_icon.png"));
+    static Image KingB = new Image(BoardInitialization.class.getResourceAsStream("img/KingB_icon.png"));
+    static Image KingW = new Image(BoardInitialization.class.getResourceAsStream("img/KingW_icon.png"));
+    static Image KnightB = new Image(BoardInitialization.class.getResourceAsStream("img/KnightB_icon.png"));
+    static Image KnightW = new Image(BoardInitialization.class.getResourceAsStream("img/KnightW_icon.png"));
+    static Image PawnB = new Image(BoardInitialization.class.getResourceAsStream("img/PawnB_icon.png"));
+    static Image PawnW = new Image(BoardInitialization.class.getResourceAsStream("img/PawnW_icon.png"));
+    static Image QueenB = new Image(BoardInitialization.class.getResourceAsStream("img/QueenB_icon.png"));
+    static Image QueenW = new Image(BoardInitialization.class.getResourceAsStream("img/QueenW_icon.png"));
+    static Image RookB = new Image(BoardInitialization.class.getResourceAsStream("img/RookB_icon.png"));
+    static Image RookW = new Image(BoardInitialization.class.getResourceAsStream("img/RookW_icon.png"));
     final static int FIELD_SIZE=50;
     final static Font FIELD_FONT=new Font("Arial",10);
     final static String WHITE_FIELD="#ead5a0";

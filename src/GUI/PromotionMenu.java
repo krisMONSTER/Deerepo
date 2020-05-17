@@ -1,14 +1,11 @@
 package GUI;
 
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -38,10 +35,10 @@ public class PromotionMenu {
         figures[3] = new Button("Queen");
 
         if(color=="black"){ //tutaj uzywam tego argumentu color jako informacja jakiego koloru obrazki podstawic
-            figures[0].setGraphic(new ImageView(ChessBoard.KnightB));
-            figures[1].setGraphic(new ImageView(ChessBoard.RookB));
-            figures[2].setGraphic(new ImageView(ChessBoard.BishopB));
-            figures[3].setGraphic(new ImageView(ChessBoard.QueenB));
+            figures[0].setGraphic(new ImageView(BoardInitialization.KnightB));
+            figures[1].setGraphic(new ImageView(BoardInitialization.RookB));
+            figures[2].setGraphic(new ImageView(BoardInitialization.BishopB));
+            figures[3].setGraphic(new ImageView(BoardInitialization.QueenB));
 
             for(int i=0; i<4; i++)
             {
@@ -49,10 +46,10 @@ public class PromotionMenu {
             }
         }
         else{
-            figures[0].setGraphic(new ImageView(ChessBoard.KnightW));
-            figures[1].setGraphic(new ImageView(ChessBoard.RookW));
-            figures[2].setGraphic(new ImageView(ChessBoard.BishopW));
-            figures[3].setGraphic(new ImageView(ChessBoard.QueenW));
+            figures[0].setGraphic(new ImageView(BoardInitialization.KnightW));
+            figures[1].setGraphic(new ImageView(BoardInitialization.RookW));
+            figures[2].setGraphic(new ImageView(BoardInitialization.BishopW));
+            figures[3].setGraphic(new ImageView(BoardInitialization.QueenW));
             for(int i=0; i<4; i++)
             {
                 figures[i].setStyle("-fx-background-color: black;-fx-border-color: white;-fx-text-fill:white;");
