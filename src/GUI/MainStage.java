@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
@@ -86,9 +87,16 @@ public class MainStage extends Application{
         });
         button7.setStyle("-fx-background-color: white;-fx-border-color: black;");
 
+        //Button 8 promocja pionka
+        Button button8 = new Button("Test promocji pionka");
+        button8.setOnAction(e->{
+            pawnPromotion();
+        });
+        button8.setStyle("-fx-background-color: black;-fx-border-color: white;-fx-text-fill:white;");
+
         //Layout 1
         VBox layout1 = new VBox(20); // układa obiekty "w kolumnie"
-        layout1.getChildren().addAll(label1, button1, button3, button4, button6, button7);
+        layout1.getChildren().addAll(label1, button1, button3, button4, button6, button7,button8);
         layout1.setAlignment(Pos.CENTER);
         layout1.setBackground(new Background(scene1_background));
         scene1 = new Scene(layout1, 400,400);
@@ -153,6 +161,13 @@ public class MainStage extends Application{
         Boolean answer;
         answer=ConfirmBox.display("Wyjscie z gry", "Czy na pewno chcesz opuscic gre?\nPrzecież jest super!");
         if(answer==true) window.close();
+    }
+
+    public void pawnPromotion()
+    {
+        ImageView pawn;
+        pawn=PromotionMenu.display("white");
+        if(pawn!=null) System.out.println("Wybrano figure!");
     }
 
 }

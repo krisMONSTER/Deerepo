@@ -91,4 +91,5 @@ public class StructureTaskOffline extends Thread{
             }while(clickResult!=ClickResult.move);
         }
     }
+    
 }
