@@ -1,7 +1,10 @@
 package GUI;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
 
 
+import javafx.animation.Timeline;
 import javafx.scene.Node;
 
 
@@ -20,18 +23,18 @@ public class MoveAnimation {
 
     public static void move_animation(Node piece, double move_fromx, double move_fromy, double move_tox, double move_toy)
     {
-        MoveAnimation.pawn=piece;
-        MoveAnimation.move_to =new MoveTo(move_fromx,move_fromy);
-        line_to.setX(move_tox);
-        line_to.setY(move_toy);
-        path.getElements().add(MoveAnimation.move_to);
-        path.getElements().add(line_to);
-        pathTransition.setDuration(Duration.millis(10000));
-        pathTransition.setNode(pawn);
-        pathTransition.setAutoReverse(false);
-        pathTransition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-        pathTransition.setCycleCount(1);
-        pathTransition.play();
+        pawn=piece;
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.setAutoReverse(true);
+        int stepx=(int)(move_tox-move_fromx);
+        int stepy=(int)(move_toy-move_toy);
+        //final KeyValue kv = new KeyValue(pawn.getLayoutX(),(double)stepx*50 );
+        //final KeyFrame kf = new KeyFrame(Duration.millis(500), kv);
+        //timeline.getKeyFrames().add(kf);
+        timeline.play();
+
+
 
     }
 }

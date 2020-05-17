@@ -29,7 +29,9 @@ public class ConfirmBox {
 
         // Dwa przyciski
         Button yesButton = new Button("Tak");
+        yesButton.setStyle(MainStage.blackbutton);
         Button noButton = new Button("Nie");
+        noButton.setStyle(MainStage.whitebutton);
 
 
         yesButton.setOnAction(e -> {

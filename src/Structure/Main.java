@@ -1,6 +1,5 @@
 package Structure;
 
-import GUI.Game;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

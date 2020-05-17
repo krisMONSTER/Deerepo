@@ -40,9 +40,9 @@ public class MainStage extends Application{
     private static ToDisplay toDisplay;
 
     //CSS dla przyciskow
-    String whitebutton="-fx-background-color: white;-fx-border-color: black;-fx-font-family: FreeMono, monospace;";
-    String blackbutton="-fx-background-color: black;-fx-border-color: white;-fx-text-fill:white;-fx-font-family: FreeMono, monospace;";
-    String fontstyle="-fx-font-family:FreeMono, monospace;-fx-font-size: 30;";
+    static String whitebutton="-fx-background-color: white;-fx-border-color: black;-fx-font-family: FreeMono, monospace;";
+    static String blackbutton="-fx-background-color: black;-fx-border-color: white;-fx-text-fill:white;-fx-font-family: FreeMono, monospace;";
+    static String fontstyle="-fx-font-family:FreeMono, monospace;-fx-font-size: 30;";
 
 
     public static void main(String[] args) {
@@ -65,7 +65,7 @@ public class MainStage extends Application{
 
         //Button Rozpoczynanie gry
         firstSceneButton[0]=new Button("Rozpocznij gre");
-        Move move=new Move(clickCommand, display);
+        Move move=new Move(clickCommand, display ,tymczasowe);
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
             StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, tymczasowe);

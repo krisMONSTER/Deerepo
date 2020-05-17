@@ -24,12 +24,14 @@ public class Move {
     static Scanner in = new Scanner (System.in);
     private final ArrayBlockingQueue<int[]> clickCommand;
     private final ArrayBlockingQueue<ToDisplay> display;
+    private final ArrayBlockingQueue<GameState> gameState;
     private static ToDisplay toDisplay;
 
 
-    public Move(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display){
+    public Move(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameState){
         this.clickCommand=clickCommand;
         this.display=display;
+        this.gameState=gameState;
     }
 
     //Metoda obsluguje przesuwania pionkow po planszy
@@ -43,6 +45,7 @@ public class Move {
             //Okreslanie kolumny i wiersza w ktorym znajduje sie pionek, poprzez wspolrzedne miejsca klikniecia myszka
             find_col=(int)((e.getX()/50)+1);
             find_row=(int)((e.getY()/50)+1);
+
 
             //czy juz zostal wybrany pionek, jesli nie to zaznacza go
             if(is_picked==false) {
@@ -114,6 +117,23 @@ public class Move {
 
             //czy juz zostal wybrany pionek, jesli nie to zaznacza go
             try {
+                    GameState state = gameState.peek();
+                    gameState.take();
+                    if(state==GameState.draw) {
+                        AlertBox.display("Koniec gry", "Remis!");
+                        return;
+                    }
+
+                    if(state==GameState.whiteWon){
+                        AlertBox.display("Koniec gry", "Biale wygraly!");
+                        return;
+                    }
+
+                    if(state==GameState.blackWon){
+                        AlertBox.display("Koniec gry", "Czarne wygraly!");
+                        return;
+                    }
+
                     clickCommand.put(new int[]{find_col-1,7-(find_row-1)});
                     toDisplay = display.take();
 

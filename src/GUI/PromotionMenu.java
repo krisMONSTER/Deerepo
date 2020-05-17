@@ -29,10 +29,10 @@ public class PromotionMenu {
         window.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png"))); //ikona okna
 
 
-        figures[0]= new Button("Knight");
-        figures[1] = new Button("Rook");
-        figures[2] = new Button("Bishop");
-        figures[3] = new Button("Queen");
+        figures[0]= new Button("Skoczek");
+        figures[1] = new Button("Wieża");
+        figures[2] = new Button("Goniec");
+        figures[3] = new Button("Hetman");
 
         if(color=="black"){ //tutaj uzywam tego argumentu color jako informacja jakiego koloru obrazki podstawic
             figures[0].setGraphic(new ImageView(BoardInitialization.KnightB));
