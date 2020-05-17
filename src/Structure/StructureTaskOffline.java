@@ -99,4 +99,5 @@ public class StructureTaskOffline extends Thread{
         }
         System.out.println("koniec watku struktury");
     }
+    
 }

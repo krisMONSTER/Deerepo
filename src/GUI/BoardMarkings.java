@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import static GUI.MainStage.gridPane;
 import static GUI.MainStage.markings;
 
-public class ChessBoardMarkings {
+public class BoardMarkings {
 
     public static final String MARKINGS_COLOR="#6c5545";
 
