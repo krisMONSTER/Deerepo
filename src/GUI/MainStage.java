@@ -69,6 +69,8 @@ public class MainStage extends Application{
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
             StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, tymczasowe);
+            BoardInitialization.BlankSpace(8);
+            BoardInitialization.InitChessBoard();
             move.execute_move(t);
         });
 
@@ -127,7 +129,11 @@ public class MainStage extends Application{
 
         //Button2 Przycisk powrotu do glownego menu
         secondSceneButton[0]=new Button("Menu");
-        secondSceneButton[0].setOnAction(e -> window.setScene(scene1));
+        secondSceneButton[0].setOnAction(e -> {
+            boolean choice;
+            choice=ConfirmBox.display("Powrot do menu","Powrót do menu oznacza przerwanie gry i \nwygraną przeciwnika.\nCzy potwierdzasz swój wybór?");
+            if(choice==true) window.setScene(scene1);
+        });
 
 
         //Button5 Przycisk do restartu szachownicy

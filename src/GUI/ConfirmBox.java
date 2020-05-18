@@ -21,7 +21,7 @@ public class ConfirmBox {
         window.initModality(Modality.APPLICATION_MODAL);
         //blokuje mozliwosc interakcji z innymi oknami, dopoki nie zostanie obsluzone to konkretne okno
         window.setTitle(title);
-        window.setMinWidth(250);
+        window.setMinWidth(300);
         window.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png")));
         Label label1 = new Label();
         label1.setText(message);
