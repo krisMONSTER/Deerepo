@@ -19,8 +19,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class MainStage extends Application{
 
-    Stage window;
-    Scene scene1, scene2;
+    static Stage window;
+    static Scene scene1, scene2;
 
     //Rzeczy do okienka z plansza
     public static BorderPane border = new BorderPane(); //Okno z plansza
@@ -119,6 +119,7 @@ public class MainStage extends Application{
         for(int i=0; i<firstSceneButton.length;i++)
         { layout1.getChildren().add(firstSceneButton[i]); }
 
+
         layout1.setAlignment(Pos.CENTER);
         layout1.setBackground(new Background(scene1_background));
         scene1 = new Scene(layout1, 400,400);
@@ -146,7 +147,7 @@ public class MainStage extends Application{
 
         //Layout 2 tam gdzie jest plansza
         HBox layout2=new HBox(20);
-        layout2.getChildren().addAll(secondSceneButton[0],secondSceneButton[1]);
+        layout2.getChildren().addAll(secondSceneButton[0]);
         layout2.setSpacing(0);
         border.setTop(layout2);
 
@@ -177,8 +178,13 @@ public class MainStage extends Application{
     public void pawnPromotion()
     {
         ImageView pawn;
-        pawn=PromotionMenu.display("white");
+        pawn=PromotionMenu.display("black");
         if(pawn!=null) System.out.println("Wybrano figure!");
+    }
+
+    public static void endGame()
+    {
+        window.setScene(scene1);
     }
 
 }
