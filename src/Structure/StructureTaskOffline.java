@@ -41,7 +41,7 @@ public class StructureTaskOffline extends Thread{
             if(currentPlayer==white) currentPlayer = black;
             else currentPlayer = white;
             Board.addCurrentBoardState();
-            GameState gameState = Board.checkGameState();
+            GameState gameState = Board.checkGameState(currentPlayer.getColour());
             Board.display();
             ClickResult clickResult;
             do {

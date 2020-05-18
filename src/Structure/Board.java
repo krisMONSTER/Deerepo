@@ -188,7 +188,7 @@ public class Board {
 		boardStates.addState(pieceList);
 	}
 
-	public static GameState checkGameState() {
+	public static GameState checkGameState(boolean colourAtMove) {
 		for(Piece king : pieceList){
 			if(king instanceof King){
 				boolean kingColour = king.getColour();
@@ -199,6 +199,14 @@ public class Board {
 						}
 						else{
 							return GameState.whiteWon;
+						}
+					}
+					else if(kingColour != colourAtMove){
+						if(colourAtMove){
+							return GameState.whiteWon;
+						}
+						else {
+							return GameState.blackWon;
 						}
 					}
 				}

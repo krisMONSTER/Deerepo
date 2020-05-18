@@ -45,6 +45,10 @@ public class Player {
 	public Piece getPickedPiece() {
 		return pickedPiece;
 	}
+
+	public boolean getColour(){
+		return colour;
+	}
 	
 	public boolean isMoveValid(int x, int y) {
 		return pickedPiece.isMoveValid(x, y);
