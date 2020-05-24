@@ -47,7 +47,7 @@ public class Help {
         explain[3]=new Label(" Goniec porusza się o dowolną ilość pól po skosie.\n\n" +
                 " Wartość punktowa w grze: 3");
 
-        explain[4]=new Label(" Hetman porusza się o dowolną ilość pół po skosie lub\n w pionie albo w poziomie.\n\n" +
+        explain[4]=new Label(" Hetman porusza się o dowolną ilość pól po skosie lub\n w pionie albo w poziomie.\n\n" +
                 " Wartość punktowa w grze: 9");
 
         explain[5]=new Label(" Król porusza się o jedno pole w dowolnym kierunku.\n" +
