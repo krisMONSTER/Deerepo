@@ -59,7 +59,7 @@ public class MainStage extends Application{
         window.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png")));
         window.setResizable(false);
 
-        Button [] firstSceneButton = new Button[6];
+        Button [] firstSceneButton = new Button[7];
         Button [] secondSceneButton = new Button[2];
 
 
@@ -74,15 +74,18 @@ public class MainStage extends Application{
             move.execute_move(t);
         });
 
+        //Button samouczek
+        firstSceneButton[1]=new Button("Samouczek");
+        firstSceneButton[1].setOnAction(e -> Help.display("black"));
 
         //Button AlertBox test
-        firstSceneButton[1]=new Button("Czy można oszukiwać w tej grze?");
-        firstSceneButton[1].setOnAction(e -> AlertBox.display("Oszukiwanie","Nie można oszukiwać!"));
+        firstSceneButton[2]=new Button("Czy można oszukiwać w tej grze?");
+        firstSceneButton[2].setOnAction(e -> AlertBox.display("Oszukiwanie","Nie można oszukiwać!"));
 
 
         //Button Zamykanie programu
-        firstSceneButton[2]=new Button( "Opuść grę");
-        firstSceneButton[2].setOnAction(e -> closeProgram());
+        firstSceneButton[3]=new Button( "Opuść grę");
+        firstSceneButton[3].setOnAction(e -> closeProgram());
         window.setOnCloseRequest(e->
         {
             e.consume(); // sama metoda setOnCloseRequest zamyka program niezależnie jakiej odpowiedzi użytkownik udzieli
@@ -90,22 +93,23 @@ public class MainStage extends Application{
         });
 
         //Button Sieci - hostuj gre
-        firstSceneButton[3] = new Button("Hostuj grę");
-        firstSceneButton[3].setOnAction(e -> {
-
-        });
-
-        //Button Sieci - dolacz do gry
-        firstSceneButton[4]= new Button("Dołącz do gry");
+        firstSceneButton[4] = new Button("Hostuj grę");
         firstSceneButton[4].setOnAction(e -> {
 
         });
 
+        //Button Sieci - dolacz do gry
+        firstSceneButton[5]= new Button("Dołącz do gry");
+        firstSceneButton[5].setOnAction(e -> {
+
+        });
+
         //Button promocja pionka
-        firstSceneButton[5] = new Button("Test promocji pionka");
-        firstSceneButton[5].setOnAction(e->{
+        firstSceneButton[6] = new Button("Test promocji pionka");
+        firstSceneButton[6].setOnAction(e->{
             pawnPromotion();
         });
+
 
         //Dekorowanie buttonow
         for(int i=0; i<firstSceneButton.length;i++) {
