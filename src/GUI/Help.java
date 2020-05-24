@@ -40,12 +40,12 @@ public class Help {
                 "tę sekwencję w odwrotnej kolejności.\n\n" +
                 " Wartość punktowa w grze: 3");
 
-        explain[2]=new Label(" Wieża porusza się o dowolną ilość pól w pionie\n"+
+        explain[2]=new Label(" Goniec porusza się o dowolną ilość pól po skosie.\n\n" +
+                " Wartość punktowa w grze: 3");
+
+        explain[3]=new Label(" Wieża porusza się o dowolną ilość pól w pionie\n"+
                 " lub w poziomie.\n\n"+
                 " Wartość punktowa w grze: 5");
-
-        explain[3]=new Label(" Goniec porusza się o dowolną ilość pól po skosie.\n\n" +
-                " Wartość punktowa w grze: 3");
 
         explain[4]=new Label(" Hetman porusza się o dowolną ilość pól po skosie lub\n w pionie albo w poziomie.\n\n" +
                 " Wartość punktowa w grze: 9");
@@ -55,13 +55,13 @@ public class Help {
                 " Wartość punktowa w grze: brak");
 
         for (int i = 0; i < 6; i++) {
-            explain[i].setStyle("-fx-background-color: #535353;-fx-border-color: black;-fx-text-fill:white;-fx-font-family: FreeMono, monospace;");
+            explain[i].setStyle("-fx-background-color: #404040;-fx-border-color: black;-fx-text-fill:white;-fx-font-family: FreeMono, monospace;");
         }
 
         explain[0].setGraphic(new ImageView(BoardInitialization.PawnW));
         explain[1].setGraphic(new ImageView(BoardInitialization.KnightW));
-        explain[2].setGraphic(new ImageView(BoardInitialization.RookW));
-        explain[3].setGraphic(new ImageView(BoardInitialization.BishopW));
+        explain[2].setGraphic(new ImageView(BoardInitialization.BishopW));
+        explain[3].setGraphic(new ImageView(BoardInitialization.RookW));
         explain[4].setGraphic(new ImageView(BoardInitialization.QueenW));
         explain[5].setGraphic(new ImageView(BoardInitialization.KingW));
 
@@ -77,7 +77,7 @@ public class Help {
             layout.getChildren().add(explain[i]);
             explain[i].setMinSize(450,60);
             explain[i].setLineSpacing(10);
-            explain[i].setGraphicTextGap(15);
+            explain[i].setGraphicTextGap(10);
         }
 
         layout.setSpacing(10);
