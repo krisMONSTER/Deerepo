@@ -18,8 +18,10 @@ public class Move {
     static boolean is_picked; //Info dla EventHandlera czy przypadkiem nie wybrano juz jakiegos pionka
     static Label piece;
     static ImageView piece_image; //Ikona wybranego pionka
-    static String previous_field_color;
     static Lighting light = new Lighting();
+    static String RED_FIELD="-fx-background-color:#DC674E ;-fx-border-color: black; -fx-padding: 0";
+    static String GREEN_FIELD="-fx-background-color:#628255;-fx-border-color: black; -fx-padding: 0";
+    static String YELLOW_FIELD="-fx-background-color:#DBD687;-fx-border-color: black; -fx-padding: 0";
 
     static Scanner in = new Scanner (System.in);
     private final ArrayBlockingQueue<int[]> clickCommand;
@@ -116,26 +118,27 @@ public class Move {
 
 
             try {
-                    GameState state = gameState.peek();
-                    gameState.take();
-                    if(state==GameState.draw) {
-                        AlertBox.display("Koniec gry", "Remis!");
-                        MainStage.endGame();
-                        return;
-                    }
 
-                    if(state==GameState.whiteWon){
-                        AlertBox.display("Koniec gry", "Biale wygraly!");
-                        System.out.println("Biale wygraly!");
-                        MainStage.endGame();
-                        return;
-                    }
+                GameState state = gameState.peek();
+                gameState.take();
+                if(state==GameState.draw) {
+                    AlertBox.display("Koniec gry", "Remis!");
+                    MainStage.endGame();
+                    return;
+                }
 
-                    if(state==GameState.blackWon){
-                        AlertBox.display("Koniec gry", "Czarne wygraly!");
-                        MainStage.endGame();
-                        return;
-                    }
+                if(state==GameState.whiteWon){
+                    AlertBox.display("Koniec gry", "Biale wygraly!");
+                    System.out.println("Biale wygraly!");
+                    MainStage.endGame();
+                    return;
+                }
+
+                if(state==GameState.blackWon){
+                    AlertBox.display("Koniec gry", "Czarne wygraly!");
+                    MainStage.endGame();
+                    return;
+                }
 
                     clickCommand.put(new int[]{find_col-1,7-(find_row-1)});
                     toDisplay = display.take();
@@ -147,12 +150,15 @@ public class Move {
 
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.pick) //kiedy wybrano po raz pierwszy pionka
                     {
+                        BoardInitialization.resetColors();
                         int [] pickpawn = toDisplay.getCoordinates().get(0);
                         board[7-(pickpawn[1])][pickpawn[0]].getGraphic().setEffect(light);
+
                     }
 
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.repick) //kiedy podjeto decyzje o wyborze innego pionka
                     {
+                        BoardInitialization.resetColors();
                         int [] pickedpawn = toDisplay.getCoordinates().get(0);
                         int [] newpawn = toDisplay.getCoordinates().get(1);
                         board[7-(pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
@@ -172,9 +178,14 @@ public class Move {
                         int [] oldplace = toDisplay.getCoordinates().get(0);
                         int [] newplace = toDisplay.getCoordinates().get(1);
                         oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
+
+                        BoardInitialization.resetColors();
                         board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                         board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
+                        board[7-(oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
                         board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
+                        board[7-(newplace[1])][newplace[0]].setStyle(GREEN_FIELD);
+
                     }
 
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.capture) //kiedy wybrano pole na ktorym znajduje sie pionek koloru przeciwnego
@@ -184,24 +195,30 @@ public class Move {
                         int [] oldplace = toDisplay.getCoordinates().get(0);
                         int [] newplace = toDisplay.getCoordinates().get(1);
                         oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
+
+                        BoardInitialization.resetColors();
                         board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                         board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
+                        board[7-(oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
                         board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
+                        board[7-(newplace[1])][newplace[0]].setStyle(RED_FIELD);
                     }
 
                     else if(toDisplay.getTypeOfAction()==TypeOfAction.enPassant) //bicie w przelocie
                     {
                         ImageView oldgraphic;
-                        System.out.println("enpaso");
                         int [] oldplace = toDisplay.getCoordinates().get(0);
                         int [] newplace = toDisplay.getCoordinates().get(1);
                         int [] cptrdpawn = toDisplay.getCoordinates().get(2);
-
                         oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
+                        BoardInitialization.resetColors();
                         board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                         board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
+                        board[7-(oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
                         board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
+                        board[7-(newplace[1])][newplace[0]].setStyle(GREEN_FIELD);
                         board[7-(cptrdpawn[1])][cptrdpawn[0]].setGraphic(null);
+                        board[7-(cptrdpawn[1])][cptrdpawn[0]].setStyle(RED_FIELD);
 
                     }
 
@@ -218,10 +235,12 @@ public class Move {
                         king=(ImageView)board[7-(oldking[1])][oldking[0]].getGraphic(); //Przestawienie krola
                         board[7-(oldking[1])][oldking[0]].getGraphic().setEffect(null);
                         board[7-(oldking[1])][oldking[0]].setGraphic(null);
+                        board[7-(oldking[1])][oldking[0]].setStyle(GREEN_FIELD);
                         board[7-(newking[1])][newking[0]].setGraphic(king);
+                        board[7-(newking[1])][newking[0]].setStyle(GREEN_FIELD);
+
 
                         rook=(ImageView)board[7-(oldrook[1])][oldrook[0]].getGraphic(); //Przestawienie wiezy
-                        //board[7-(oldrook[1])][oldrook[0]].getGraphic().setEffect(null);   <-- to jest chyba niepotrzebne
                         board[7-(oldrook[1])][oldrook[0]].setGraphic(null);
                         board[7-(newrook[1])][newrook[0]].setGraphic(rook);
                     }

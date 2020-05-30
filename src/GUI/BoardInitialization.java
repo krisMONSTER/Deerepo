@@ -101,6 +101,17 @@ public class BoardInitialization {
 
     }
 
+    public static void resetColors() {
+        String color;
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if ((x + y) % 2 == 0) color = WHITE_FIELD; //"biale pola"
+                else color = BLACK_FIELD; //"czarne" pola
+
+                board[x][y].setStyle("-fx-background-color: " + color + ";-fx-border-color: black; -fx-padding: 0");
+            }
+        }
+    }
 
 }
 
