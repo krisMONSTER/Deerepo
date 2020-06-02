@@ -26,17 +26,10 @@ public class BoardInitialization {
     final static Font FIELD_FONT=new Font("Arial",10);
     final static String WHITE_FIELD="#ead5a0";
     final static String BLACK_FIELD="#b6935e";
-    final static String PICKED_FIELD="";
-
-
-    Label piece;
-    ImageView piece_image; //Ikona wybranego pionka
 
 
     //wyswietla pusta plansze
     public static void BlankSpace(int size) {
-
-
 
         //x - wiersz, y - kolumna
         for (int x = 0; x < size; x++) {

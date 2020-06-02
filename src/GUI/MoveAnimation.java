@@ -13,7 +13,7 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
-public class MoveAnimation {
+public class MoveAnimation{
 
     static Node pawn;
     static Path path = new Path();

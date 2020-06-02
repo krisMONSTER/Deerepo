@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 
 import static GUI.MainStage.board;
@@ -104,9 +105,10 @@ public class Move {
 
     }
 
-    public void execute_move( StructureTaskOffline t)
+    public void execute_move( StructureTaskOffline t, StateSynchronization s)
     {
         t.start();
+        s.start();
 
         EventHandler<MouseEvent> eventHandler = e -> {
             int find_col;
@@ -117,29 +119,9 @@ public class Move {
             find_row=(int)((e.getY()/50)+1);
 
 
-            try {
+            try{
 
-                GameState state = gameState.peek();
-                gameState.take();
-                if(state==GameState.draw) {
-                    AlertBox.display("Koniec gry", "Remis!");
-                    MainStage.endGame();
-                    return;
-                }
-
-                if(state==GameState.whiteWon){
-                    AlertBox.display("Koniec gry", "Biale wygraly!");
-                    System.out.println("Biale wygraly!");
-                    MainStage.endGame();
-                    return;
-                }
-
-                if(state==GameState.blackWon){
-                    AlertBox.display("Koniec gry", "Czarne wygraly!");
-                    MainStage.endGame();
-                    return;
-                }
-
+                    s.sem.release();
                     clickCommand.put(new int[]{find_col-1,7-(find_row-1)});
                     toDisplay = display.take();
 
@@ -244,6 +226,7 @@ public class Move {
                         board[7-(oldrook[1])][oldrook[0]].setGraphic(null);
                         board[7-(newrook[1])][newrook[0]].setGraphic(rook);
                     }
+                    s.sem.release();
 
             }catch (InterruptedException ex){
                 ex.printStackTrace();
