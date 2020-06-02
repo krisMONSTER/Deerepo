@@ -3,6 +3,8 @@ package Structure;
 import GUI.AlertBox;
 import GUI.PromotionMenu;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -32,20 +34,63 @@ public class Main extends Application{
 	}
 
 	public void start(Stage primaryStage){
-		/*Stage window = primaryStage;
-		window.setTitle("aa");
+		primaryStage.setTitle("aa");
 		StackPane layout = new StackPane();
 		Scene scene = new Scene(layout, 300, 250);
-		window.setScene(scene);
-		window.show();
-		try{
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		Task<Void> task = new Task<>() {
+			@Override
+			protected Void call() throws Exception {
+				System.out.println("Zaczynaja biale!");
+				while(true){
+					try{
+						gameState = gameStates.take();
+					}catch (InterruptedException e){
+						e.printStackTrace();
+					}
+					System.out.println("stan gry:"+gameState);
+					Board.test();
+					if(gameState != GameState.active){
+						new Thread(() -> Platform.runLater(() -> AlertBox.display("KONIEC GRY","KONIEC GRY"))).start();
+						break;
+					}
+					int x,y;
+					System.out.print("Podaj x:");
+					x = sc.nextInt();
+					sc.nextLine();
+					System.out.print("Podaj y:");
+					y = sc.nextInt();
+					try {
+						clickCommand.put(new int[]{x,y});
+					}catch (InterruptedException e){
+						e.printStackTrace();
+					}
+					try {
+						toDisplay = display.take();
+					}catch (InterruptedException e){
+						e.printStackTrace();
+					}
+					System.out.println("typ akcji:"+toDisplay.getTypeOfAction());
+					for(int[] coordinates : toDisplay.getCoordinates()){
+						System.out.println("(x,y):"+coordinates[0]+" "+coordinates[1]);
+					}
+				}
+				return null;
+			}
+		};
+		StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameStates);
+		t.setDaemon(true);
+		t.start();
+		Thread thread = new Thread(task);
+		thread.setDaemon(true);
+		thread.start();
+		/*try{
 			Thread.sleep(1000);
 		}catch (InterruptedException e){
 			e.printStackTrace();
 		}*/
-		//AlertBox.display("aaa","aaaaaaaa");
-		StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameStates);
-		t.start();
+		/*
 		System.out.println("Zaczynaja biale!");
 		while(true){
 			try{
@@ -79,5 +124,7 @@ public class Main extends Application{
 				System.out.println("(x,y):"+coordinates[0]+" "+coordinates[1]);
 			}
 		}
+
+		 */
 	}
 }

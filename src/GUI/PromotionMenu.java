@@ -3,29 +3,30 @@ package GUI;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class PromotionMenu {
 
-    static ImageView pawn;
+    static String typeOfPiece = null;
 
 
-    public static ImageView display(String color){
+    public static String display(boolean color){
 
         Stage window = new Stage();
-        Label label1 = new Label();
         Button [] figures = new Button[4];
 
+        window.initStyle(StageStyle.TRANSPARENT);
         window.initModality(Modality.APPLICATION_MODAL);
         //blokuje mozliwosc interakcji z innymi oknami, dopoki nie zostanie obsluzone to konkretne okno
-        window.setTitle("Promocja pionka"); //tytul okienka
-        window.setMinWidth(300); //rozmiar okienka
-        window.setMinHeight(320);
+        window.setTitle("Promocja piona"); //tytul okienka
+        //window.setMinWidth(300); //rozmiar okienka
+        //window.setMinHeight(320);
         window.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png"))); //ikona okna
 
 
@@ -34,7 +35,7 @@ public class PromotionMenu {
         figures[2] = new Button("Goniec");
         figures[3] = new Button("Hetman");
 
-        if(color=="black"){ //tutaj uzywam tego argumentu color jako informacja jakiego koloru obrazki podstawic
+        if(color==false){ //tutaj uzywam tego argumentu color jako informacja jakiego koloru obrazki podstawic
             figures[0].setGraphic(new ImageView(BoardInitialization.KnightB));
             figures[1].setGraphic(new ImageView(BoardInitialization.RookB));
             figures[2].setGraphic(new ImageView(BoardInitialization.BishopB));
@@ -59,19 +60,22 @@ public class PromotionMenu {
 
         figures[0].setOnAction(e->{ //tutaj moja wartoscia zwracana jest ten obrazek ktory przypisalam u gory w ifie, takze tutaj sobie smialo pozmieniaj
             //na to co tam bedziesz chcial zwracac
-            pawn=(ImageView)figures[0].getGraphic();
+
+            //dobra
+
+            typeOfPiece = "knight";
             window.close();
         });
         figures[1].setOnAction(e->{
-            pawn=(ImageView)figures[1].getGraphic();
+            typeOfPiece = "rook";
             window.close();
         });
         figures[2].setOnAction(e->{
-            pawn=(ImageView)figures[2].getGraphic();
+            typeOfPiece = "bishop";
             window.close();
         });
         figures[3].setOnAction(e->{
-            pawn=(ImageView)figures[3].getGraphic();
+            typeOfPiece = "queen";
             window.close();
         });
 
@@ -85,11 +89,13 @@ public class PromotionMenu {
         }
         layout.setAlignment(Pos.CENTER);
         layout.setSpacing(10);
-        Scene scene = new Scene(layout);
+        StackPane outerLayout = new StackPane();
+        outerLayout.getChildren().add(layout);
+        Scene scene = new Scene(outerLayout,300,320);
         window.setScene(scene);
         window.showAndWait();
 
-        return pawn; // zwracam figure ktora zostala wybrana przez nacisniecie przycisku
+        return typeOfPiece; // zwracam figure ktora zostala wybrana przez nacisniecie przycisku
     }
 
 }

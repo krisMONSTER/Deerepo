@@ -1,6 +1,10 @@
 package Structure;
 
+import GUI.PromotionMenu;
+import javafx.application.Platform;
+
 import java.util.Objects;
+import java.util.concurrent.Semaphore;
 
 public class Pawn extends Piece{
 	private boolean enPassant;
@@ -102,12 +106,51 @@ public class Pawn extends Piece{
 		}
 		dataChanges.putAlteration(new Alteration(x, y, a, b));
 		if(b == 7 || b == 0) {
-			dataChanges.putAlteration(new Alteration(a, b, new Queen(a, b, colour)));
-			if(!Board.isFieldFree(a, b)){
-				toDisplay.setTypeOfAction(TypeOfAction.promotionToQueenWithCapture);
+			final String[] promotionMenuResult = new String[1];
+			final Semaphore selection = new Semaphore(0);
+			new Thread(() -> Platform.runLater(() -> {promotionMenuResult[0] = PromotionMenu.display(false);selection.release();})).start();
+			try{
+				selection.acquire();
+			}catch (InterruptedException e){
+				e.printStackTrace();
 			}
-			else{
-				toDisplay.setTypeOfAction(TypeOfAction.promotionToQueen);
+			switch (promotionMenuResult[0]){
+				case "knight" -> {
+					dataChanges.putAlteration(new Alteration(a, b, new Knight(a, b, colour)));
+					if(!Board.isFieldFree(a, b)){
+						toDisplay.setTypeOfAction(TypeOfAction.promotionToKnightWithCapture);
+					}
+					else{
+						toDisplay.setTypeOfAction(TypeOfAction.promotionToKnight);
+					}
+				}
+				case "rook" -> {
+					dataChanges.putAlteration(new Alteration(a, b, new Rook(a, b, colour)));
+					if(!Board.isFieldFree(a, b)){
+						toDisplay.setTypeOfAction(TypeOfAction.promotionToRookWithCapture);
+					}
+					else{
+						toDisplay.setTypeOfAction(TypeOfAction.promotionToRook);
+					}
+				}
+				case "bishop" -> {
+					dataChanges.putAlteration(new Alteration(a, b, new Bishop(a, b, colour)));
+					if(!Board.isFieldFree(a, b)){
+						toDisplay.setTypeOfAction(TypeOfAction.promotionToBishopWithCapture);
+					}
+					else{
+						toDisplay.setTypeOfAction(TypeOfAction.promotionToBishop);
+					}
+				}
+				case "queen" -> {
+					dataChanges.putAlteration(new Alteration(a, b, new Queen(a, b, colour)));
+					if(!Board.isFieldFree(a, b)){
+						toDisplay.setTypeOfAction(TypeOfAction.promotionToQueenWithCapture);
+					}
+					else{
+						toDisplay.setTypeOfAction(TypeOfAction.promotionToQueen);
+					}
+				}
 			}
 		}
 	}

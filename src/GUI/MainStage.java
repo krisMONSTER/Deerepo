@@ -189,9 +189,14 @@ public class MainStage extends Application{
 
     public void pawnPromotion()
     {
+        /* POZMIENIALEM TROCHE PROMOTION MENU
         ImageView pawn;
         pawn=PromotionMenu.display("black");
         if(pawn!=null) System.out.println("Wybrano figure!");
+         */
+        String piece;
+        piece=PromotionMenu.display(false);
+        if(piece!=null) System.out.println("Wybrano figure!");
     }
 
     public static void endGame()
