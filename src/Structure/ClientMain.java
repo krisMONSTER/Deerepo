@@ -2,6 +2,7 @@ package Structure;
 
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 public class ClientMain {
     private static final ArrayBlockingQueue<int[]> clickCommand = new ArrayBlockingQueue<>(1);
@@ -10,9 +11,10 @@ public class ClientMain {
     private static final Scanner sc = new Scanner(System.in);
     private static ToDisplay toDisplay;
     private static GameState gameState;
+    private static final Semaphore clickSemaphore = new Semaphore(0);
 
     public static void main(String[] args) {
-        StructureTaskClient t = new StructureTaskClient(clickCommand, display, gameStates);
+        StructureTaskClient t = new StructureTaskClient(clickCommand, display, gameStates, clickSemaphore);
         t.start();
         while(true){
             try{
@@ -45,6 +47,11 @@ public class ClientMain {
 
             do {
                 int x, y;
+                try{
+                    clickSemaphore.acquire();
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
                 System.out.print("Podaj x:");
                 x = sc.nextInt();
                 sc.nextLine();
@@ -55,6 +62,7 @@ public class ClientMain {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                clickSemaphore.release();
                 try {
                     toDisplay = display.take();
                 } catch (InterruptedException e) {
