@@ -234,6 +234,24 @@ public class Move {
         MainStage.gridPane.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
     }
 
+    public void executeMove(Semaphore clickSemaphore, ArrayBlockingQueue<int[]> clickCommand)
+    {
+        EventHandler<MouseEvent> eventHandler = e -> {
+            if(clickSemaphore.tryAcquire()){
+                int find_col;
+                int find_row;
+                find_col=(int)((e.getX()/50)+1);
+                find_row=(int)((e.getY()/50)+1);
+                try {
+                    clickCommand.put(new int[]{find_col - 1, 7 - (find_row - 1)});
+                }catch (InterruptedException exception){
+                    exception.printStackTrace();
+                }
+                clickSemaphore.release();
+            }
+        };
+        MainStage.gridPane.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
+    }
 }
 
 

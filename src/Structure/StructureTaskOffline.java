@@ -2,6 +2,7 @@ package Structure;
 
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 public class StructureTaskOffline extends Thread{
     private final ArrayBlockingQueue<int[]> clickCommand;
@@ -9,14 +10,16 @@ public class StructureTaskOffline extends Thread{
     private final ArrayBlockingQueue<GameState> gameStates;
     private final Player white;
     private final Player black;
+    private final Semaphore clickSemaphore;
     private Player currentPlayer;
     private int storedX;
     private int storedY;
 
-    public StructureTaskOffline(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates){
+    public StructureTaskOffline(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates, Semaphore clickSemaphore){
         this.clickCommand = clickCommand;
         this.display = display;
         this.gameStates = gameStates;
+        this.clickSemaphore = clickSemaphore;
         white = new Player(true);
         black = new Player(false);
         currentPlayer = black;
@@ -50,11 +53,12 @@ public class StructureTaskOffline extends Thread{
                 if(gameState!=GameState.active){
                     break outer;
                 }
-                //TO NA DOLE MOZE INACZEJ
                 int[] coordinates = null;
+                clickSemaphore.release();
                 try {
                     coordinates = clickCommand.take();
-                } catch (InterruptedException e) {
+                    clickSemaphore.acquire();
+                }catch (InterruptedException e){
                     e.printStackTrace();
                 }
                 clickResult = currentPlayer.performOnClick(Objects.requireNonNull(coordinates)[0], coordinates[1]);

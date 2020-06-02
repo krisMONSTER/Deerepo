@@ -10,11 +10,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 
 public class MainStage extends Application{
@@ -35,8 +35,8 @@ public class MainStage extends Application{
     //Do mechanizmu
     private final ArrayBlockingQueue<int[]> clickCommand = new ArrayBlockingQueue<>(1); //do synchronizacji z mechanizmem
     private final ArrayBlockingQueue<ToDisplay> display = new ArrayBlockingQueue<>(1);
-    private final ArrayBlockingQueue<GameState> tymczasowe = new ArrayBlockingQueue<>(1);
-    //DODALEM ZEBY BLEDOW NIE WYWALALO, NAZWIJ SE JAK CHCESZ
+    private final ArrayBlockingQueue<GameState> gameState = new ArrayBlockingQueue<>(1);
+    private final Semaphore clickSemaphore = new Semaphore(0);
     private static ToDisplay toDisplay;
 
     //CSS dla przyciskow
@@ -65,11 +65,11 @@ public class MainStage extends Application{
 
         //Button Rozpoczynanie gry
         firstSceneButton[0]=new Button("Rozpocznij gre");
-        Move move=new Move(clickCommand, display ,tymczasowe);
+        Move move=new Move(clickCommand, display , gameState);
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
-            StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, tymczasowe);
-            SynchronizeTask task = new SynchronizeTask(tymczasowe);
+            StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore);
+            SynchronizeTask task = new SynchronizeTask(gameState);
             Thread s = new Thread(task);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
