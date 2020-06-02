@@ -69,7 +69,8 @@ public class MainStage extends Application{
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
             StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, tymczasowe);
-            StateSynchronization s = new StateSynchronization(tymczasowe);
+            SynchronizeTask task = new SynchronizeTask(tymczasowe);
+            Thread s = new Thread(task);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
             move.execute_move(t, s);

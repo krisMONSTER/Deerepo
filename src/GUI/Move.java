@@ -105,7 +105,7 @@ public class Move {
 
     }
 
-    public void execute_move( StructureTaskOffline t, StateSynchronization s)
+    public void execute_move( StructureTaskOffline t, Thread s)
     {
         t.start();
         s.start();
@@ -121,7 +121,6 @@ public class Move {
 
             try{
 
-                    s.sem.release();
                     clickCommand.put(new int[]{find_col-1,7-(find_row-1)});
                     toDisplay = display.take();
 
@@ -226,7 +225,6 @@ public class Move {
                         board[7-(oldrook[1])][oldrook[0]].setGraphic(null);
                         board[7-(newrook[1])][newrook[0]].setGraphic(rook);
                     }
-                    s.sem.release();
 
             }catch (InterruptedException ex){
                 ex.printStackTrace();
