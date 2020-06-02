@@ -56,7 +56,6 @@ public class Player {
 	
 	public void makeChanges(int x, int y, DataChanges dataChanges, ToDisplay toDisplay) {
 		pickedPiece.setDataChanges(x, y, dataChanges, toDisplay);
-		dataChanges.setToDisplay(toDisplay);
 		pickedPiece = null;
 		Board.findAndResetEnPassant(!colour);
 	}

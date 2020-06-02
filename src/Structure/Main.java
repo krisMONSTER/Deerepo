@@ -1,8 +1,21 @@
 package Structure;
 
+import GUI.AlertBox;
+import GUI.PromotionMenu;
 import javafx.application.Application;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.geometry.*;
 
+import javax.swing.*;
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -18,7 +31,19 @@ public class Main extends Application{
 		launch(args);
 	}
 
-	public void start(Stage stage){
+	public void start(Stage primaryStage){
+		/*Stage window = primaryStage;
+		window.setTitle("aa");
+		StackPane layout = new StackPane();
+		Scene scene = new Scene(layout, 300, 250);
+		window.setScene(scene);
+		window.show();
+		try{
+			Thread.sleep(1000);
+		}catch (InterruptedException e){
+			e.printStackTrace();
+		}*/
+		//AlertBox.display("aaa","aaaaaaaa");
 		StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameStates);
 		t.start();
 		System.out.println("Zaczynaja biale!");

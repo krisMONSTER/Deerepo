@@ -1,10 +1,12 @@
 package NET;
 
 import Structure.DataChanges;
+import Structure.DataPackage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -14,6 +16,8 @@ public class Client {
     private String address = "localhost";
     private int port = 7172;
     private Socket s;
+    private ObjectInputStream is;
+    private ObjectOutputStream os;
 
     private ArrayBlockingQueue<DataChanges> oq = null;
     private ArrayBlockingQueue<DataChanges> iq = null;
@@ -28,6 +32,24 @@ public class Client {
     public Client(String address, int port) {
         this.address = address;
         this.port = port;
+    }
+
+    public void setupClient() throws IOException{
+        s = new Socket(address, port);
+        os = new ObjectOutputStream(s.getOutputStream());
+        is = new ObjectInputStream(s.getInputStream());
+    }
+
+    public void send(DataPackage dataPackage) throws IOException{
+        os.writeObject(dataPackage);
+    }
+
+    public DataPackage receive() throws IOException,ClassNotFoundException{
+        return (DataPackage)is.readObject();
+    }
+
+    public void close() throws IOException{
+        s.close();
     }
 
     void start() throws IOException {

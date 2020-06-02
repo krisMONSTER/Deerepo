@@ -10,8 +10,6 @@ public class StructureTaskOffline extends Thread{
     private final Player white;
     private final Player black;
     private Player currentPlayer;
-    private DataChanges dataChanges = new DataChanges();
-    private ToDisplay toDisplay = new ToDisplay();
     private int storedX;
     private int storedY;
 
@@ -24,13 +22,12 @@ public class StructureTaskOffline extends Thread{
         currentPlayer = black;
     }
 
-    private void sendGuiDisplayData(){
+    private void sendGuiDisplayData(ToDisplay toDisplay){
         try {
             display.put(toDisplay);
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        toDisplay = new ToDisplay();
     }
 
     //game flow
@@ -58,40 +55,40 @@ public class StructureTaskOffline extends Thread{
                 try {
                     coordinates = clickCommand.take();
                 } catch (InterruptedException e) {
-                    //tu chyba bedzie jakies wyjscie z watku
                     e.printStackTrace();
                 }
                 clickResult = currentPlayer.performOnClick(Objects.requireNonNull(coordinates)[0], coordinates[1]);
                 switch (clickResult) {
                     case nothing -> {
-                        toDisplay.setTypeOfAction(TypeOfAction.nothing);
-                        sendGuiDisplayData();
+                        ToDisplay toDisplay = new ToDisplay(TypeOfAction.nothing);
+                        sendGuiDisplayData(toDisplay);
                     }
                     case pick -> {
+                        ToDisplay toDisplay = new ToDisplay(TypeOfAction.pick);
                         storedX = currentPlayer.getPickedPiece().getX();
                         storedY = currentPlayer.getPickedPiece().getY();
-                        toDisplay.setTypeOfAction(TypeOfAction.pick);
                         toDisplay.addCoordinates(new int[]{storedX, storedY});
-                        sendGuiDisplayData();
+                        sendGuiDisplayData(toDisplay);
                     }
                     case repick -> {
-                        toDisplay.setTypeOfAction(TypeOfAction.repick);
+                        ToDisplay toDisplay = new ToDisplay(TypeOfAction.repick);
                         toDisplay.addCoordinates(new int[]{storedX, storedY});
                         toDisplay.addCoordinates(new int[]{currentPlayer.getPickedPiece().getX(), currentPlayer.getPickedPiece().getY()});
                         storedX = currentPlayer.getPickedPiece().getX();
                         storedY = currentPlayer.getPickedPiece().getY();
-                        sendGuiDisplayData();
+                        sendGuiDisplayData(toDisplay);
                     }
                     case clear -> {
-                        toDisplay.setTypeOfAction(TypeOfAction.clear);
+                        ToDisplay toDisplay = new ToDisplay(TypeOfAction.clear);
                         toDisplay.addCoordinates(new int[]{storedX, storedY});
-                        sendGuiDisplayData();
+                        sendGuiDisplayData(toDisplay);
                     }
                     case move -> {
+                        ToDisplay toDisplay = new ToDisplay();
+                        DataChanges dataChanges = new DataChanges();
                         currentPlayer.makeChanges(coordinates[0],coordinates[1],dataChanges,toDisplay);
                         Board.executeDataChanges(dataChanges);
-                        sendGuiDisplayData();
-                        dataChanges = new DataChanges();
+                        sendGuiDisplayData(toDisplay);
                     }
                 }
             }while(clickResult!=ClickResult.move);

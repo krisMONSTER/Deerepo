@@ -1,6 +1,7 @@
 package NET;
 
 import Structure.DataChanges;
+import Structure.DataPackage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,6 +16,8 @@ public class Host {
     private int port = 7172;
     private ServerSocket ss;
     private Socket s;
+    private ObjectInputStream is;
+    private ObjectOutputStream os;
 
     private ArrayBlockingQueue<DataChanges> oq = null;
     private ArrayBlockingQueue<DataChanges> iq = null;
@@ -25,6 +28,26 @@ public class Host {
 
     public Host(int port) {
         this.port = port;
+    }
+
+    public void setupHost() throws IOException{
+        ss = new ServerSocket(port);
+        s = ss.accept();
+        os = new ObjectOutputStream(s.getOutputStream());
+        is = new ObjectInputStream(s.getInputStream());
+    }
+
+    public void send(DataPackage dataPackage) throws IOException{
+        os.writeObject(dataPackage);
+    }
+
+    public DataPackage receive() throws IOException,ClassNotFoundException{
+        return (DataPackage)is.readObject();
+    }
+
+    public void close() throws IOException{
+        s.close();
+        ss.close();
     }
 
     void start() throws IOException {
