@@ -75,7 +75,7 @@ public class MainStage extends Application{
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
            // Move.setProcess(display);
-            move.execute_move(t);
+            move.execute_move(t,clickSemaphore);
             //move.executeMove(clickSemaphore,clickCommand);
         });
 

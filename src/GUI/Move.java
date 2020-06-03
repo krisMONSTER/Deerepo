@@ -183,7 +183,7 @@ public class Move {
         });
     }
 
-    public void execute_move( StructureTaskOffline t)
+    public void execute_move( StructureTaskOffline t, Semaphore clickSemaphore)
     {
         t.start();
 
@@ -191,12 +191,13 @@ public class Move {
             int find_col;
             int find_row;
 
+            try{
+
+            if(clickSemaphore.tryAcquire()){
             //Okreslanie kolumny i wiersza w ktorym znajduje sie pionek, poprzez wspolrzedne miejsca klikniecia myszka
             find_col=(int)((e.getX()/50)+1);
             find_row=(int)((e.getY()/50)+1);
 
-
-            try{
                 GameState state = gameState.take();
                 if (state == GameState.draw) {
                     AlertBox.display("Koniec gry", "Remis!");
@@ -214,6 +215,9 @@ public class Move {
                     MainStage.endGame();
                 }
                 clickCommand.put(new int[]{find_col-1,7-(find_row-1)});
+                }
+                clickSemaphore.release();
+
                 toDisplay = display.take();
                     if(toDisplay.getTypeOfAction()==TypeOfAction.nothing) //kiedy kliknieto na puste pole
                     {
