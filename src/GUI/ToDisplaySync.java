@@ -6,10 +6,12 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
+import static GUI.BoardInitialization.*;
 import static GUI.MainStage.board;
 import static GUI.Move.*;
 
@@ -122,6 +124,82 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     rook = (ImageView) board[7 - (oldrook[1])][oldrook[0]].getGraphic(); //Przestawienie wiezy
                     board[7 - (oldrook[1])][oldrook[0]].setGraphic(null);
                     board[7 - (newrook[1])][newrook[0]].setGraphic(rook);
+                }
+                else if(todisplay.getTypeOfAction()==TypeOfAction.promotionToBishop || todisplay.getTypeOfAction()==TypeOfAction.promotionToKnight || todisplay.getTypeOfAction()==TypeOfAction.promotionToQueen || todisplay.getTypeOfAction()==TypeOfAction.promotionToRook)
+                {
+                    TypeOfAction type = todisplay.getTypeOfAction();
+                    ImageView oldpawn;
+                    ImageView newgraphic;
+                    String color;
+
+                    int[] oldplace = todisplay.getCoordinates().get(0);
+                    int[] newplace = todisplay.getCoordinates().get(1);
+                    oldpawn = (ImageView) board[7 - (oldplace[1])][oldplace[0]].getGraphic();
+
+                    if(oldpawn==new ImageView(PawnB)) color="black";
+                    else color="white";
+
+                    if(type==TypeOfAction.promotionToKnight){
+                        if(color=="white") newgraphic=new ImageView(KnightW);
+                        else newgraphic=new ImageView(KnightB);
+                    }
+                    else if(type==TypeOfAction.promotionToBishop){
+                        if(color=="white") newgraphic=new ImageView(BishopW);
+                        else newgraphic=new ImageView(BishopB);
+                    }
+                    else if(type==TypeOfAction.promotionToQueen){
+                        if(color=="white") newgraphic=new ImageView(QueenW);
+                        else newgraphic=new ImageView(QueenB);
+                    }
+                    else {
+                        if(color=="white") newgraphic=new ImageView(RookW);
+                        else newgraphic=new ImageView(RookB);
+                    }
+
+                    BoardInitialization.resetColors();
+                    board[7 - (oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
+                    board[7 - (oldplace[1])][oldplace[0]].setGraphic(null);
+                    board[7 - (oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
+                    board[7 - (newplace[1])][newplace[0]].setGraphic(newgraphic);
+                    board[7 - (newplace[1])][newplace[0]].setStyle(GREEN_FIELD);
+                }
+                else if(todisplay.getTypeOfAction()==TypeOfAction.promotionToBishopWithCapture || todisplay.getTypeOfAction()==TypeOfAction.promotionToKnightWithCapture || todisplay.getTypeOfAction()==TypeOfAction.promotionToQueenWithCapture || todisplay.getTypeOfAction()==TypeOfAction.promotionToRookWithCapture)
+                {
+                    TypeOfAction type = todisplay.getTypeOfAction();
+                    ImageView oldpawn;
+                    ImageView newgraphic;
+                    String color;
+
+                    int[] oldplace = todisplay.getCoordinates().get(0);
+                    int[] newplace = todisplay.getCoordinates().get(1);
+                    oldpawn = (ImageView) board[7 - (oldplace[1])][oldplace[0]].getGraphic();
+
+                    if(oldpawn==new ImageView(PawnB)) color="black";
+                    else color="white";
+
+                    if(type==TypeOfAction.promotionToKnightWithCapture){
+                        if(color=="white") newgraphic=new ImageView(KnightW);
+                        else newgraphic=new ImageView(KnightB);
+                    }
+                    else if(type==TypeOfAction.promotionToBishopWithCapture){
+                        if(color=="white") newgraphic=new ImageView(BishopW);
+                        else newgraphic=new ImageView(BishopB);
+                    }
+                    else if(type==TypeOfAction.promotionToQueenWithCapture){
+                        if(color=="white") newgraphic=new ImageView(QueenW);
+                        else newgraphic=new ImageView(QueenB);
+                    }
+                    else {
+                        if(color=="white") newgraphic=new ImageView(RookW);
+                        else newgraphic=new ImageView(RookB);
+                    }
+
+                    BoardInitialization.resetColors();
+                    board[7 - (oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
+                    board[7 - (oldplace[1])][oldplace[0]].setGraphic(null);
+                    board[7 - (oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
+                    board[7 - (newplace[1])][newplace[0]].setGraphic(newgraphic);
+                    board[7 - (newplace[1])][newplace[0]].setStyle(RED_FIELD);
                 }
                 event.consume();
                 reset();
