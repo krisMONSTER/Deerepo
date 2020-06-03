@@ -1,34 +1,32 @@
 package GUI;
 
 import Structure.GameState;
+import Structure.ToDisplay;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class SynchronizeTask extends Task<Void> {
+public class ToDisplaySync extends Service<ToDisplay> {
 
-    private ArrayBlockingQueue<GameState> gameState;
+    private ArrayBlockingQueue<ToDisplay> display;
+    private static ToDisplay toDisplay;
 
-    public SynchronizeTask(ArrayBlockingQueue<GameState> gameState){ this.gameState=gameState; }
-
-
-    protected Void call() {
-
-        GameState state;
-
-        try {
-            while(true) {
-                System.out.println("Robie cos");
-                state = gameState.take();
-                checkState(state);
-            }
-        }
-        catch(InterruptedException e){e.printStackTrace();}
-        return null;
+    public ToDisplaySync(ArrayBlockingQueue<ToDisplay> display){
+        this.display=display;
     }
 
+    @Override
+    protected Task createTask() {
+        return new Task() {
+            @Override
+            protected ToDisplay call() throws Exception {
+                toDisplay=display.take();
+                return toDisplay;
+            }
+        };
+    }
 
-    public void checkState(GameState state){
+   /* public void checkState(GameState state){
         if (state == GameState.draw) {
             AlertBox.display("Koniec gry", "Remis!");
             MainStage.endGame();
@@ -44,6 +42,6 @@ public class SynchronizeTask extends Task<Void> {
             AlertBox.display("Koniec gry", "Czarne wygraly!");
             MainStage.endGame();
         }
-    }
+    } */
 
 }

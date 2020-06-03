@@ -1,6 +1,8 @@
 package GUI;
 
+import NET.Game;
 import Structure.*;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Lighting;
@@ -72,43 +74,118 @@ public class Move {
         MainStage.gridPane.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
     }
 
-    //Metoda, ktora pozwala podawac wspolrzedne pionka oraz jego nowa pozycje poprzez konsole
-    public static void execute_move_console()
-    {
+    public static void setProcess(ArrayBlockingQueue<ToDisplay>display) {
+        ToDisplaySync process = new ToDisplaySync(display);
+        process.setOnSucceeded(e->{
+            ToDisplay toDisplay = process.getValue();
 
-        EventHandler<MouseEvent> eventHandler = e -> {
-            System.out.println("Podaj kolumne");
-            int col=in.nextInt();
-            System.out.println("Podaj wiersz");
-            int row=in.nextInt();
-            System.out.println("Podaj nowa kolumne");
-            int newcol = in.nextInt();
-            System.out.println("Podaj nowy wiersz");
-            int newrow = in.nextInt();
-            piece_image = (ImageView) board[7 - row][col].getGraphic();
-            board[7 - row][col].setGraphic(null);
-            board[7 - newrow][newcol].setGraphic(piece_image);
-        };
+            if(toDisplay.getTypeOfAction()==TypeOfAction.nothing) //kiedy kliknieto na puste pole
+            {
+                return;
+            }
 
-        MainStage.gridPane.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+            else if(toDisplay.getTypeOfAction()==TypeOfAction.pick) //kiedy wybrano po raz pierwszy pionka
+            {
+                BoardInitialization.resetColors();
+                int [] pickpawn = toDisplay.getCoordinates().get(0);
+                board[7-(pickpawn[1])][pickpawn[0]].getGraphic().setEffect(light);
 
+            }
+
+            else if(toDisplay.getTypeOfAction()==TypeOfAction.repick) //kiedy podjeto decyzje o wyborze innego pionka
+            {
+                BoardInitialization.resetColors();
+                int [] pickedpawn = toDisplay.getCoordinates().get(0);
+                int [] newpawn = toDisplay.getCoordinates().get(1);
+                board[7-(pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
+                board[7-(newpawn[1])][newpawn[0]].getGraphic().setEffect(light);
+            }
+
+            else if(toDisplay.getTypeOfAction()==TypeOfAction.clear) //kiedy zrezygnowano z wyboru pionka
+            {
+                int [] pickedpawn = toDisplay.getCoordinates().get(0);
+                board[7-(pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
+            }
+
+            else if(toDisplay.getTypeOfAction()==TypeOfAction.move) //kiedy wybrano puste pole po wyborze pionka
+            {
+                ImageView oldgraphic;
+
+                int [] oldplace = toDisplay.getCoordinates().get(0);
+                int [] newplace = toDisplay.getCoordinates().get(1);
+                oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
+
+                BoardInitialization.resetColors();
+                board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
+                board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
+                board[7-(oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
+                board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
+                board[7-(newplace[1])][newplace[0]].setStyle(GREEN_FIELD);
+
+            }
+
+            else if(toDisplay.getTypeOfAction()==TypeOfAction.capture) //kiedy wybrano pole na ktorym znajduje sie pionek koloru przeciwnego
+            {
+                ImageView oldgraphic;
+
+                int [] oldplace = toDisplay.getCoordinates().get(0);
+                int [] newplace = toDisplay.getCoordinates().get(1);
+                oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
+
+                BoardInitialization.resetColors();
+                board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
+                board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
+                board[7-(oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
+                board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
+                board[7-(newplace[1])][newplace[0]].setStyle(RED_FIELD);
+            }
+
+            else if(toDisplay.getTypeOfAction()==TypeOfAction.enPassant) //bicie w przelocie
+            {
+                ImageView oldgraphic;
+                int [] oldplace = toDisplay.getCoordinates().get(0);
+                int [] newplace = toDisplay.getCoordinates().get(1);
+                int [] cptrdpawn = toDisplay.getCoordinates().get(2);
+                oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
+                BoardInitialization.resetColors();
+                board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
+                board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
+                board[7-(oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
+                board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
+                board[7-(newplace[1])][newplace[0]].setStyle(GREEN_FIELD);
+                board[7-(cptrdpawn[1])][cptrdpawn[0]].setGraphic(null);
+                board[7-(cptrdpawn[1])][cptrdpawn[0]].setStyle(RED_FIELD);
+
+            }
+
+            else if(toDisplay.getTypeOfAction()==TypeOfAction.castling)
+            {
+                ImageView king;
+                ImageView rook;
+
+                int [] oldking = toDisplay.getCoordinates().get(0);
+                int [] newking = toDisplay.getCoordinates().get(1);
+                int [] oldrook = toDisplay.getCoordinates().get(2);
+                int [] newrook = toDisplay.getCoordinates().get(3);
+
+                king=(ImageView)board[7-(oldking[1])][oldking[0]].getGraphic(); //Przestawienie krola
+                board[7-(oldking[1])][oldking[0]].getGraphic().setEffect(null);
+                board[7-(oldking[1])][oldking[0]].setGraphic(null);
+                board[7-(oldking[1])][oldking[0]].setStyle(GREEN_FIELD);
+                board[7-(newking[1])][newking[0]].setGraphic(king);
+                board[7-(newking[1])][newking[0]].setStyle(GREEN_FIELD);
+
+
+                rook=(ImageView)board[7-(oldrook[1])][oldrook[0]].getGraphic(); //Przestawienie wiezy
+                board[7-(oldrook[1])][oldrook[0]].setGraphic(null);
+                board[7-(newrook[1])][newrook[0]].setGraphic(rook);
+            }
+        });
     }
 
-
-    //Metoda, ktora przesuwa pionek ze zrodla do celu poprzez podanie parametrow do funkcji
-    public void execute_move_on_data_changes(int col, int row, int newcol, int newrow)
-    {
-
-        piece_image =(ImageView) board[7-row][col].getGraphic();
-        board[7-row][col].setGraphic(null);
-        board[7-newrow][newcol].setGraphic(piece_image);
-
-    }
-
-    public void execute_move( StructureTaskOffline t, Thread s)
+    public void execute_move( StructureTaskOffline t)
     {
         t.start();
-        s.start();
 
         EventHandler<MouseEvent> eventHandler = e -> {
             int find_col;
@@ -120,10 +197,24 @@ public class Move {
 
 
             try{
+                GameState state = gameState.take();
+                if (state == GameState.draw) {
+                    AlertBox.display("Koniec gry", "Remis!");
+                    MainStage.endGame();
+                }
 
-                    clickCommand.put(new int[]{find_col-1,7-(find_row-1)});
-                    toDisplay = display.take();
+                else if (state == GameState.whiteWon) {
+                    AlertBox.display("Koniec gry", "Biale wygraly!");
+                    System.out.println("Biale wygraly!");
+                    MainStage.endGame();
+                }
 
+                else if (state == GameState.blackWon) {
+                    AlertBox.display("Koniec gry", "Czarne wygraly!");
+                    MainStage.endGame();
+                }
+                clickCommand.put(new int[]{find_col-1,7-(find_row-1)});
+                toDisplay = display.take();
                     if(toDisplay.getTypeOfAction()==TypeOfAction.nothing) //kiedy kliknieto na puste pole
                     {
                         return;

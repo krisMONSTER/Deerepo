@@ -69,11 +69,14 @@ public class MainStage extends Application{
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
             StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore);
-            SynchronizeTask task = new SynchronizeTask(gameState);
-            Thread s = new Thread(task);
+
+           // ToDisplaySync task = new ToDisplaySync(gameState);
+           // Thread s = new Thread(task);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
-            move.execute_move(t, s);
+           // Move.setProcess(display);
+            move.execute_move(t);
+            //move.executeMove(clickSemaphore,clickCommand);
         });
 
         //Button samouczek
