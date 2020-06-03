@@ -235,10 +235,8 @@ public class Move {
     }
 
 
-    public void executeMove(Semaphore clickSemaphore, ArrayBlockingQueue<int[]> clickCommand, StructureTaskOffline t)
+    public void executeMove(Semaphore clickSemaphore, ArrayBlockingQueue<int[]> clickCommand)
     {
-        t.start();
-
         EventHandler<MouseEvent> eventHandler = e -> {
             if(clickSemaphore.tryAcquire()){
                 int find_col;

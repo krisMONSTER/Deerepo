@@ -75,7 +75,8 @@ public class MainStage extends Application{
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
             //move.execute_move(t,clickSemaphore);
-            move.executeMove(clickSemaphore,clickCommand,t);
+            t.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
+            move.executeMove(clickSemaphore,clickCommand);
             move.addCheckStateHandler();
             move.addProcessHandler();
 
