@@ -5,20 +5,23 @@ import NET.Client;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Semaphore;
 
 public class StructureTaskClient extends Thread{
     private final ArrayBlockingQueue<int[]> clickCommand;
     private final ArrayBlockingQueue<ToDisplay> display;
     private final ArrayBlockingQueue<GameState> gameStates;
     private final Player player;
+    private final Semaphore clickSemaphore;
     private int storedX;
     private int storedY;
     private final Client client;
 
-    public StructureTaskClient(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates){
+    public StructureTaskClient(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates, Semaphore clickSemaphore){
         this.clickCommand = clickCommand;
         this.display = display;
         this.gameStates = gameStates;
+        this.clickSemaphore = clickSemaphore;
         player = new Player(false);
         client = new Client();
     }
@@ -98,8 +101,10 @@ public class StructureTaskClient extends Thread{
             ClickResult clickResult;
             do {
                 int[] coordinates = null;
+                clickSemaphore.release();
                 try {
                     coordinates = clickCommand.take();
+                    clickSemaphore.acquire();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
