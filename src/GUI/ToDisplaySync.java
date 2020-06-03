@@ -214,7 +214,6 @@ public class ToDisplaySync extends Service<ToDisplay> {
             @Override
             protected ToDisplay call() throws Exception {
                 toDisplay = display.take();
-                System.out.println("Display sync dziala!");
                 return toDisplay;
             }
         };

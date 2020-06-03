@@ -241,7 +241,6 @@ public class Move {
                 int find_row;
                 find_col=(int)((e.getX()/50)+1);
                 find_row=(int)((e.getY()/50)+1);
-                System.out.println("pobieranie");
                 try {
                     clickCommand.put(new int[]{find_col - 1, 7 - (find_row - 1)});
                 }catch (InterruptedException exception){
