@@ -31,7 +31,7 @@ public class CheckState extends Service<GameState> {
                         AlertBox.display("Koniec gry", "Czarne wygraly!");
                         MainStage.endGame();
                     }
-                    
+
                     else if (check==GameState.draw){
                         AlertBox.display("Koniec gry", "Remis!");
                         MainStage.endGame();
