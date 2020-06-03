@@ -74,9 +74,11 @@ public class MainStage extends Application{
            // Thread s = new Thread(task);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
-           // Move.setProcess(display);
-            move.execute_move(t,clickSemaphore);
-            //move.executeMove(clickSemaphore,clickCommand);
+            //move.execute_move(t,clickSemaphore);
+            move.executeMove(clickSemaphore,clickCommand,t);
+            move.addCheckStateHandler();
+            move.addProcessHandler();
+
         });
 
         //Button samouczek

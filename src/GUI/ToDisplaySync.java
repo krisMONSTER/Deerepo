@@ -26,22 +26,4 @@ public class ToDisplaySync extends Service<ToDisplay> {
         };
     }
 
-   /* public void checkState(GameState state){
-        if (state == GameState.draw) {
-            AlertBox.display("Koniec gry", "Remis!");
-            MainStage.endGame();
-        }
-
-        else if (state == GameState.whiteWon) {
-            AlertBox.display("Koniec gry", "Biale wygraly!");
-            System.out.println("Biale wygraly!");
-            MainStage.endGame();
-        }
-
-        else if (state == GameState.blackWon) {
-            AlertBox.display("Koniec gry", "Czarne wygraly!");
-            MainStage.endGame();
-        }
-    } */
-
 }
