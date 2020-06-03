@@ -223,15 +223,13 @@ public class Move {
     public void addCheckStateHandler() {
 
         CheckState check = new CheckState(gameState);
-        check.startService(check);
-
+        check.start();
     }
 
     public void addProcessHandler()
     {
         ToDisplaySync process = new ToDisplaySync(display);
-        process.startService(process);
-
+        process.start();
     }
 
 

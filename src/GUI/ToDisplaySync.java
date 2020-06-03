@@ -40,7 +40,6 @@ public class ToDisplaySync extends Service<ToDisplay> {
 
                 if (todisplay.getTypeOfAction() == TypeOfAction.nothing) //kiedy kliknieto na puste pole
                 {
-                    return;
                 } else if (todisplay.getTypeOfAction() == TypeOfAction.pick) //kiedy wybrano po raz pierwszy pionka
                 {
                     BoardInitialization.resetColors();
@@ -141,15 +140,6 @@ public class ToDisplaySync extends Service<ToDisplay> {
                 return toDisplay;
             }
         };
-    }
-
-    public void startService(Service<ToDisplay>serwis)
-    {
-        if(!serwis.isRunning())
-        {
-            serwis.reset();
-            serwis.start();
-        }
     }
 
 }

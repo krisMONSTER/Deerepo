@@ -1,8 +1,6 @@
 package GUI;
 
-import NET.Game;
 import Structure.GameState;
-import Structure.ToDisplay;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
@@ -10,7 +8,7 @@ import javafx.event.EventHandler;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class CheckState extends Service<Boolean> {
+public class CheckState extends Service<GameState> {
 
     private ArrayBlockingQueue<GameState> gameState;
 
@@ -22,22 +20,30 @@ public class CheckState extends Service<Boolean> {
             @Override
             public void handle(WorkerStateEvent event) {
 
-                    Boolean boolcheck = getValue();
+                    GameState check = getValue();
 
-                    if (boolcheck==true){
+                    if (check==GameState.whiteWon) {
                         AlertBox.display("Koniec gry", "Biale wygraly!");
-                        System.out.println("Biale wygraly!");
                         MainStage.endGame();
                     }
 
+                    else if (check==GameState.blackWon){
+                        AlertBox.display("Koniec gry", "Czarne wygraly!");
+                        MainStage.endGame();
+                    }
+                    
+                    else if (check==GameState.draw){
+                        AlertBox.display("Koniec gry", "Remis!");
+                        MainStage.endGame();
+                    }
             }
 
         });
     }
 
-    protected Task<Boolean> createTask() {
+    protected Task<GameState> createTask() {
         return new Task<>() {
-            public Boolean call() {
+            public GameState call() {
                 GameState state = null;
 
                 do {
@@ -48,28 +54,9 @@ public class CheckState extends Service<Boolean> {
                     }
                 } while (state == GameState.active);
 
-                return true; //TO TAK NA RAZIE
-                /*
-                tu jest zle
-                    try {
-                    state = gameState.take();
-                    System.out.println("Checkstate - Dzialam");
-                    if (state == GameState.active) return false;
-                    else return true;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
+                return state;
             }
         };
-    }
-
-    public void startService(Service<Boolean>serwis)
-    {
-        if(!serwis.isRunning())
-        {
-            serwis.reset();
-            serwis.start();
-        }
     }
 
 }
