@@ -35,21 +35,30 @@ public class CheckState extends Service<Boolean> {
         });
     }
 
-    protected Task createTask() {
-        return new Task() {
+    protected Task<Boolean> createTask() {
+        return new Task<>() {
             public Boolean call() {
+                GameState state = null;
 
-                GameState state;
+                do {
+                    try {
+                        state = gameState.take();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } while (state == GameState.active);
 
-                try {
+                return true; //TO TAK NA RAZIE
+                /*
+                tu jest zle
+                    try {
                     state = gameState.take();
                     System.out.println("Checkstate - Dzialam");
                     if (state == GameState.active) return false;
                     else return true;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
-                return false;
+                }*/
             }
         };
     }

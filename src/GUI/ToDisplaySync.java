@@ -15,8 +15,18 @@ import static GUI.Move.*;
 
 public class ToDisplaySync extends Service<ToDisplay> {
 
-    private ArrayBlockingQueue<ToDisplay> display;
+    private final ArrayBlockingQueue<ToDisplay> display;
     private static ToDisplay toDisplay;
+
+    public void startTheService(){
+        if(!isRunning()){
+            System.out.println("startuje");
+            reset();
+            start();
+        }
+        else
+            System.out.println("nie startuje");
+    }
 
     public ToDisplaySync(ArrayBlockingQueue<ToDisplay> display){
         this.display=display;
@@ -114,18 +124,19 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     board[7 - (oldrook[1])][oldrook[0]].setGraphic(null);
                     board[7 - (newrook[1])][newrook[0]].setGraphic(rook);
                 }
-
                 event.consume();
+                reset();
+                start();
             }
             });
     }
 
     @Override
-    protected Task createTask() {
-        return new Task() {
+    protected Task<ToDisplay> createTask() {
+        return new Task<>() {
             @Override
             protected ToDisplay call() throws Exception {
-                toDisplay=display.take();
+                toDisplay = display.take();
                 System.out.println("Display sync dziala!");
                 return toDisplay;
             }
