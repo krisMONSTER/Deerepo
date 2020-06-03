@@ -74,115 +74,6 @@ public class Move {
         MainStage.gridPane.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
     }
 
-    public static void setProcess(ArrayBlockingQueue<ToDisplay>display) {
-        ToDisplaySync process = new ToDisplaySync(display);
-        process.setOnSucceeded(e->{
-            ToDisplay toDisplay = process.getValue();
-
-            if(toDisplay.getTypeOfAction()==TypeOfAction.nothing) //kiedy kliknieto na puste pole
-            {
-                return;
-            }
-
-            else if(toDisplay.getTypeOfAction()==TypeOfAction.pick) //kiedy wybrano po raz pierwszy pionka
-            {
-                BoardInitialization.resetColors();
-                int [] pickpawn = toDisplay.getCoordinates().get(0);
-                board[7-(pickpawn[1])][pickpawn[0]].getGraphic().setEffect(light);
-
-            }
-
-            else if(toDisplay.getTypeOfAction()==TypeOfAction.repick) //kiedy podjeto decyzje o wyborze innego pionka
-            {
-                BoardInitialization.resetColors();
-                int [] pickedpawn = toDisplay.getCoordinates().get(0);
-                int [] newpawn = toDisplay.getCoordinates().get(1);
-                board[7-(pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
-                board[7-(newpawn[1])][newpawn[0]].getGraphic().setEffect(light);
-            }
-
-            else if(toDisplay.getTypeOfAction()==TypeOfAction.clear) //kiedy zrezygnowano z wyboru pionka
-            {
-                int [] pickedpawn = toDisplay.getCoordinates().get(0);
-                board[7-(pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
-            }
-
-            else if(toDisplay.getTypeOfAction()==TypeOfAction.move) //kiedy wybrano puste pole po wyborze pionka
-            {
-                ImageView oldgraphic;
-
-                int [] oldplace = toDisplay.getCoordinates().get(0);
-                int [] newplace = toDisplay.getCoordinates().get(1);
-                oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
-
-                BoardInitialization.resetColors();
-                board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
-                board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
-                board[7-(oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
-                board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
-                board[7-(newplace[1])][newplace[0]].setStyle(GREEN_FIELD);
-
-            }
-
-            else if(toDisplay.getTypeOfAction()==TypeOfAction.capture) //kiedy wybrano pole na ktorym znajduje sie pionek koloru przeciwnego
-            {
-                ImageView oldgraphic;
-
-                int [] oldplace = toDisplay.getCoordinates().get(0);
-                int [] newplace = toDisplay.getCoordinates().get(1);
-                oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
-
-                BoardInitialization.resetColors();
-                board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
-                board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
-                board[7-(oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
-                board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
-                board[7-(newplace[1])][newplace[0]].setStyle(RED_FIELD);
-            }
-
-            else if(toDisplay.getTypeOfAction()==TypeOfAction.enPassant) //bicie w przelocie
-            {
-                ImageView oldgraphic;
-                int [] oldplace = toDisplay.getCoordinates().get(0);
-                int [] newplace = toDisplay.getCoordinates().get(1);
-                int [] cptrdpawn = toDisplay.getCoordinates().get(2);
-                oldgraphic=(ImageView)board[7-(oldplace[1])][oldplace[0]].getGraphic();
-                BoardInitialization.resetColors();
-                board[7-(oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
-                board[7-(oldplace[1])][oldplace[0]].setGraphic(null);
-                board[7-(oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
-                board[7-(newplace[1])][newplace[0]].setGraphic(oldgraphic);
-                board[7-(newplace[1])][newplace[0]].setStyle(GREEN_FIELD);
-                board[7-(cptrdpawn[1])][cptrdpawn[0]].setGraphic(null);
-                board[7-(cptrdpawn[1])][cptrdpawn[0]].setStyle(RED_FIELD);
-
-            }
-
-            else if(toDisplay.getTypeOfAction()==TypeOfAction.castling)
-            {
-                ImageView king;
-                ImageView rook;
-
-                int [] oldking = toDisplay.getCoordinates().get(0);
-                int [] newking = toDisplay.getCoordinates().get(1);
-                int [] oldrook = toDisplay.getCoordinates().get(2);
-                int [] newrook = toDisplay.getCoordinates().get(3);
-
-                king=(ImageView)board[7-(oldking[1])][oldking[0]].getGraphic(); //Przestawienie krola
-                board[7-(oldking[1])][oldking[0]].getGraphic().setEffect(null);
-                board[7-(oldking[1])][oldking[0]].setGraphic(null);
-                board[7-(oldking[1])][oldking[0]].setStyle(GREEN_FIELD);
-                board[7-(newking[1])][newking[0]].setGraphic(king);
-                board[7-(newking[1])][newking[0]].setStyle(GREEN_FIELD);
-
-
-                rook=(ImageView)board[7-(oldrook[1])][oldrook[0]].getGraphic(); //Przestawienie wiezy
-                board[7-(oldrook[1])][oldrook[0]].setGraphic(null);
-                board[7-(newrook[1])][newrook[0]].setGraphic(rook);
-            }
-        });
-    }
-
     public void execute_move( StructureTaskOffline t, Semaphore clickSemaphore)
     {
         t.start();
@@ -332,7 +223,7 @@ public class Move {
     public void addCheckStateHandler() {
         CheckState check = new CheckState(gameState);
 
-        EventHandler<WorkerStateEvent> statehandler = new EventHandler<WorkerStateEvent>() {
+        check.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
             @Override
             public void handle(WorkerStateEvent event) {
@@ -349,17 +240,15 @@ public class Move {
                 }
             }
 
-        };
-
-        MainStage.gridPane.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,statehandler);
+        });
+        check.start();
     }
 
     public void addProcessHandler()
     {
         ToDisplaySync process = new ToDisplaySync(display);
 
-
-        EventHandler<WorkerStateEvent> processhandler = new EventHandler<WorkerStateEvent>() {
+        process.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
             @Override
             public void handle(WorkerStateEvent event) {
@@ -476,9 +365,8 @@ public class Move {
                 event.consume();
             }
 
-        };
-
-        MainStage.gridPane.addEventHandler(WorkerStateEvent.WORKER_STATE_SUCCEEDED,processhandler);
+        });
+        process.start();
     }
 
 

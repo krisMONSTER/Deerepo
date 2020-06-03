@@ -1,6 +1,5 @@
 package GUI;
 
-import Structure.GameState;
 import Structure.ToDisplay;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
@@ -21,6 +20,7 @@ public class ToDisplaySync extends Service<ToDisplay> {
             @Override
             protected ToDisplay call() throws Exception {
                 toDisplay=display.take();
+                System.out.println("Display sync dziala!");
                 return toDisplay;
             }
         };

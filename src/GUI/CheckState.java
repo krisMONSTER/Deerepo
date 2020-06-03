@@ -23,6 +23,7 @@ public class CheckState extends Service<Boolean> {
 
                 try {
                     state = gameState.take();
+                    System.out.println("Checkstate - Dzialam");
                     if (state == GameState.active) return false;
                     else return true;
                 } catch (InterruptedException e) {
