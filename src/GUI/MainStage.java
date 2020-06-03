@@ -59,7 +59,7 @@ public class MainStage extends Application{
         window.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png")));
         window.setResizable(false);
 
-        Button [] firstSceneButton = new Button[7];
+        Button [] firstSceneButton = new Button[6];
         Button [] secondSceneButton = new Button[2];
 
 
@@ -112,11 +112,6 @@ public class MainStage extends Application{
 
         });
 
-        //Button promocja pionka
-        firstSceneButton[6] = new Button("Test promocji pionka");
-        firstSceneButton[6].setOnAction(e->{
-            pawnPromotion();
-        });
 
 
         //Dekorowanie buttonow
