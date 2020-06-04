@@ -1,28 +1,22 @@
 package NET;
 
-import Structure.DataChanges;
 import Structure.DataPackage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ArrayBlockingQueue;
 
 public class Client {
 
-    // dane do polaczenia, domyslnie localhost:7172
     private String address = "localhost";
-    private int port = 7172;
+    private final int port;
     private Socket s;
     private ObjectInputStream is;
     private ObjectOutputStream os;
 
-    private ArrayBlockingQueue<DataChanges> oq = null;
-    private ArrayBlockingQueue<DataChanges> iq = null;
-
     public Client() {
+        port = 7172;
     }
 
     public Client(int port) {
@@ -52,7 +46,7 @@ public class Client {
         s.close();
     }
 
-    void start() throws IOException {
+    /*void start() throws IOException {
 
         try {
             oq = new ArrayBlockingQueue<>(1);
@@ -85,5 +79,5 @@ public class Client {
         } finally {
             s.close();
         }
-    }
+    }*/
 }

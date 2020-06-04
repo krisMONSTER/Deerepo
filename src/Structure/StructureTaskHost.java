@@ -18,13 +18,14 @@ public class StructureTaskHost extends Thread{
     private int storedY;
     private final Host host;
 
-    public StructureTaskHost(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates, Semaphore clickSemaphore){
+    public StructureTaskHost(int port, ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates, Semaphore clickSemaphore){
         this.clickCommand = clickCommand;
         this.display = display;
         this.gameStates = gameStates;
         this.clickSemaphore = clickSemaphore;
         player = new Player(true);
-        host = new Host();
+        host = new Host(port);
+        this.setDaemon(true);
     }
 
     private void sendGuiDisplayData(ToDisplay toDisplay){
@@ -61,8 +62,10 @@ public class StructureTaskHost extends Thread{
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
+            System.out.println("Gamestates do GUI");
             if(gameState!=GameState.active){
                 try {
+                    System.out.println("koniec hosta");
                     host.close();
                 }catch (IOException ignore){}
                 break;
@@ -77,6 +80,7 @@ public class StructureTaskHost extends Thread{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println("otrzymano klikniecie");
                 clickResult = player.performOnClick(Objects.requireNonNull(coordinates)[0], coordinates[1]);
                 switch (clickResult) {
                     case nothing -> sendGuiDisplayData(new ToDisplay(TypeOfAction.nothing));
@@ -109,12 +113,14 @@ public class StructureTaskHost extends Thread{
                         DataPackage dataPackage = new DataPackage(dataChanges, toDisplay);
                         try {
                             host.send(dataPackage);
+                            System.out.println("Wyslano do klienta");
                         }catch (IOException a){
                             try{
                                 gameStates.put(GameState.disconnected);
                             }catch (InterruptedException e){
                                 e.printStackTrace();
                             }
+                            System.out.println("Gamestates do GUI");
                             return;
                         }
                     }
@@ -128,8 +134,10 @@ public class StructureTaskHost extends Thread{
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
+            System.out.println("Gamestates do GUI");
             if(gameState!=GameState.active){
                 try {
+                    System.out.println("koniec hosta");
                     host.close();
                 }catch (IOException ignored){}
                 break;
@@ -138,6 +146,7 @@ public class StructureTaskHost extends Thread{
             DataPackage dataPackage = null;
             try {
                 dataPackage = host.receive();
+                System.out.println("Otrzymano od klienta");
             }catch (IOException a){
                 try{
                     sendGuiDisplayData(new ToDisplay(TypeOfAction.nothing));
@@ -145,6 +154,7 @@ public class StructureTaskHost extends Thread{
                 }catch (InterruptedException e){
                     e.printStackTrace();
                 }
+                System.out.println("koniec hosta");
                 return;
             }catch (ClassNotFoundException e){
                 e.printStackTrace();

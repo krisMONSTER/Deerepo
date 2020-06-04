@@ -23,6 +23,7 @@ public class StructureTaskOffline extends Thread{
         white = new Player(true);
         black = new Player(false);
         currentPlayer = black;
+        this.setDaemon(true);
     }
 
     private void sendGuiDisplayData(ToDisplay toDisplay){

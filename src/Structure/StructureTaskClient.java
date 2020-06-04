@@ -17,13 +17,14 @@ public class StructureTaskClient extends Thread{
     private int storedY;
     private final Client client;
 
-    public StructureTaskClient(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates, Semaphore clickSemaphore){
+    public StructureTaskClient(String address, int port, ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates, Semaphore clickSemaphore){
         this.clickCommand = clickCommand;
         this.display = display;
         this.gameStates = gameStates;
         this.clickSemaphore = clickSemaphore;
         player = new Player(false);
-        client = new Client();
+        client = new Client(address,port);
+        this.setDaemon(true);
     }
 
     private void sendGuiDisplayData(ToDisplay toDisplay){
@@ -60,6 +61,7 @@ public class StructureTaskClient extends Thread{
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
+            System.out.println("Gamestates do GUI");
             if(gameState!=GameState.active){
                 try {
                     client.close();
@@ -69,6 +71,7 @@ public class StructureTaskClient extends Thread{
             DataPackage dataPackage = null;
             try {
                 dataPackage = client.receive();
+                System.out.println("Otrzymano od hosta");
             }catch (IOException a){
                 try{
                     sendGuiDisplayData(new ToDisplay(TypeOfAction.nothing));
@@ -76,6 +79,7 @@ public class StructureTaskClient extends Thread{
                 }catch (InterruptedException e){
                     e.printStackTrace();
                 }
+                System.out.println("koniec klienta");
                 return;
             }catch (ClassNotFoundException e){
                 e.printStackTrace();
@@ -95,8 +99,10 @@ public class StructureTaskClient extends Thread{
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
+            System.out.println("Gamestates do GUI");
             if(gameState!=GameState.active){
                 try {
+                    System.out.println("koniec klienta");
                     client.close();
                 }catch (IOException ignore){}
                 break;
@@ -111,6 +117,7 @@ public class StructureTaskClient extends Thread{
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println("otrzymano klikniecie");
                 clickResult = player.performOnClick(Objects.requireNonNull(coordinates)[0], coordinates[1]);
                 switch (clickResult) {
                     case nothing -> sendGuiDisplayData(new ToDisplay(TypeOfAction.nothing));
@@ -143,12 +150,14 @@ public class StructureTaskClient extends Thread{
                         dataPackage = new DataPackage(dataChanges, toDisplay);
                         try {
                             client.send(dataPackage);
+                            System.out.println("Wyslano do hosta");
                         }catch (IOException a){
                             try{
                                 gameStates.put(GameState.disconnected);
                             }catch (InterruptedException e){
                                 e.printStackTrace();
                             }
+                            System.out.println("Gamestates do GUI");
                             return;
                         }
                     }

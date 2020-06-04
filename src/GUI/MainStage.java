@@ -1,5 +1,7 @@
 package GUI;
 
+import MutableVariables.MutableInteger;
+import MutableVariables.MutableString;
 import Structure.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -65,13 +67,8 @@ public class MainStage extends Application{
         firstSceneButton[0]=new Button("Rozpocznij gre");
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
-            clickCommand = new ArrayBlockingQueue<>(1);
-            display = new ArrayBlockingQueue<>(1);
-            gameState = new ArrayBlockingQueue<>(1);
-            clickSemaphore = new Semaphore(0);
-            move = new Move(clickCommand, display , gameState);
+            initExchangeTools();
             StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore);
-
            // ToDisplaySync task = new ToDisplaySync(gameState);
            // Thread s = new Thread(task);
             BoardInitialization.BlankSpace(8);
@@ -104,37 +101,38 @@ public class MainStage extends Application{
         //Button Sieci - hostuj gre
         firstSceneButton[4] = new Button("Hostuj grę");
         firstSceneButton[4].setOnAction(e -> {
-            window.setScene(scene2);
-            clickCommand = new ArrayBlockingQueue<>(1);
-            display = new ArrayBlockingQueue<>(1);
-            gameState = new ArrayBlockingQueue<>(1);
-            clickSemaphore = new Semaphore(0);
-            move = new Move(clickCommand, display , gameState);
-            StructureTaskHost t = new StructureTaskHost(clickCommand, display, gameState, clickSemaphore);
-            BoardInitialization.BlankSpace(8);
-            BoardInitialization.InitChessBoard();
-            t.start();
-            move.executeMove(clickSemaphore,clickCommand);
-            move.addCheckStateHandler();
-            move.addProcessHandler();
+            MutableInteger port = new MutableInteger();
+            ConnectionMenuHost.display(port);
+            if(port.isSet()){
+                window.setScene(scene2);
+                initExchangeTools();
+                StructureTaskHost t = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
+                BoardInitialization.BlankSpace(8);
+                BoardInitialization.InitChessBoard();
+                t.start();
+                move.executeMove(clickSemaphore,clickCommand);
+                move.addCheckStateHandler();
+                move.addProcessHandler();
+            }
         });
 
         //Button Sieci - dolacz do gry
         firstSceneButton[5]= new Button("Dołącz do gry");
         firstSceneButton[5].setOnAction(e -> {
-            window.setScene(scene2);
-            clickCommand = new ArrayBlockingQueue<>(1);
-            display = new ArrayBlockingQueue<>(1);
-            gameState = new ArrayBlockingQueue<>(1);
-            clickSemaphore = new Semaphore(0);
-            move = new Move(clickCommand, display , gameState);
-            StructureTaskClient t = new StructureTaskClient(clickCommand, display, gameState, clickSemaphore);
-            BoardInitialization.BlankSpace(8);
-            BoardInitialization.InitChessBoard();
-            t.start();
-            move.executeMove(clickSemaphore,clickCommand);
-            move.addCheckStateHandler();
-            move.addProcessHandler();
+            MutableString address = new MutableString();
+            MutableInteger port = new MutableInteger();
+            ConnectionMenuClient.display(address,port);
+            if(address.isSet()&&port.isSet()){
+                window.setScene(scene2);
+                initExchangeTools();
+                StructureTaskClient t = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
+                BoardInitialization.BlankSpace(8);
+                BoardInitialization.InitChessBoard();
+                t.start();
+                move.executeMove(clickSemaphore,clickCommand);
+                move.addCheckStateHandler();
+                move.addProcessHandler();
+            }
         });
 
 
@@ -205,6 +203,13 @@ public class MainStage extends Application{
         window.show();
     }
 
+    private void initExchangeTools(){
+        clickCommand = new ArrayBlockingQueue<>(1);
+        display = new ArrayBlockingQueue<>(1);
+        gameState = new ArrayBlockingQueue<>(1);
+        clickSemaphore = new Semaphore(0);
+        move = new Move(clickCommand, display , gameState);
+    }
 
     private void closeProgram()
     {

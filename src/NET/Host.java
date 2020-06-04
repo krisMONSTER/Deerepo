@@ -1,6 +1,5 @@
 package NET;
 
-import Structure.DataChanges;
 import Structure.DataPackage;
 
 import java.io.IOException;
@@ -8,22 +7,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ArrayBlockingQueue;
 
 public class Host {
 
-    // port do otwarcia socketu, domyslnie 7172
-    private int port = 7172;
+    private final int port;
     private ServerSocket ss;
     private Socket s;
     private ObjectInputStream is;
     private ObjectOutputStream os;
 
-    private ArrayBlockingQueue<DataChanges> oq = null;
-    private ArrayBlockingQueue<DataChanges> iq = null;
-
     public Host() {
-
+        port = 7172;
     }
 
     public Host(int port) {
@@ -50,7 +44,7 @@ public class Host {
         ss.close();
     }
 
-    void start() throws IOException {
+    /*void start() throws IOException {
 
         try {
             oq = new ArrayBlockingQueue<>(1);
@@ -85,7 +79,7 @@ public class Host {
             s.close();
             ss.close();
         }
-    }
+    }*/
 
 
 }

@@ -20,7 +20,7 @@ public class Game {
         int port;
         wybor = scan.nextInt();
         scan.nextLine();
-        switch(wybor) {
+        /*switch(wybor) {
             case 1:
 //                System.out.println("Pod jakim portem otworzyc?");
 //                port = scan.nextInt();
@@ -38,7 +38,7 @@ public class Game {
             case 0:
                 System.out.println("Do widzenia.");
                 break;
-        }
+        }*/
     }
 
 }

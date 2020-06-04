@@ -14,7 +14,7 @@ public class HostMain {
     private static final Semaphore clickSemaphore = new Semaphore(0);
 
     public static void main(String[] args) {
-        StructureTaskHost t = new StructureTaskHost(clickCommand, display, gameStates, clickSemaphore);
+        StructureTaskHost t = new StructureTaskHost(7172, clickCommand, display, gameStates, clickSemaphore);
         t.start();
         while(true){
             try{

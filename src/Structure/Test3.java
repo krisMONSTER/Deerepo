@@ -1,5 +1,8 @@
 package Structure;
 
+import GUI.ConnectionMenuClient;
+import MutableVariables.MutableInteger;
+import MutableVariables.MutableString;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,6 +37,9 @@ public class Test3 extends Application implements EventHandler<ActionEvent> {
         Scene scene = new Scene(stackPane,300,300);
         stage.setScene(scene);
         stage.show();
+        MutableInteger a = new MutableInteger();
+        MutableString b = new MutableString();
+        ConnectionMenuClient.display(b,a);
     }
 
     public void handle(ActionEvent actionEvent) {

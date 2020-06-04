@@ -14,7 +14,7 @@ public class ClientMain {
     private static final Semaphore clickSemaphore = new Semaphore(0);
 
     public static void main(String[] args) {
-        StructureTaskClient t = new StructureTaskClient(clickCommand, display, gameStates, clickSemaphore);
+        StructureTaskClient t = new StructureTaskClient("localhost", 7172, clickCommand, display, gameStates, clickSemaphore);
         t.start();
         while(true){
             try{
