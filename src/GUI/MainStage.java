@@ -1,8 +1,6 @@
 package GUI;
 
-import Structure.GameState;
-import Structure.StructureTaskOffline;
-import Structure.ToDisplay;
+import Structure.*;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -33,11 +31,11 @@ public class MainStage extends Application{
             BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, new BackgroundSize(400, 400, false, false, false, false));
 
     //Do mechanizmu
-    private final ArrayBlockingQueue<int[]> clickCommand = new ArrayBlockingQueue<>(1); //do synchronizacji z mechanizmem
-    private final ArrayBlockingQueue<ToDisplay> display = new ArrayBlockingQueue<>(1);
-    private final ArrayBlockingQueue<GameState> gameState = new ArrayBlockingQueue<>(1);
-    private final Semaphore clickSemaphore = new Semaphore(0);
-    private static ToDisplay toDisplay;
+    private ArrayBlockingQueue<int[]> clickCommand;
+    private ArrayBlockingQueue<ToDisplay> display;
+    private ArrayBlockingQueue<GameState> gameState;
+    private Semaphore clickSemaphore;
+    private Move move;
 
     //CSS dla przyciskow
     static String whitebutton="-fx-background-color: white;-fx-border-color: black;-fx-font-family: FreeMono, monospace;";
@@ -65,9 +63,13 @@ public class MainStage extends Application{
 
         //Button Rozpoczynanie gry
         firstSceneButton[0]=new Button("Rozpocznij gre");
-        Move move=new Move(clickCommand, display , gameState);
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
+            clickCommand = new ArrayBlockingQueue<>(1);
+            display = new ArrayBlockingQueue<>(1);
+            gameState = new ArrayBlockingQueue<>(1);
+            clickSemaphore = new Semaphore(0);
+            move = new Move(clickCommand, display , gameState);
             StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore);
 
            // ToDisplaySync task = new ToDisplaySync(gameState);
@@ -79,7 +81,6 @@ public class MainStage extends Application{
             move.executeMove(clickSemaphore,clickCommand);
             move.addCheckStateHandler();
             move.addProcessHandler();
-
         });
 
         //Button samouczek
@@ -103,13 +104,37 @@ public class MainStage extends Application{
         //Button Sieci - hostuj gre
         firstSceneButton[4] = new Button("Hostuj grę");
         firstSceneButton[4].setOnAction(e -> {
-
+            window.setScene(scene2);
+            clickCommand = new ArrayBlockingQueue<>(1);
+            display = new ArrayBlockingQueue<>(1);
+            gameState = new ArrayBlockingQueue<>(1);
+            clickSemaphore = new Semaphore(0);
+            move = new Move(clickCommand, display , gameState);
+            StructureTaskHost t = new StructureTaskHost(clickCommand, display, gameState, clickSemaphore);
+            BoardInitialization.BlankSpace(8);
+            BoardInitialization.InitChessBoard();
+            t.start();
+            move.executeMove(clickSemaphore,clickCommand);
+            move.addCheckStateHandler();
+            move.addProcessHandler();
         });
 
         //Button Sieci - dolacz do gry
         firstSceneButton[5]= new Button("Dołącz do gry");
         firstSceneButton[5].setOnAction(e -> {
-
+            window.setScene(scene2);
+            clickCommand = new ArrayBlockingQueue<>(1);
+            display = new ArrayBlockingQueue<>(1);
+            gameState = new ArrayBlockingQueue<>(1);
+            clickSemaphore = new Semaphore(0);
+            move = new Move(clickCommand, display , gameState);
+            StructureTaskClient t = new StructureTaskClient(clickCommand, display, gameState, clickSemaphore);
+            BoardInitialization.BlankSpace(8);
+            BoardInitialization.InitChessBoard();
+            t.start();
+            move.executeMove(clickSemaphore,clickCommand);
+            move.addCheckStateHandler();
+            move.addProcessHandler();
         });
 
 
@@ -186,18 +211,6 @@ public class MainStage extends Application{
         Boolean answer;
         answer=ConfirmBox.display("Wyjscie z gry", "Czy na pewno chcesz opuscic gre?\nPrzecież jest super!");
         if(answer==true) window.close();
-    }
-
-    public void pawnPromotion()
-    {
-        /* POZMIENIALEM TROCHE PROMOTION MENU
-        ImageView pawn;
-        pawn=PromotionMenu.display("black");
-        if(pawn!=null) System.out.println("Wybrano figure!");
-         */
-        String piece;
-        piece=PromotionMenu.display(false);
-        if(piece!=null) System.out.println("Wybrano figure!");
     }
 
     public static void endGame()

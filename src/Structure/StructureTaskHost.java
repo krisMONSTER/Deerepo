@@ -37,9 +37,11 @@ public class StructureTaskHost extends Thread{
 
     //game flow
     public void run(){
+        System.out.println("Oczekiwanie na klienta");
         try {
             host.setupHost();
         }catch (IOException a){
+            System.out.println("Blad przy uruchamianiu uslug serwera");
             try{
                 gameStates.put(GameState.disconnected);
             }catch (InterruptedException e){
@@ -47,6 +49,7 @@ public class StructureTaskHost extends Thread{
             }
             return;
         }
+        System.out.println("Polaczono z klientem");
         Board.setupBoard();
         while (true){
             //SEND DATAPACKAGE

@@ -45,12 +45,12 @@ public class StructureTaskOffline extends Thread{
             Board.display();
             ClickResult clickResult;
             do {
-                try{
-                    gameStates.put(gameState);
-                }catch (InterruptedException e){
-                    e.printStackTrace();
-                }
                 if(gameState!=GameState.active){
+                    try{
+                        gameStates.put(gameState);
+                    }catch (InterruptedException e){
+                        e.printStackTrace();
+                    }
                     break outer;
                 }
                 int[] coordinates = null;
@@ -63,10 +63,7 @@ public class StructureTaskOffline extends Thread{
                 }
                 clickResult = currentPlayer.performOnClick(Objects.requireNonNull(coordinates)[0], coordinates[1]);
                 switch (clickResult) {
-                    case nothing -> {
-                        ToDisplay toDisplay = new ToDisplay(TypeOfAction.nothing);
-                        sendGuiDisplayData(toDisplay);
-                    }
+                    case nothing -> {}
                     case pick -> {
                         ToDisplay toDisplay = new ToDisplay(TypeOfAction.pick);
                         storedX = currentPlayer.getPickedPiece().getX();

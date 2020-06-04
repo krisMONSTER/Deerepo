@@ -1,8 +1,6 @@
 package GUI;
 
-import NET.Game;
 import Structure.*;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Lighting;

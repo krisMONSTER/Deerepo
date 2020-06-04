@@ -36,9 +36,11 @@ public class StructureTaskClient extends Thread{
 
     //game flow
     public void run(){
+        System.out.println("Proba polaczenia z serwerem");
         try {
             client.setupClient();
         }catch (IOException a){
+            System.out.println("Nieudane polaczenie");
             try{
                 gameStates.put(GameState.disconnected);
             }catch (InterruptedException e){
@@ -46,6 +48,7 @@ public class StructureTaskClient extends Thread{
             }
             return;
         }
+        System.out.println("Polaczono");
         Board.setupBoard();
         while(true){
             //RECEIVE DATAPACKAGE
