@@ -28,6 +28,11 @@ public class AdditionsToSecondScene {
         layout2.setSpacing(75);
     }
 
+    public static void readGameState()
+    {
+
+    }
+
 
 
 

@@ -102,15 +102,26 @@ public class ToDisplaySync extends Service<ToDisplay> {
                 }
                 else if (todisplay.getTypeOfAction() == TypeOfAction.enPassant) //bicie w przelocie
                 {
+                    Boolean color;
                     ImageView oldgraphic;
+                    ImageView graphicforshelf;
+
                     int[] oldplace = todisplay.getCoordinates().get(0);
                     int[] newplace = todisplay.getCoordinates().get(1);
                     int[] cptrdpawn = todisplay.getCoordinates().get(2);
+
                     oldgraphic = (ImageView) board[7 - (oldplace[1])][oldplace[0]].getGraphic();
+                    graphicforshelf=(ImageView) board[7 - (cptrdpawn[1])][cptrdpawn[0]].getGraphic();
                     BoardInitialization.resetColors();
+
                     board[7 - (oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                     board[7 - (oldplace[1])][oldplace[0]].setGraphic(null);
                     board[7 - (oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
+
+                    color=pawnColor(graphicforshelf);
+                    if(color) ShelvesForPawns.addWhitePawn(graphicforshelf);
+                    else ShelvesForPawns.addBlackPawn(graphicforshelf);
+
                     board[7 - (newplace[1])][newplace[0]].setGraphic(oldgraphic);
                     board[7 - (newplace[1])][newplace[0]].setStyle(GREEN_FIELD);
                     board[7 - (cptrdpawn[1])][cptrdpawn[0]].setGraphic(null);
@@ -190,8 +201,8 @@ public class ToDisplaySync extends Service<ToDisplay> {
 
                     color=pawnColor(oldpawn);
 
-                    if(color) ShelvesForPawns.addWhitePawn(cptrpawn);
-                    else ShelvesForPawns.addBlackPawn(cptrpawn);
+                    if(color) ShelvesForPawns.addBlackPawn(cptrpawn);
+                    else ShelvesForPawns.addWhitePawn(cptrpawn);
 
                     if(type==TypeOfAction.promotionToKnightWithCapture){
                         if(color) newgraphic=new ImageView(KnightW);
