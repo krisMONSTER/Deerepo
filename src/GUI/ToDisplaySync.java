@@ -55,11 +55,14 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     int[] newpawn = todisplay.getCoordinates().get(1);
                     board[7 - (pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
                     board[7 - (newpawn[1])][newpawn[0]].getGraphic().setEffect(light);
-                } else if (todisplay.getTypeOfAction() == TypeOfAction.clear) //kiedy zrezygnowano z wyboru pionka
+                }
+                else if (todisplay.getTypeOfAction() == TypeOfAction.clear) //kiedy zrezygnowano z wyboru pionka
                 {
                     int[] pickedpawn = todisplay.getCoordinates().get(0);
                     board[7 - (pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
-                } else if (todisplay.getTypeOfAction() == TypeOfAction.move) //kiedy wybrano puste pole po wyborze pionka
+
+                }
+                else if (todisplay.getTypeOfAction() == TypeOfAction.move) //kiedy wybrano puste pole po wyborze pionka
                 {
                     ImageView oldgraphic;
 
@@ -77,18 +80,27 @@ public class ToDisplaySync extends Service<ToDisplay> {
                 } else if (todisplay.getTypeOfAction() == TypeOfAction.capture) //kiedy wybrano pole na ktorym znajduje sie pionek koloru przeciwnego
                 {
                     ImageView oldgraphic;
+                    ImageView graphicforshelf;
+                    Boolean color;
 
                     int[] oldplace = todisplay.getCoordinates().get(0);
                     int[] newplace = todisplay.getCoordinates().get(1);
                     oldgraphic = (ImageView) board[7 - (oldplace[1])][oldplace[0]].getGraphic();
+                    graphicforshelf=(ImageView) board[7 - (newplace[1])][newplace[0]].getGraphic();
 
                     BoardInitialization.resetColors();
                     board[7 - (oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                     board[7 - (oldplace[1])][oldplace[0]].setGraphic(null);
                     board[7 - (oldplace[1])][oldplace[0]].setStyle(GREEN_FIELD);
+
+                    color=pawnColor(graphicforshelf);
+                    if(color) ShelvesForPawns.addWhitePawn(graphicforshelf);
+                    else ShelvesForPawns.addBlackPawn(graphicforshelf);
+
                     board[7 - (newplace[1])][newplace[0]].setGraphic(oldgraphic);
                     board[7 - (newplace[1])][newplace[0]].setStyle(RED_FIELD);
-                } else if (todisplay.getTypeOfAction() == TypeOfAction.enPassant) //bicie w przelocie
+                }
+                else if (todisplay.getTypeOfAction() == TypeOfAction.enPassant) //bicie w przelocie
                 {
                     ImageView oldgraphic;
                     int[] oldplace = todisplay.getCoordinates().get(0);
@@ -136,7 +148,7 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     int[] newplace = todisplay.getCoordinates().get(1);
                     oldpawn = (ImageView) board[7 - (oldplace[1])][oldplace[0]].getGraphic();
 
-                    if(oldpawn==new ImageView(PawnB)) color="black";
+                    if(oldpawn.getImage()==PawnB) color="black";
                     else color="white";
 
                     if(type==TypeOfAction.promotionToKnight){
@@ -168,29 +180,33 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     TypeOfAction type = todisplay.getTypeOfAction();
                     ImageView oldpawn;
                     ImageView newgraphic;
-                    String color;
+                    ImageView cptrpawn;
+                    Boolean color;
 
                     int[] oldplace = todisplay.getCoordinates().get(0);
                     int[] newplace = todisplay.getCoordinates().get(1);
-                    oldpawn = (ImageView) board[7 - (oldplace[1])][oldplace[0]].getGraphic();
+                    oldpawn =(ImageView) board[7 - (oldplace[1])][oldplace[0]].getGraphic();
+                    cptrpawn=(ImageView) board[7 - (newplace[1])][newplace[0]].getGraphic();
 
-                    if(oldpawn==new ImageView(PawnB)) color="black";
-                    else color="white";
+                    color=pawnColor(oldpawn);
+
+                    if(color) ShelvesForPawns.addWhitePawn(cptrpawn);
+                    else ShelvesForPawns.addBlackPawn(cptrpawn);
 
                     if(type==TypeOfAction.promotionToKnightWithCapture){
-                        if(color=="white") newgraphic=new ImageView(KnightW);
+                        if(color) newgraphic=new ImageView(KnightW);
                         else newgraphic=new ImageView(KnightB);
                     }
                     else if(type==TypeOfAction.promotionToBishopWithCapture){
-                        if(color=="white") newgraphic=new ImageView(BishopW);
+                        if(color) newgraphic=new ImageView(BishopW);
                         else newgraphic=new ImageView(BishopB);
                     }
                     else if(type==TypeOfAction.promotionToQueenWithCapture){
-                        if(color=="white") newgraphic=new ImageView(QueenW);
+                        if(color) newgraphic=new ImageView(QueenW);
                         else newgraphic=new ImageView(QueenB);
                     }
                     else {
-                        if(color=="white") newgraphic=new ImageView(RookW);
+                        if(color) newgraphic=new ImageView(RookW);
                         else newgraphic=new ImageView(RookB);
                     }
 

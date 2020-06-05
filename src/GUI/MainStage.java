@@ -27,6 +27,7 @@ public class MainStage extends Application{
     public static GridPane gridPane =new GridPane();
     public static GridPane markings = new GridPane();
     public static Label[][] board = new Label[8][8];
+    public static HBox layout2;
 
     //Obrazek dla okna glownego
     public static BackgroundImage scene1_background = new BackgroundImage(new Image(MainStage.class.getResourceAsStream("img/scene1_background.png")),BackgroundRepeat.REPEAT,
@@ -69,10 +70,9 @@ public class MainStage extends Application{
             window.setScene(scene2);
             initExchangeTools();
             StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore);
-           // ToDisplaySync task = new ToDisplaySync(gameState);
-           // Thread s = new Thread(task);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
+            AdditionsToSecondScene.setOfflineGameLabel();
             //move.execute_move(t,clickSemaphore);
             t.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
             move.executeMove(clickSemaphore,clickCommand);
@@ -109,6 +109,7 @@ public class MainStage extends Application{
                 StructureTaskHost t = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
+                AdditionsToSecondScene.setNetgameLabel();
                 t.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
@@ -128,6 +129,7 @@ public class MainStage extends Application{
                 StructureTaskClient t = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
+                AdditionsToSecondScene.setNetgameLabel();
                 t.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
@@ -182,9 +184,11 @@ public class MainStage extends Application{
         }
 
         //Layout 2 tam gdzie jest plansza
-        HBox layout2=new HBox(20);
+        layout2=new HBox(595);
         layout2.getChildren().addAll(secondSceneButton[0]);
+        secondSceneButton[0].setAlignment(Pos.BASELINE_LEFT);
         layout2.setSpacing(0);
+        BorderPane.setMargin(layout2,new Insets(0,25,0,25));
         border.setTop(layout2);
 
 
@@ -194,10 +198,11 @@ public class MainStage extends Application{
         BoardMarkings.Add_Fields_Markings();
         markings.add(gridPane,1,1,8,8);
         border.setCenter(markings);
+        ShelvesForPawns.addShelves();
+        BoardInitialization.CreateListOfPawns();
         BorderPane.setMargin(markings,new Insets(20,25,20,25));
 
-        scene2 = new Scene(border,495,520);
-
+        scene2 = new Scene(border); //TODO
 
         window.setScene(scene1);
         window.show();

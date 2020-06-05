@@ -2,13 +2,12 @@ package GUI;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-
-import static GUI.MainStage.gridPane;
 import static GUI.MainStage.markings;
 
 public class BoardMarkings {
 
     public static final String MARKINGS_COLOR="#6c5545";
+    public static final String BROWN_FIELD="-fx-background-color:" + MARKINGS_COLOR +";-fx-padding: 0;-fx-border-color: black;-fx-text-fill: black";
 
     public static void Add_Fields_Markings()
     {
@@ -24,7 +23,7 @@ public class BoardMarkings {
 
     private static Label newRowLabel(int i) {
         Label l = new Label((8-i) + "");
-        l.setStyle("-fx-background-color:" + MARKINGS_COLOR +";-fx-padding: 0;-fx-border-color: black;-fx-text-fill: black");
+        l.setStyle(BROWN_FIELD);
         l.setMinSize(20, 50);
         l.setAlignment(Pos.CENTER);
         return l;
@@ -32,7 +31,7 @@ public class BoardMarkings {
 
     private static Label newColLabel(int i) {
         Label l = new Label((char) (i + 65) + "");
-        l.setStyle("-fx-background-color:" + MARKINGS_COLOR +"; -fx-padding: 0;-fx-border-color: black;-fx-text-fill: black");
+        l.setStyle(BROWN_FIELD);
         l.setMinSize(50, 20);
         l.setAlignment(Pos.CENTER);
         return l;

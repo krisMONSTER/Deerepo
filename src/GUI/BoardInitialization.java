@@ -22,11 +22,29 @@ public class BoardInitialization {
     static Image QueenW = new Image(BoardInitialization.class.getResourceAsStream("img/QueenW_icon.png"));
     static Image RookB = new Image(BoardInitialization.class.getResourceAsStream("img/RookB_icon.png"));
     static Image RookW = new Image(BoardInitialization.class.getResourceAsStream("img/RookW_icon.png"));
+    static Image [] WhitePawns=new Image[6];
+    static Image [] BlackPawns=new Image[6];
+
+
     final static int FIELD_SIZE=50;
     final static Font FIELD_FONT=new Font("Arial",10);
     final static String WHITE_FIELD="#ead5a0";
     final static String BLACK_FIELD="#b6935e";
 
+
+    public static void CreateListOfPawns(){
+        WhitePawns[0]=PawnW;
+        WhitePawns[1]=BishopW;
+        WhitePawns[2]=KnightW;
+        WhitePawns[3]=RookW;
+        WhitePawns[4]=QueenW;
+
+        BlackPawns[0]=PawnB;
+        BlackPawns[1]=BishopB;
+        BlackPawns[2]=KnightB;
+        BlackPawns[3]=RookB;
+        BlackPawns[4]=QueenB;
+    }
 
     //wyswietla pusta plansze
     public static void BlankSpace(int size) {
@@ -104,6 +122,19 @@ public class BoardInitialization {
                 board[x][y].setStyle("-fx-background-color: " + color + ";-fx-border-color: black; -fx-padding: 0");
             }
         }
+    }
+
+    public static Boolean pawnColor(ImageView pawn){
+        Boolean color=false;
+
+        for(int i=0;i<6;i++)
+        {
+            if(pawn.getImage()==WhitePawns[i]){
+                color=true;
+                break;
+            }
+        }
+        return color;
     }
 
 }
