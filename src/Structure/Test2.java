@@ -21,7 +21,7 @@ public class Test2 {
             s = new Socket("localhost", 7172);
             os = new ObjectOutputStream(s.getOutputStream());
             is = new ObjectInputStream(s.getInputStream());
-            TimeUnit.MILLISECONDS.sleep(5000);
+            TimeUnit.MILLISECONDS.sleep(1000);
             dp = receive(is);
             System.out.println("koniec");
         }catch (IOException e){

@@ -23,12 +23,25 @@ public class Test {
             os = new ObjectOutputStream(s.getOutputStream());
             is = new ObjectInputStream(s.getInputStream());
             TimeUnit.MILLISECONDS.sleep(1000);
-            os.writeObject(dp);
+            //os.writeObject(dp);
         }catch (IOException e){
             System.out.println("nie udalo sie polaczyc");
-            e.printStackTrace();
         }catch (InterruptedException e){
             e.printStackTrace();
+        }
+        try{
+            System.out.println("zamykanie");
+            ss.close();
+            s.close();
+        }catch (IOException e){
+            System.out.println("wyjatek przy zamykaniu");
+        }
+        try{
+            System.out.println("zamykanie");
+            ss.close();
+            s.close();
+        }catch (IOException e){
+            System.out.println("wyjatek przy zamykaniu");
         }
     }
 }

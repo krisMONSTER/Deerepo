@@ -16,6 +16,11 @@ public class CheckState extends Service<GameState> {
 
     private ArrayBlockingQueue<GameState> gameState;
 
+    private void reuse(){
+        reset();
+        start();
+    }
+
     public CheckState(ArrayBlockingQueue<GameState> gameState) {
         this.gameState = gameState;
 
@@ -27,17 +32,29 @@ public class CheckState extends Service<GameState> {
                     GameState check = getValue();
 
 
-                    if(check==GameState.active) statusinfo.setText("W trakcie");
+                    if(check==GameState.active) {
+                        statusinfo.setText("W trakcie");
+                        reuse();
+                    }
 
                     else if(check==GameState.disconnected) statusinfo.setText("Utracono połączenie");
 
-                    else if(check==GameState.connected) statusinfo.setText("Połączono");
+                    else if(check==GameState.connected) {
+                        statusinfo.setText("Połączono");
+                        reuse();
+                    }
 
-                    else if(check==GameState.hostSetupFail) statusinfo.setText("Nieudana próba połączenia z hostem");
+                    else if(check==GameState.hostSetupFail) statusinfo.setText("Nieudana próba ustawienia serwera");
 
-                    else if(check==GameState.tryConnectToHost) statusinfo.setText("Próba nawiązania połączenia");
+                    else if(check==GameState.tryConnectToHost) {
+                        statusinfo.setText("Próba nawiązania połączenia");
+                        reuse();
+                    }
 
-                    else if(check==GameState.waitingForClient) statusinfo.setText("Oczekiwanie na klienta");
+                    else if(check==GameState.waitingForClient) {
+                        statusinfo.setText("Oczekiwanie na klienta");
+                        reuse();
+                    }
 
                     else if (check==GameState.whiteWon) {
                         statusinfo.setText("Wygrana białych");

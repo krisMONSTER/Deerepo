@@ -30,6 +30,7 @@ public class Client {
 
     public void setupClient() throws IOException{
         s = new Socket(address, port);
+        s.setSoTimeout(2000);
         os = new ObjectOutputStream(s.getOutputStream());
         is = new ObjectInputStream(s.getInputStream());
     }

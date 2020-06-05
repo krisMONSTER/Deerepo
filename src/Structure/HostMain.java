@@ -1,5 +1,7 @@
 package Structure;
 
+import MutableVariables.MutableBoolean;
+
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -12,9 +14,10 @@ public class HostMain {
     private static ToDisplay toDisplay;
     private static GameState gameState;
     private static final Semaphore clickSemaphore = new Semaphore(0);
+    private static MutableBoolean isActive = new MutableBoolean();
 
     public static void main(String[] args) {
-        StructureTaskHost t = new StructureTaskHost(7172, clickCommand, display, gameStates, clickSemaphore);
+        StructureTaskHost t = new StructureTaskHost(7172, clickCommand, display, gameStates, clickSemaphore, isActive);
         t.start();
         while(true){
             try{

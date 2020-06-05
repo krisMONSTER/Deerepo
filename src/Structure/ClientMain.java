@@ -1,5 +1,7 @@
 package Structure;
 
+import MutableVariables.MutableBoolean;
+
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Semaphore;
@@ -12,11 +14,19 @@ public class ClientMain {
     private static ToDisplay toDisplay;
     private static GameState gameState;
     private static final Semaphore clickSemaphore = new Semaphore(0);
+    private static MutableBoolean isActive = new MutableBoolean(true);
 
     public static void main(String[] args) {
-        StructureTaskClient t = new StructureTaskClient("localhost", 7172, clickCommand, display, gameStates, clickSemaphore);
+        StructureTaskClient t = new StructureTaskClient("localhost", 7172, clickCommand, display, gameStates, clickSemaphore, isActive);
         t.start();
-        while(true){
+        ClickSimulation clickSimulation = new ClickSimulation(clickSemaphore, clickCommand);
+        clickSimulation.start();
+        GameStateReceiveSimulation gameStateReceiveSimulation = new GameStateReceiveSimulation(gameStates);
+        gameStateReceiveSimulation.start();
+        ToDisplayReceiveSimulation toDisplayReceiveSimulation = new ToDisplayReceiveSimulation(display);
+        toDisplayReceiveSimulation.start();
+
+        /*while(true){
             try{
                 gameState = gameStates.take();
             }catch (InterruptedException e){
@@ -73,6 +83,6 @@ public class ClientMain {
                     System.out.println("(x,y):"+coordinates[0]+" "+coordinates[1]);
                 }
             }while (toDisplay.getTypeOfAction()!=TypeOfAction.move);
-        }
+        }*/
     }
 }

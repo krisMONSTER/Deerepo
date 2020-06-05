@@ -112,11 +112,11 @@ public class MainStage extends Application{
             if(port.isSet()){
                 window.setScene(scene2);
                 initExchangeTools();
-                StructureTaskHost t = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
+                structureTask = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.setNetgameLabel();
-                t.start();
+                structureTask.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
                 move.addProcessHandler();
@@ -132,11 +132,11 @@ public class MainStage extends Application{
             if(address.isSet()&&port.isSet()){
                 window.setScene(scene2);
                 initExchangeTools();
-                StructureTaskClient t = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
+                structureTask = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.setNetgameLabel();
-                t.start();
+                structureTask.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
                 move.addProcessHandler();

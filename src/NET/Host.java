@@ -3,10 +3,12 @@ package NET;
 import Structure.DataPackage;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class Host {
 
@@ -24,9 +26,14 @@ public class Host {
         this.port = port;
     }
 
-    public void setupHost() throws IOException{
+    public void setupSocketServer() throws IOException{
         ss = new ServerSocket(port);
+        ss.setSoTimeout(2000);
+    }
+
+    public void setupSocket() throws IOException{
         s = ss.accept();
+        s.setSoTimeout(2000);
         os = new ObjectOutputStream(s.getOutputStream());
         is = new ObjectInputStream(s.getInputStream());
     }
@@ -41,6 +48,10 @@ public class Host {
 
     public void close() throws IOException{
         s.close();
+        ss.close();
+    }
+
+    public void closeSocketServer() throws IOException{
         ss.close();
     }
 

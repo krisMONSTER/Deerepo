@@ -13,17 +13,17 @@ public class StructureTaskOffline extends StructureTask{
     private final Player white;
     private final Player black;
     private final Semaphore clickSemaphore;
-    private final MutableBoolean workCommand;
+    private final MutableBoolean isActive;
     private Player currentPlayer;
     private int storedX;
     private int storedY;
 
-    public StructureTaskOffline(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates, Semaphore clickSemaphore, MutableBoolean workCommand){
+    public StructureTaskOffline(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameStates, Semaphore clickSemaphore, MutableBoolean isActive){
         this.clickCommand = clickCommand;
         this.display = display;
         this.gameStates = gameStates;
         this.clickSemaphore = clickSemaphore;
-        this.workCommand = workCommand;
+        this.isActive = isActive;
         white = new Player(true);
         black = new Player(false);
         currentPlayer = white;
@@ -31,7 +31,7 @@ public class StructureTaskOffline extends StructureTask{
     }
 
     private void sendGUIGameState(GameState gameState){
-        if(workCommand.get()) {
+        if(isActive.get()) {
             try {
                 gameStates.put(gameState);
             } catch (InterruptedException ignored) {}
@@ -39,7 +39,7 @@ public class StructureTaskOffline extends StructureTask{
     }
 
     private boolean sendGUIDisplayData(ToDisplay toDisplay){
-        if(workCommand.get()) {
+        if(isActive.get()) {
             try {
                 display.put(toDisplay);
             } catch (InterruptedException e) {
@@ -54,7 +54,7 @@ public class StructureTaskOffline extends StructureTask{
     public void run(){
         Board.setupBoard();
         outer:
-        while (workCommand.get()) {
+        while (isActive.get()) {
             Board.addCurrentBoardState();
             GameState gameState = Board.checkGameState(currentPlayer.getColour());
             if (gameState != GameState.active) {
@@ -65,7 +65,7 @@ public class StructureTaskOffline extends StructureTask{
             ClickResult clickResult;
             do {
                 int[] coordinates;
-                if(workCommand.get()) {
+                if(isActive.get()) {
                     clickSemaphore.release();
                     try {
                         coordinates = clickCommand.take();
@@ -77,8 +77,7 @@ public class StructureTaskOffline extends StructureTask{
                 else break outer;
                 clickResult = currentPlayer.performOnClick(Objects.requireNonNull(coordinates)[0], coordinates[1]);
                 switch (clickResult) {
-                    case nothing -> {
-                    }
+                    case nothing -> {}
                     case pick -> {
                         ToDisplay toDisplay = new ToDisplay(TypeOfAction.pick);
                         storedX = currentPlayer.getPickedPiece().getX();
