@@ -1,5 +1,6 @@
 package GUI;
 
+import MutableVariables.MutableBoolean;
 import MutableVariables.MutableInteger;
 import MutableVariables.MutableString;
 import Structure.*;
@@ -37,8 +38,9 @@ public class MainStage extends Application{
     private ArrayBlockingQueue<int[]> clickCommand;
     private ArrayBlockingQueue<ToDisplay> display;
     private ArrayBlockingQueue<GameState> gameState;
-    private Semaphore clickSemaphore;
     private Move move;
+    private Semaphore clickSemaphore;
+    private MutableBoolean activeThread;
 
     //CSS dla przyciskow
     static String whitebutton="-fx-background-color: white;-fx-border-color: black;-fx-font-family: FreeMono, monospace;";
@@ -69,7 +71,7 @@ public class MainStage extends Application{
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
             initExchangeTools();
-            StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore);
+            StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
             AdditionsToSecondScene.setOfflineGameLabel();
@@ -212,8 +214,9 @@ public class MainStage extends Application{
         clickCommand = new ArrayBlockingQueue<>(1);
         display = new ArrayBlockingQueue<>(1);
         gameState = new ArrayBlockingQueue<>(1);
-        clickSemaphore = new Semaphore(0);
         move = new Move(clickCommand, display , gameState);
+        clickSemaphore = new Semaphore(0);
+        activeThread = new MutableBoolean(true);
     }
 
     private void closeProgram()

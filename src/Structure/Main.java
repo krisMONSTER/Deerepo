@@ -2,6 +2,7 @@ package Structure;
 
 import GUI.AlertBox;
 import GUI.PromotionMenu;
+import MutableVariables.MutableBoolean;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -26,6 +27,7 @@ public class Main extends Application{
 	private final ArrayBlockingQueue<int[]> clickCommand = new ArrayBlockingQueue<>(1);
 	private final ArrayBlockingQueue<ToDisplay> display = new ArrayBlockingQueue<>(1);
 	private final ArrayBlockingQueue<GameState> gameStates = new ArrayBlockingQueue<>(1);
+	private final MutableBoolean active = new MutableBoolean(true);
 	private static final Scanner sc = new Scanner(System.in);
 	private static ToDisplay toDisplay;
 	private static GameState gameState;
@@ -87,7 +89,7 @@ public class Main extends Application{
 				return null;
 			}
 		};
-		StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameStates, clickSemaphore);
+		StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameStates, clickSemaphore, active);
 		t.setDaemon(true);
 		t.start();
 		Thread thread = new Thread(task);
