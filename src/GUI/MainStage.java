@@ -42,6 +42,9 @@ public class MainStage extends Application{
     private Semaphore clickSemaphore;
     private MutableBoolean activeThread;
 
+    //Watki struktury
+    StructureTask structureTask;
+
     //CSS dla przyciskow
     static String whitebutton="-fx-background-color: white;-fx-border-color: black;-fx-font-family: FreeMono, monospace;";
     static String blackbutton="-fx-background-color: black;-fx-border-color: white;-fx-text-fill:white;-fx-font-family: FreeMono, monospace;";
@@ -71,12 +74,12 @@ public class MainStage extends Application{
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
             initExchangeTools();
-            StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
+            structureTask = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
             AdditionsToSecondScene.setOfflineGameLabel();
             //move.execute_move(t,clickSemaphore);
-            t.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
+            structureTask.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
             move.executeMove(clickSemaphore,clickCommand);
             move.addCheckStateHandler();
             move.addProcessHandler();
@@ -166,7 +169,16 @@ public class MainStage extends Application{
         secondSceneButton[0].setOnAction(e -> {
             boolean choice;
             choice=ConfirmBox.display("Powrot do menu","Powrót do menu oznacza przerwanie gry i \nwygraną przeciwnika.\nCzy potwierdzasz swój wybór?");
-            if(choice==true) window.setScene(scene1);
+            if(choice==true) {
+                activeThread.set(false);
+                structureTask.interrupt();
+                try {
+                    structureTask.join();
+                }catch (InterruptedException exception){
+                    exception.printStackTrace();
+                }
+                window.setScene(scene1);
+            }
         });
 
 

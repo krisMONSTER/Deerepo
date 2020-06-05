@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Semaphore;
 
-public class StructureTaskHost extends Thread{
+public class StructureTaskHost extends StructureTask{
     private final ArrayBlockingQueue<int[]> clickCommand;
     private final ArrayBlockingQueue<ToDisplay> display;
     private final ArrayBlockingQueue<GameState> gameStates;
