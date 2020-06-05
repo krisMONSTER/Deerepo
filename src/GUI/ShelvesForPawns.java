@@ -24,10 +24,11 @@ public class ShelvesForPawns {
     static Label [] lrightshelf = new Label [15];
     static int whitecounter=0;
     static int blackcounter=0;
-   /* static Label blackpawns1=new Label("  Figury");
-    static Label blackpawns2=new Label("dla czarnych");
-    static Label whitepawns1=new Label("  Figury");
-    static Label whitepawns2=new Label("dla białych"); */
+    static Label blackpawns1=new Label("   Zbite");
+    static Label blackpawns2=new Label("białe:");
+    static Label whitepawns1=new Label("   Zbite");
+    static Label whitepawns2=new Label("czarne:");
+    static String labelstyle = "-fx-font-family:FreeMono, monospace;-fx-text-fill:black;-fx-background-color:#b6935e;-fx-font-size: 15;";
 
 
     public static void addShelves()
@@ -45,11 +46,19 @@ public class ShelvesForPawns {
             rightshelf.getChildren().add(vrightshelf[i]);
         }
 
+        blackpawns1.setStyle(labelstyle);
+        blackpawns1.setMinSize(50,20);
+        blackpawns2.setStyle(labelstyle);
+        blackpawns2.setMinSize(50,20);
+        whitepawns1.setStyle(labelstyle);
+        whitepawns1.setMinSize(50,20);
+        whitepawns2.setStyle(labelstyle);
+        whitepawns2.setMinSize(50,20);
 
-       /* vleftshelf[0].getChildren().add(blackpawns1);
+        vleftshelf[0].getChildren().add(blackpawns1);
         vleftshelf[1].getChildren().add(blackpawns2);
         vrightshelf[0].getChildren().add(whitepawns1);
-        vrightshelf[1].getChildren().add(whitepawns2); */
+        vrightshelf[1].getChildren().add(whitepawns2);
 
 
        for(int i=0;i<15;i++){

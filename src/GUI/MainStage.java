@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -34,6 +35,9 @@ public class MainStage extends Application{
     //Obrazek dla okna glownego
     public static BackgroundImage scene1_background = new BackgroundImage(new Image(MainStage.class.getResourceAsStream("img/scene1_background.png")),BackgroundRepeat.REPEAT,
             BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, new BackgroundSize(400, 400, false, false, false, false));
+    //Tło dla sceny 2
+    //public static BackgroundFill scene2_background = new BackgroundFill(Color.web("#f7f6f6"),
+    //        CornerRadii.EMPTY, Insets.EMPTY);
 
     //Do mechanizmu
     private ArrayBlockingQueue<int[]> clickCommand;
@@ -75,7 +79,7 @@ public class MainStage extends Application{
             StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
-            AdditionsToSecondScene.setOfflineGameLabel();
+            AdditionsToSecondScene.netgamelabel.setText("Gra Offline");
             //move.execute_move(t,clickSemaphore);
             t.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
             move.executeMove(clickSemaphore,clickCommand);
@@ -112,7 +116,7 @@ public class MainStage extends Application{
                 StructureTaskHost t = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
-                AdditionsToSecondScene.setNetgameLabel();
+                AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
                 t.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
@@ -132,7 +136,7 @@ public class MainStage extends Application{
                 StructureTaskClient t = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
-                AdditionsToSecondScene.setNetgameLabel();
+                AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
                 t.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
@@ -167,7 +171,10 @@ public class MainStage extends Application{
         secondSceneButton[0].setOnAction(e -> {
             boolean choice;
             choice=ConfirmBox.display("Powrot do menu","Powrót do menu oznacza przerwanie gry i \nwygraną przeciwnika.\nCzy potwierdzasz swój wybór?");
-            if(choice==true) window.setScene(scene1);
+            if(choice==true) {
+                window.setScene(scene1);
+                ShelvesForPawns.resetShelves();
+            }
         });
 
 
@@ -203,8 +210,10 @@ public class MainStage extends Application{
         border.setCenter(markings);
         AdditionsToSecondScene.readGameState();
         ShelvesForPawns.addShelves();
+        AdditionsToSecondScene.setNetgameLabel();
         BoardInitialization.CreateListOfPawns();
         BorderPane.setMargin(markings,new Insets(20,25,20,25));
+        //border.setBackground(new Background(scene2_background));
 
         scene2 = new Scene(border,Paint.valueOf("#ead5a0")); //TODO
 

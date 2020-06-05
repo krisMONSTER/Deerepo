@@ -27,7 +27,6 @@ public class BoardInitialization {
 
 
     final static int FIELD_SIZE=50;
-    final static Font FIELD_FONT=new Font("Arial",10);
     final static String WHITE_FIELD="#ead5a0";
     final static String BLACK_FIELD="#b6935e";
 
