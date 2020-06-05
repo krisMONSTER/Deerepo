@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -200,11 +201,12 @@ public class MainStage extends Application{
         BoardMarkings.Add_Fields_Markings();
         markings.add(gridPane,1,1,8,8);
         border.setCenter(markings);
+        AdditionsToSecondScene.readGameState();
         ShelvesForPawns.addShelves();
         BoardInitialization.CreateListOfPawns();
         BorderPane.setMargin(markings,new Insets(20,25,20,25));
 
-        scene2 = new Scene(border); //TODO
+        scene2 = new Scene(border,Paint.valueOf("#ead5a0")); //TODO
 
         window.setScene(scene1);
         window.show();
