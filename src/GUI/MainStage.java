@@ -36,8 +36,10 @@ public class MainStage extends Application{
     public static BackgroundImage scene1_background = new BackgroundImage(new Image(MainStage.class.getResourceAsStream("img/scene1_background.png")),BackgroundRepeat.REPEAT,
             BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, new BackgroundSize(400, 400, false, false, false, false));
     //Tło dla sceny 2
-    //public static BackgroundFill scene2_background = new BackgroundFill(Color.web("#f7f6f6"),
-    //        CornerRadii.EMPTY, Insets.EMPTY);
+    public static BackgroundFill scene2_background = new BackgroundFill(Color.web("#C5C6C7"),
+            CornerRadii.EMPTY, Insets.EMPTY);
+    //#9bb6b8
+    //#c1bca0
 
     //Do mechanizmu
     private ArrayBlockingQueue<int[]> clickCommand;
@@ -213,7 +215,7 @@ public class MainStage extends Application{
         AdditionsToSecondScene.setNetgameLabel();
         BoardInitialization.CreateListOfPawns();
         BorderPane.setMargin(markings,new Insets(20,25,20,25));
-        //border.setBackground(new Background(scene2_background));
+        border.setBackground(new Background(scene2_background));
 
         scene2 = new Scene(border,Paint.valueOf("#ead5a0")); //TODO
 
