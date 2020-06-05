@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -34,6 +35,11 @@ public class MainStage extends Application{
     //Obrazek dla okna glownego
     public static BackgroundImage scene1_background = new BackgroundImage(new Image(MainStage.class.getResourceAsStream("img/scene1_background.png")),BackgroundRepeat.REPEAT,
             BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, new BackgroundSize(400, 400, false, false, false, false));
+    //Tło dla sceny 2
+    public static BackgroundFill scene2_background = new BackgroundFill(Color.web("#C5C6C7"),
+            CornerRadii.EMPTY, Insets.EMPTY);
+    //#9bb6b8
+    //#c1bca0
 
     //Do mechanizmu
     private ArrayBlockingQueue<int[]> clickCommand;
@@ -42,9 +48,6 @@ public class MainStage extends Application{
     private Move move;
     private Semaphore clickSemaphore;
     private MutableBoolean activeThread;
-
-    //Watki struktury
-    StructureTask structureTask;
 
     //CSS dla przyciskow
     static String whitebutton="-fx-background-color: white;-fx-border-color: black;-fx-font-family: FreeMono, monospace;";
@@ -75,12 +78,12 @@ public class MainStage extends Application{
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
             initExchangeTools();
-            structureTask = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
+            StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
-            AdditionsToSecondScene.setOfflineGameLabel();
+            AdditionsToSecondScene.netgamelabel.setText("Gra Offline");
             //move.execute_move(t,clickSemaphore);
-            structureTask.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
+            t.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
             move.executeMove(clickSemaphore,clickCommand);
             move.addCheckStateHandler();
             move.addProcessHandler();
@@ -112,11 +115,11 @@ public class MainStage extends Application{
             if(port.isSet()){
                 window.setScene(scene2);
                 initExchangeTools();
-                structureTask = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
+                StructureTaskHost t = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
-                AdditionsToSecondScene.setNetgameLabel();
-                structureTask.start();
+                AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
+                t.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
                 move.addProcessHandler();
@@ -132,11 +135,11 @@ public class MainStage extends Application{
             if(address.isSet()&&port.isSet()){
                 window.setScene(scene2);
                 initExchangeTools();
-                structureTask = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
+                StructureTaskClient t = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
-                AdditionsToSecondScene.setNetgameLabel();
-                structureTask.start();
+                AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
+                t.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
                 move.addProcessHandler();
@@ -171,14 +174,8 @@ public class MainStage extends Application{
             boolean choice;
             choice=ConfirmBox.display("Powrot do menu","Powrót do menu oznacza przerwanie gry i \nwygraną przeciwnika.\nCzy potwierdzasz swój wybór?");
             if(choice==true) {
-                activeThread.set(false);
-                structureTask.interrupt();
-                try {
-                    structureTask.join();
-                }catch (InterruptedException exception){
-                    exception.printStackTrace();
-                }
                 window.setScene(scene1);
+                ShelvesForPawns.resetShelves();
             }
         });
 
@@ -215,8 +212,10 @@ public class MainStage extends Application{
         border.setCenter(markings);
         AdditionsToSecondScene.readGameState();
         ShelvesForPawns.addShelves();
+        AdditionsToSecondScene.setNetgameLabel();
         BoardInitialization.CreateListOfPawns();
         BorderPane.setMargin(markings,new Insets(20,25,20,25));
+        border.setBackground(new Background(scene2_background));
 
         scene2 = new Scene(border,Paint.valueOf("#ead5a0")); //TODO
 

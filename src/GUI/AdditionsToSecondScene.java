@@ -8,10 +8,10 @@ import javafx.scene.layout.HBox;
 
 
 import static GUI.MainStage.*;
+import static GUI.ShelvesForPawns.labelstyle;
 
 public class AdditionsToSecondScene {
     static Label netgamelabel=new Label("Gra Sieciowa");
-    static Label offlinegamelabel=new Label("Gra Offline");
     static Label status = new Label("Status gry:");
     static Label statusinfo = new Label ("Status info");
     static HBox statuspanel = new HBox();
@@ -19,27 +19,20 @@ public class AdditionsToSecondScene {
     public static void setNetgameLabel(){
         netgamelabel.setMinSize(570,20);
         netgamelabel.setStyle(whitebutton);
-        netgamelabel.setStyle(fontstyle);
+        netgamelabel.setStyle("-fx-font-family:FreeMono, monospace;-fx-text-fill: black;-fx-font-size: 35;");
         netgamelabel.setAlignment(Pos.CENTER);
         layout2.getChildren().add(netgamelabel);
-        layout2.setSpacing(20);
-    }
-
-    public static void setOfflineGameLabel(){
-        offlinegamelabel.setMinSize(570,20);
-        offlinegamelabel.setStyle(fontstyle);
-        offlinegamelabel.setAlignment(Pos.CENTER);
-        layout2.getChildren().add(offlinegamelabel);
         layout2.setSpacing(20);
     }
 
     public static void readGameState()
     {
         statuspanel.getChildren().addAll(status,statusinfo);
+        status.setStyle("-fx-font-family:FreeMono, monospace;-fx-text-fill:black;-fx-font-size: 15;");
         statuspanel.setSpacing(5);
         border.setBottom(statuspanel);
         status.setAlignment(Pos.CENTER);
-        statusinfo.setStyle(blackbutton);
+        statusinfo.setStyle("-fx-background-color: black;-fx-border-color: white;-fx-text-fill:white;-fx-font-family: FreeMono, monospace;-fx-font-size: 12");
         statusinfo.setAlignment(Pos.CENTER);
         statusinfo.setMinSize(250,20);
         statusinfo.setPadding(new Insets(5,5,5,5));
