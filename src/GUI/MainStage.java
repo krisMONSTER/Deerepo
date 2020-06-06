@@ -91,27 +91,9 @@ public class MainStage extends Application{
             move.addProcessHandler();
         });
 
-        //Button samouczek
-        firstSceneButton[1]=new Button("Samouczek");
-        firstSceneButton[1].setOnAction(e -> Help.display("black"));
-
-        //Button AlertBox test
-        firstSceneButton[2]=new Button("Czy można oszukiwać w tej grze?");
-        firstSceneButton[2].setOnAction(e -> AlertBox.display("Oszukiwanie","Nie można oszukiwać!"));
-
-
-        //Button Zamykanie programu
-        firstSceneButton[3]=new Button( "Opuść grę");
-        firstSceneButton[3].setOnAction(e -> closeProgram());
-        window.setOnCloseRequest(e->
-        {
-            e.consume(); // sama metoda setOnCloseRequest zamyka program niezależnie jakiej odpowiedzi użytkownik udzieli
-            closeProgram(); // uzywajac e.consume() przejmujemy kontrole nad tym co sie stanie np. uzywajac okreslonej metody
-        });
-
         //Button Sieci - hostuj gre
-        firstSceneButton[4] = new Button("Hostuj grę");
-        firstSceneButton[4].setOnAction(e -> {
+        firstSceneButton[1] = new Button("Hostuj grę");
+        firstSceneButton[1].setOnAction(e -> {
             MutableInteger port = new MutableInteger();
             ConnectionMenuHost.display(port);
             if(port.isSet()){
@@ -130,8 +112,8 @@ public class MainStage extends Application{
         });
 
         //Button Sieci - dolacz do gry
-        firstSceneButton[5]= new Button("Dołącz do gry");
-        firstSceneButton[5].setOnAction(e -> {
+        firstSceneButton[2]= new Button("Dołącz do gry");
+        firstSceneButton[2].setOnAction(e -> {
             MutableString address = new MutableString();
             MutableInteger port = new MutableInteger();
             ConnectionMenuClient.display(address,port);
@@ -150,6 +132,23 @@ public class MainStage extends Application{
             }
         });
 
+        //Button samouczek
+        firstSceneButton[3]=new Button("Samouczek");
+        firstSceneButton[3].setOnAction(e -> Help.display("black"));
+
+        //Button AlertBox test
+        firstSceneButton[4]=new Button("Czy można oszukiwać w tej grze?");
+        firstSceneButton[4].setOnAction(e -> AlertBox.display("Oszukiwanie","Nie można oszukiwać!"));
+
+
+        //Button Zamykanie programu
+        firstSceneButton[5]=new Button( "Opuść grę");
+        firstSceneButton[5].setOnAction(e -> closeProgram());
+        window.setOnCloseRequest(e->
+        {
+            e.consume(); // sama metoda setOnCloseRequest zamyka program niezależnie jakiej odpowiedzi użytkownik udzieli
+            closeProgram(); // uzywajac e.consume() przejmujemy kontrole nad tym co sie stanie np. uzywajac okreslonej metody
+        });
 
 
         //Dekorowanie buttonow
