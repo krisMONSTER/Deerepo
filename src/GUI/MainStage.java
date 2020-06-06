@@ -48,6 +48,7 @@ public class MainStage extends Application{
     private Move move;
     private Semaphore clickSemaphore;
     private MutableBoolean activeThread;
+    private StructureTask structureTask;
 
     //CSS dla przyciskow
     static String whitebutton="-fx-background-color: white;-fx-border-color: black;-fx-font-family: FreeMono, monospace;";
@@ -78,12 +79,12 @@ public class MainStage extends Application{
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
             initExchangeTools();
-            StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
+            structureTask = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
             AdditionsToSecondScene.netgamelabel.setText("Gra Offline");
             //move.execute_move(t,clickSemaphore);
-            t.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
+            structureTask.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
             move.executeMove(clickSemaphore,clickCommand);
             move.addCheckStateHandler();
             move.addProcessHandler();
@@ -115,11 +116,11 @@ public class MainStage extends Application{
             if(port.isSet()){
                 window.setScene(scene2);
                 initExchangeTools();
-                StructureTaskHost t = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
+                structureTask = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
-                t.start();
+                structureTask.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
                 move.addProcessHandler();
@@ -135,11 +136,11 @@ public class MainStage extends Application{
             if(address.isSet()&&port.isSet()){
                 window.setScene(scene2);
                 initExchangeTools();
-                StructureTaskClient t = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
+                structureTask = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
-                t.start();
+                structureTask.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
                 move.addProcessHandler();
@@ -174,6 +175,13 @@ public class MainStage extends Application{
             boolean choice;
             choice=ConfirmBox.display("Powrot do menu","Powrót do menu oznacza przerwanie gry i \nwygraną przeciwnika.\nCzy potwierdzasz swój wybór?");
             if(choice==true) {
+                activeThread.set(false);
+                structureTask.interrupt();
+                try {
+                    structureTask.join();
+                }catch (InterruptedException exception){
+                    exception.printStackTrace();
+                }
                 window.setScene(scene1);
                 ShelvesForPawns.resetShelves();
             }

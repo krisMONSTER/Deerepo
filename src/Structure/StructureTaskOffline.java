@@ -54,7 +54,7 @@ public class StructureTaskOffline extends StructureTask{
     public void run(){
         Board.setupBoard();
         outer:
-        while (isActive.get()) {
+        while (true) {
             Board.addCurrentBoardState();
             GameState gameState = Board.checkGameState(currentPlayer.getColour());
             if (gameState != GameState.active) {
@@ -74,7 +74,8 @@ public class StructureTaskOffline extends StructureTask{
                         break outer;
                     }
                 }
-                else break outer;
+                else { break outer; }
+                System.out.println("TU JESTEM");
                 clickResult = currentPlayer.performOnClick(Objects.requireNonNull(coordinates)[0], coordinates[1]);
                 switch (clickResult) {
                     case nothing -> {}
@@ -120,5 +121,4 @@ public class StructureTaskOffline extends StructureTask{
         }
         System.out.println("koniec watku struktury");
     }
-    
 }

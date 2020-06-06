@@ -1,3 +1,3 @@
 package Structure;
 
-public abstract class StructureTask extends Thread{}
+public class StructureTask extends Thread{}
