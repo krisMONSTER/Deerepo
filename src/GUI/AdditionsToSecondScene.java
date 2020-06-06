@@ -17,7 +17,7 @@ public class AdditionsToSecondScene {
     static HBox statuspanel = new HBox();
 
     public static void setNetgameLabel(){
-        netgamelabel.setMinSize(570,20);
+        netgamelabel.setMinSize(590,20);
         netgamelabel.setStyle(whitebutton);
         netgamelabel.setStyle("-fx-font-family:FreeMono, monospace;-fx-text-fill: black;-fx-font-size: 35;");
         netgamelabel.setAlignment(Pos.CENTER);
