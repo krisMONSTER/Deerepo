@@ -36,7 +36,7 @@ public class MainStage extends Application{
     public static BackgroundImage scene1_background = new BackgroundImage(new Image(MainStage.class.getResourceAsStream("img/scene1_background.png")),BackgroundRepeat.REPEAT,
             BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, new BackgroundSize(400, 400, false, false, false, false));
     //Tło dla sceny 2
-    public static BackgroundFill scene2_background = new BackgroundFill(Color.web("#C5C6C7"),
+    public static BackgroundFill scene2_background = new BackgroundFill(Color.web("#8E8D8A"),
             CornerRadii.EMPTY, Insets.EMPTY);
     //#9bb6b8
     //#c1bca0
@@ -83,6 +83,7 @@ public class MainStage extends Application{
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
             AdditionsToSecondScene.netgamelabel.setText("Gra Offline");
+            ShelvesForPawns.resetShelves();
             //move.execute_move(t,clickSemaphore);
             structureTask.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
             move.executeMove(clickSemaphore,clickCommand);
@@ -120,6 +121,7 @@ public class MainStage extends Application{
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
+                ShelvesForPawns.resetShelves();
                 structureTask.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
@@ -140,6 +142,7 @@ public class MainStage extends Application{
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
+                ShelvesForPawns.resetShelves();
                 structureTask.start();
                 move.executeMove(clickSemaphore,clickCommand);
                 move.addCheckStateHandler();
@@ -183,7 +186,6 @@ public class MainStage extends Application{
                     exception.printStackTrace();
                 }
                 window.setScene(scene1);
-                ShelvesForPawns.resetShelves();
             }
         });
 
