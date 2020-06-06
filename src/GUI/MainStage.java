@@ -115,7 +115,7 @@ public class MainStage extends Application{
             if(port.isSet()){
                 window.setScene(scene2);
                 initExchangeTools();
-                StructureTaskHost t = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
+                StructureTaskHost t = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
@@ -135,7 +135,7 @@ public class MainStage extends Application{
             if(address.isSet()&&port.isSet()){
                 window.setScene(scene2);
                 initExchangeTools();
-                StructureTaskClient t = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore);
+                StructureTaskClient t = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
