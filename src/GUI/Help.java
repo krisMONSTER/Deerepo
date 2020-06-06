@@ -16,6 +16,7 @@ import java.awt.*;
 
 public class Help {
 
+    //Samouczek - moze byc wlaczony w "tle"
     public static void display(String color) {
 
         Stage window = new Stage();

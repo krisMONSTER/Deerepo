@@ -25,8 +25,6 @@ public class PromotionMenu {
         window.initModality(Modality.APPLICATION_MODAL);
         //blokuje mozliwosc interakcji z innymi oknami, dopoki nie zostanie obsluzone to konkretne okno
         window.setTitle("Promocja piona"); //tytul okienka
-        //window.setMinWidth(300); //rozmiar okienka
-        //window.setMinHeight(320);
         window.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png"))); //ikona okna
 
 

@@ -31,6 +31,7 @@ public class ShelvesForPawns {
     static String labelstyle = "-fx-font-family:FreeMono, monospace;-fx-text-fill:black;-fx-background-color:#b6935e;-fx-font-size: 15;";
 
 
+    //Półki dla zbitych pionów
     public static void addShelves()
     {
         leftshelf.setSpacing(0);
@@ -86,6 +87,7 @@ public class ShelvesForPawns {
 
     }
 
+    //Resetowanie półek przy rozpoczęciu nowej gry
     public static void resetShelves(){
         whitecounter=0;
         whitecounter=0;
@@ -96,12 +98,14 @@ public class ShelvesForPawns {
         }
     }
 
+    //Dodaje białą figurę na półkę po zbiciu przez czarnego
     public static void addWhitePawn(ImageView whitepawn)
     {
         lleftshelf[whitecounter].setGraphic(whitepawn);
         whitecounter++;
     }
 
+    //Dodaje czarną figurę na półkę po zbiciu przez białego
     public static void addBlackPawn(ImageView blackpawn)
     {
         lrightshelf[blackcounter].setGraphic(blackpawn);

@@ -5,7 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -15,6 +14,7 @@ public class ConfirmBox {
 
     static boolean answer;
 
+    //Confirm box, zwraca wartosc true lub false w zaleznosci od wyboru uzytkownika
     public static Boolean display(String title, String message){
 
         Stage window = new Stage();

@@ -63,6 +63,7 @@ public class MainStage extends Application{
 
     public void start(Stage primaryStage){
 
+        //Rzeczy do okna
         window=primaryStage;
         Label label1 = new Label("Zagrajmy w szachy!");
         label1.setStyle(fontstyle);
@@ -70,6 +71,8 @@ public class MainStage extends Application{
         window.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png")));
         window.setResizable(false);
 
+
+        //Lista z buttonami do obu scen
         Button [] firstSceneButton = new Button[6];
         Button [] secondSceneButton = new Button[2];
 
@@ -171,7 +174,7 @@ public class MainStage extends Application{
         scene1 = new Scene(layout1, 400,400);
 
 
-        //Button2 Przycisk powrotu do glownego menu
+        //Button Przycisk powrotu do glownego menu
         secondSceneButton[0]=new Button("Menu");
         secondSceneButton[0].setOnAction(e -> {
             boolean choice;
@@ -189,7 +192,7 @@ public class MainStage extends Application{
         });
 
 
-        //Button5 Przycisk do restartu szachownicy
+        //Button Przycisk do restartu szachownicy
         secondSceneButton[1]=new Button("Restart");
         secondSceneButton[1].setOnAction(e->
         {
@@ -213,7 +216,7 @@ public class MainStage extends Application{
         border.setTop(layout2);
 
 
-        //Plansza
+        //Plansza - przygotowanie
         BoardInitialization.BlankSpace(8);
         BoardInitialization.InitChessBoard();
         BoardMarkings.Add_Fields_Markings();
@@ -224,9 +227,9 @@ public class MainStage extends Application{
         AdditionsToSecondScene.setNetgameLabel();
         BoardInitialization.CreateListOfPawns();
         BorderPane.setMargin(markings,new Insets(20,25,20,25));
-        border.setBackground(new Background(scene2_background));
+        border.setBackground(new Background(scene2_background)); //Tlo dla drugiej sceny
 
-        scene2 = new Scene(border,Paint.valueOf("#ead5a0")); //TODO
+        scene2 = new Scene(border);
 
         window.setScene(scene1);
         window.show();

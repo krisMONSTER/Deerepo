@@ -2,6 +2,7 @@ package GUI;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+
 import static GUI.MainStage.markings;
 
 public class BoardMarkings {
@@ -9,6 +10,7 @@ public class BoardMarkings {
     public static final String MARKINGS_COLOR="#6c5545";
     public static final String BROWN_FIELD="-fx-background-color:" + MARKINGS_COLOR +";-fx-padding: 0;-fx-border-color: black;-fx-text-fill: black";
 
+    //Dodaje obramowanie do planszy
     public static void Add_Fields_Markings()
     {
 
@@ -21,6 +23,7 @@ public class BoardMarkings {
 
     }
 
+    //Pasek poziomy obramowania
     private static Label newRowLabel(int i) {
         Label l = new Label((8-i) + "");
         l.setStyle(BROWN_FIELD);
@@ -29,6 +32,7 @@ public class BoardMarkings {
         return l;
     }
 
+    //Pasek pionowy obramowania
     private static Label newColLabel(int i) {
         Label l = new Label((char) (i + 65) + "");
         l.setStyle(BROWN_FIELD);

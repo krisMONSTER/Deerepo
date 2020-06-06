@@ -15,6 +15,7 @@ import static GUI.BoardInitialization.*;
 import static GUI.MainStage.board;
 import static GUI.Move.*;
 
+
 public class ToDisplaySync extends Service<ToDisplay> {
 
     private final ArrayBlockingQueue<ToDisplay> display;
@@ -30,6 +31,7 @@ public class ToDisplaySync extends Service<ToDisplay> {
             System.out.println("nie startuje");
     }
 
+    //Pobieranie danych ze struktury oraz obsługa ruchu
     public ToDisplaySync(ArrayBlockingQueue<ToDisplay> display){
         this.display=display;
 

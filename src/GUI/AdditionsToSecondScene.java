@@ -3,12 +3,10 @@ package GUI;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
-
 import static GUI.MainStage.*;
-import static GUI.ShelvesForPawns.labelstyle;
+
 
 public class AdditionsToSecondScene {
     static Label netgamelabel=new Label("Gra Sieciowa");
@@ -16,6 +14,7 @@ public class AdditionsToSecondScene {
     static Label statusinfo = new Label ("Status info");
     static HBox statuspanel = new HBox();
 
+    //Napis o trybie gry
     public static void setNetgameLabel(){
         netgamelabel.setMinSize(590,20);
         netgamelabel.setStyle(whitebutton);
@@ -25,6 +24,7 @@ public class AdditionsToSecondScene {
         layout2.setSpacing(20);
     }
 
+    //Część sceny z statusem gry
     public static void readGameState()
     {
         statuspanel.getChildren().addAll(status,statusinfo);
@@ -39,8 +39,5 @@ public class AdditionsToSecondScene {
         statuspanel.setPadding(new Insets(20,20,20,20));
 
     }
-
-
-
 
 }

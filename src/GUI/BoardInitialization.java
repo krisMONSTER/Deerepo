@@ -3,7 +3,6 @@ package GUI;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.text.Font;
 
 import static GUI.MainStage.board;
 
@@ -71,8 +70,7 @@ public class BoardInitialization {
 
     }
 
-    //wyswietla pionki na planszy
-
+    //Wyswietla figury na planszy
     public static void InitChessBoard() {
 
         //Ustawienie pionków
@@ -111,7 +109,9 @@ public class BoardInitialization {
 
     }
 
+    //Cofa zaznaczenie pól przy ruchu
     public static void resetColors() {
+
         String color;
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
@@ -123,7 +123,9 @@ public class BoardInitialization {
         }
     }
 
+    //Metoda określająca czy wybrana figura nalezy do czarnych czy bialych
     public static Boolean pawnColor(ImageView pawn){
+
         Boolean color=false;
 
         for(int i=0;i<6;i++)

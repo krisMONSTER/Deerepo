@@ -60,7 +60,6 @@ public class Move {
             }
             //jesli zostal wybrany wczesniej pionek to przenosi go na nowe miejsce
             else{
-                //MoveAnimation.move_animation(piece.getGraphic(),piece.getLayoutX(), piece.getLayoutY(),e.getX(),e.getY());
                 piece.setGraphic(null);
                 board[find_row-1][find_col-1].setGraphic(piece_image);
                 board[find_row-1][find_col-1].getGraphic().setEffect(null);
@@ -72,6 +71,7 @@ public class Move {
         MainStage.gridPane.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
     }
 
+    //Stary event handler, bez serwisow
     public void execute_move( StructureTaskOffline t, Semaphore clickSemaphore)
     {
         t.start();
