@@ -196,9 +196,17 @@ public class MainStage extends Application{
         secondSceneButton[1]=new Button("Restart");
         secondSceneButton[1].setOnAction(e->
         {
+            activeThread.set(false);
+            structureTask.interrupt();
+            try {
+                structureTask.join();
+            }catch (InterruptedException exception){
+                exception.printStackTrace();
+            }
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
             BoardMarkings.Add_Fields_Markings();
+            ShelvesForPawns.resetShelves();
             window.setScene(scene2);
         });
 

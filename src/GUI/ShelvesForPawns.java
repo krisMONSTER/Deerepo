@@ -90,7 +90,7 @@ public class ShelvesForPawns {
     //Resetowanie półek przy rozpoczęciu nowej gry
     public static void resetShelves(){
         whitecounter=0;
-        whitecounter=0;
+        blackcounter=0;
 
         for(int i=0;i<15;i++){
             lleftshelf[i].setGraphic(null);

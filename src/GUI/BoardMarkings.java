@@ -32,6 +32,7 @@ public class BoardMarkings {
         return l;
     }
 
+
     //Pasek pionowy obramowania
     private static Label newColLabel(int i) {
         Label l = new Label((char) (i + 65) + "");
