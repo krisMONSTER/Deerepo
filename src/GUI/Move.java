@@ -25,7 +25,7 @@ public class Move {
     static InnerShadow glow=new InnerShadow();
     static String RED_FIELD="-fx-background-color:#bf4040  ;-fx-border-color: black; -fx-padding: 0";
     static String GREEN_FIELD="-fx-background-color:#196F3D ;-fx-border-color: black; -fx-padding: 0";
-    static String YELLOW_FIELD="-fx-background-color:#F7DD72;-fx-border-color: black; -fx-padding: 0";
+    static String YELLOW_FIELD="-fx-background-color:#F7DD72 ;-fx-border-color: black; -fx-padding: 0";
 
     static Scanner in = new Scanner (System.in);
     private ArrayBlockingQueue<int[]> clickCommand;

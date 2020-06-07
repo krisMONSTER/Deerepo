@@ -95,8 +95,10 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     board[7 - (oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                     board[7 - (oldplace[1])][oldplace[0]].setGraphic(null);
                     board[7 - (oldplace[1])][oldplace[0]].setStyle(YELLOW_FIELD);
+                    board[7 - (oldplace[1])][oldplace[0]].setEffect(glow);
                     board[7 - (newplace[1])][newplace[0]].setGraphic(oldgraphic);
                     board[7 - (newplace[1])][newplace[0]].setStyle(YELLOW_FIELD);
+                    board[7 - (newplace[1])][newplace[0]].setEffect(glow);
 
                 } else if (todisplay.getTypeOfAction() == TypeOfAction.capture) //kiedy wybrano pole na ktorym znajduje sie pionek koloru przeciwnego
                 {
@@ -113,6 +115,7 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     board[7 - (oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                     board[7 - (oldplace[1])][oldplace[0]].setGraphic(null);
                     board[7 - (oldplace[1])][oldplace[0]].setStyle(YELLOW_FIELD);
+                    board[7 - (oldplace[1])][oldplace[0]].setEffect(glow);
 
                     color=pawnColor(graphicforshelf);
                     if(color) ShelvesForPawns.addWhitePawn(graphicforshelf);
@@ -120,6 +123,7 @@ public class ToDisplaySync extends Service<ToDisplay> {
 
                     board[7 - (newplace[1])][newplace[0]].setGraphic(oldgraphic);
                     board[7 - (newplace[1])][newplace[0]].setStyle(RED_FIELD);
+                    board[7 - (newplace[1])][newplace[0]].setEffect(glow);
                 }
                 else if (todisplay.getTypeOfAction() == TypeOfAction.enPassant) //bicie w przelocie
                 {
@@ -138,6 +142,7 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     board[7 - (oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                     board[7 - (oldplace[1])][oldplace[0]].setGraphic(null);
                     board[7 - (oldplace[1])][oldplace[0]].setStyle(YELLOW_FIELD);
+                    board[7 - (oldplace[1])][oldplace[0]].setEffect(glow);
 
                     color=pawnColor(graphicforshelf);
                     if(color) ShelvesForPawns.addWhitePawn(graphicforshelf);
@@ -145,8 +150,10 @@ public class ToDisplaySync extends Service<ToDisplay> {
 
                     board[7 - (newplace[1])][newplace[0]].setGraphic(oldgraphic);
                     board[7 - (newplace[1])][newplace[0]].setStyle(YELLOW_FIELD);
+                    board[7 - (newplace[1])][newplace[0]].setEffect(glow);
                     board[7 - (cptrdpawn[1])][cptrdpawn[0]].setGraphic(null);
                     board[7 - (cptrdpawn[1])][cptrdpawn[0]].setStyle(RED_FIELD);
+                    board[7 - (cptrdpawn[1])][cptrdpawn[0]].setEffect(glow);
 
                 } else if (todisplay.getTypeOfAction() == TypeOfAction.castling) {
                     ImageView king;
@@ -161,8 +168,10 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     board[7 - (oldking[1])][oldking[0]].getGraphic().setEffect(null);
                     board[7 - (oldking[1])][oldking[0]].setGraphic(null);
                     board[7 - (oldking[1])][oldking[0]].setStyle(YELLOW_FIELD);
+                    board[7 - (oldking[1])][oldking[0]].setEffect(glow);
                     board[7 - (newking[1])][newking[0]].setGraphic(king);
                     board[7 - (newking[1])][newking[0]].setStyle(YELLOW_FIELD);
+                    board[7 - (newking[1])][newking[0]].setEffect(glow);
 
 
                     rook = (ImageView) board[7 - (oldrook[1])][oldrook[0]].getGraphic(); //Przestawienie wiezy
@@ -204,8 +213,10 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     board[7 - (oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                     board[7 - (oldplace[1])][oldplace[0]].setGraphic(null);
                     board[7 - (oldplace[1])][oldplace[0]].setStyle(YELLOW_FIELD);
+                    board[7 - (oldplace[1])][oldplace[0]].setEffect(glow);
                     board[7 - (newplace[1])][newplace[0]].setGraphic(newgraphic);
                     board[7 - (newplace[1])][newplace[0]].setStyle(YELLOW_FIELD);
+                    board[7 - (newplace[1])][newplace[0]].setEffect(glow);
                 }
                 else if(todisplay.getTypeOfAction()==TypeOfAction.promotionToBishopWithCapture || todisplay.getTypeOfAction()==TypeOfAction.promotionToKnightWithCapture || todisplay.getTypeOfAction()==TypeOfAction.promotionToQueenWithCapture || todisplay.getTypeOfAction()==TypeOfAction.promotionToRookWithCapture)
                 {
@@ -246,8 +257,10 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     board[7 - (oldplace[1])][oldplace[0]].getGraphic().setEffect(null);
                     board[7 - (oldplace[1])][oldplace[0]].setGraphic(null);
                     board[7 - (oldplace[1])][oldplace[0]].setStyle(YELLOW_FIELD);
+                    board[7 - (oldplace[1])][oldplace[0]].setEffect(glow);
                     board[7 - (newplace[1])][newplace[0]].setGraphic(newgraphic);
                     board[7 - (newplace[1])][newplace[0]].setStyle(RED_FIELD);
+                    board[7 - (newplace[1])][newplace[0]].setEffect(glow);
                 }
                 event.consume();
                 reset();
