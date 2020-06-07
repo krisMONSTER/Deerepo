@@ -13,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -75,11 +74,13 @@ public class MainStage extends Application{
         window.getIcons().add(new Image(MainStage.class.getResourceAsStream("img/chess_icon.png")));
         window.setResizable(false);
 
-
         //Lista z buttonami do obu scen
         Button [] firstSceneButton = new Button[6];
         Button [] secondSceneButton = new Button[2];
 
+        //Zdefiniowanie handlera klikania
+        move = new Move();
+        move.addClickHandler();
 
         //Button Rozpoczynanie gry
         firstSceneButton[0]=new Button("Rozpocznij gre");
@@ -90,18 +91,11 @@ public class MainStage extends Application{
             AdditionsToSecondScene.netgamelabel.setText("Gra Offline");
             ShelvesForPawns.resetShelves();
 
-            initExchangeTools();
+            initTools();
             structureTask = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
-            checkState = new CheckState(gameState);
-            toDisplaySync = new ToDisplaySync(display);
-            move.executeMove(clickSemaphore,clickCommand);
-            move.addServicesHandlers(checkState,toDisplaySync);
+            move.initMove(clickCommand, display , gameState, clickSemaphore, checkState, toDisplaySync);
 
-            structureTask.start();
-            checkState.start();
-            toDisplaySync.start();
-            //move.addCheckStateHandler();
-            //move.addProcessHandler();
+            startThreads();
         });
 
         //Button Sieci - hostuj gre
@@ -116,16 +110,12 @@ public class MainStage extends Application{
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
                 ShelvesForPawns.resetShelves();
 
-                initExchangeTools();
-                structureTask = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
-                checkState = new CheckState(gameState);
-                toDisplaySync = new ToDisplaySync(display);
-                move.executeMove(clickSemaphore,clickCommand);
-                move.addServicesHandlers(checkState,toDisplaySync);
+                initTools();
+                structureTask = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore,
+                        activeThread);
+                move.initMove(clickCommand, display , gameState, clickSemaphore, checkState, toDisplaySync);
 
-                structureTask.start();
-                checkState.start();
-                toDisplaySync.start();
+                startThreads();
             }
         });
 
@@ -137,16 +127,16 @@ public class MainStage extends Application{
             ConnectionMenuClient.display(address,port);
             if(address.isSet()&&port.isSet()){
                 window.setScene(scene2);
-                initExchangeTools();
-                structureTask = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
                 ShelvesForPawns.resetShelves();
-                structureTask.start();
-                move.executeMove(clickSemaphore,clickCommand);
-                move.addCheckStateHandler();
-                move.addProcessHandler();
+
+                initTools();
+                structureTask = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display,
+                        gameState, clickSemaphore, activeThread);
+
+                startThreads();
             }
         });
 
@@ -260,13 +250,21 @@ public class MainStage extends Application{
         window.show();
     }
 
-    private void initExchangeTools(){
+    private void initTools(){
         clickCommand = new ArrayBlockingQueue<>(1);
         display = new ArrayBlockingQueue<>(1);
+        toDisplaySync = new ToDisplaySync(display);
         gameState = new ArrayBlockingQueue<>(1);
-        move = new Move(clickCommand, display , gameState);
+        checkState = new CheckState(gameState, toDisplaySync);
+        move.initMove(clickCommand, display , gameState, clickSemaphore, checkState, toDisplaySync);
         clickSemaphore = new Semaphore(0);
         activeThread = new MutableBoolean(true);
+    }
+
+    private void startThreads(){
+        structureTask.start();
+        toDisplaySync.start();
+        checkState.start();
     }
 
     private void closeProgram()

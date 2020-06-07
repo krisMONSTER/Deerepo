@@ -12,6 +12,7 @@ import static GUI.AdditionsToSecondScene.statusinfo;
 public class CheckState extends Service<GameState> {
 
     private final ArrayBlockingQueue<GameState> gameState;
+    private final ToDisplaySync toDisplaySync;
 
     private void reuse(){
         reset();
@@ -19,61 +20,70 @@ public class CheckState extends Service<GameState> {
     }
 
     //Serwis do sprawdzania stanu gry oraz obsluzenie zmiany jej stanu
-    public CheckState(ArrayBlockingQueue<GameState> gameState) {
+    public CheckState(ArrayBlockingQueue<GameState> gameState, ToDisplaySync toDisplaySync) {
         this.gameState = gameState;
-/*
+        this.toDisplaySync = toDisplaySync;
+
         setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
             @Override
             public void handle(WorkerStateEvent event) {
+                GameState check = getValue();
 
-                    GameState check = getValue();
 
+                if(check==GameState.active) {
+                    statusinfo.setText("W trakcie");
+                    reuse();
+                }
 
-                    if(check==GameState.active) {
-                        statusinfo.setText("W trakcie");
-                        reuse();
-                    }
+                else if(check==GameState.disconnected) {
+                    statusinfo.setText("Utracono połączenie");
+                    toDisplaySync.cancel();
+                }
 
-                    else if(check==GameState.disconnected) statusinfo.setText("Utracono połączenie");
+                else if(check==GameState.connected) {
+                    statusinfo.setText("Połączono");
+                    reuse();
+                }
 
-                    else if(check==GameState.connected) {
-                        statusinfo.setText("Połączono");
-                        reuse();
-                    }
+                else if(check==GameState.hostSetupFail) {
+                    statusinfo.setText("Nieudana próba ustawienia serwera");
+                    toDisplaySync.cancel();
+                }
 
-                    else if(check==GameState.hostSetupFail) statusinfo.setText("Nieudana próba ustawienia serwera");
+                else if(check==GameState.tryConnectToHost) {
+                    statusinfo.setText("Próba nawiązania połączenia");
+                    reuse();
+                }
 
-                    else if(check==GameState.tryConnectToHost) {
-                        statusinfo.setText("Próba nawiązania połączenia");
-                        reuse();
-                    }
+                else if(check==GameState.waitingForClient) {
+                    statusinfo.setText("Oczekiwanie na klienta");
+                    reuse();
+                }
 
-                    else if(check==GameState.waitingForClient) {
-                        statusinfo.setText("Oczekiwanie na klienta");
-                        reuse();
-                    }
+                else if (check==GameState.whiteWon) {
+                    statusinfo.setText("Wygrana białych");
+                    toDisplaySync.cancel();
+                    AlertBox.display("Koniec gry", "Białe wygrały!");
+                    MainStage.endGame();
+                }
 
-                    else if (check==GameState.whiteWon) {
-                        statusinfo.setText("Wygrana białych");
-                        AlertBox.display("Koniec gry", "Białe wygrały!");
-                        MainStage.endGame();
-                    }
+                else if (check==GameState.blackWon){
+                    statusinfo.setText("Wygrana czarnych");
+                    toDisplaySync.cancel();
+                    AlertBox.display("Koniec gry", "Czarne wygraly!");
+                    MainStage.endGame();
+                }
 
-                    else if (check==GameState.blackWon){
-                        statusinfo.setText("Wygrana czarnych");
-                        AlertBox.display("Koniec gry", "Czarne wygraly!");
-                        MainStage.endGame();
-                    }
-
-                    else if (check==GameState.draw){
-                        statusinfo.setText("Remis");
-                        AlertBox.display("Koniec gry", "Remis!");
-                        MainStage.endGame();
-                    }
+                else if (check==GameState.draw){
+                    statusinfo.setText("Remis");
+                    toDisplaySync.cancel();
+                    AlertBox.display("Koniec gry", "Remis!");
+                    MainStage.endGame();
+                }
             }
 
-        });*/
+        });
     }
 
     protected Task<GameState> createTask() {
@@ -86,10 +96,11 @@ public class CheckState extends Service<GameState> {
                         state = gameState.take();
 
                     } catch (InterruptedException e) {
+                        System.out.println("CHECK STATE KONIEC DZIALANIA");
                         return null;
                     }
                 } while (state == GameState.active);
-
+                System.out.println("CHECK STATE KONIEC DZIALANIA");
                 return state;
             }
         };

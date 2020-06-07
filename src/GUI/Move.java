@@ -27,16 +27,36 @@ public class Move {
     static String YELLOW_FIELD="-fx-background-color:#F7DD72;-fx-border-color: black; -fx-padding: 0";
 
     static Scanner in = new Scanner (System.in);
-    private final ArrayBlockingQueue<int[]> clickCommand;
-    private final ArrayBlockingQueue<ToDisplay> display;
-    private final ArrayBlockingQueue<GameState> gameState;
-    private static ToDisplay toDisplay;
+    private ArrayBlockingQueue<int[]> clickCommand;
+    private ArrayBlockingQueue<ToDisplay> display;
+    private ArrayBlockingQueue<GameState> gameState;
+    private Semaphore clickSemaphore;
+    private CheckState checkState;
+    private ToDisplaySync toDisplaySync;
+    private ToDisplay toDisplay;
 
+    public Move(){}
 
-    public Move(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display, ArrayBlockingQueue<GameState> gameState){
+    public Move(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display,
+                ArrayBlockingQueue<GameState> gameState, Semaphore clickSemaphore, CheckState checkState,
+                ToDisplaySync toDisplaySync){
         this.clickCommand=clickCommand;
         this.display=display;
         this.gameState=gameState;
+        this.clickSemaphore=clickSemaphore;
+        this.checkState = checkState;
+        this.toDisplaySync = toDisplaySync;
+    }
+
+    public void initMove(ArrayBlockingQueue<int[]> clickCommand, ArrayBlockingQueue<ToDisplay> display,
+                ArrayBlockingQueue<GameState> gameState, Semaphore clickSemaphore, CheckState checkState,
+                ToDisplaySync toDisplaySync){
+        this.clickCommand=clickCommand;
+        this.display=display;
+        this.gameState=gameState;
+        this.clickSemaphore=clickSemaphore;
+        this.checkState = checkState;
+        this.toDisplaySync = toDisplaySync;
     }
 
     //Metoda obsluguje przesuwania pionkow po planszy
@@ -220,82 +240,7 @@ public class Move {
         MainStage.gridPane.addEventHandler(MouseEvent.MOUSE_CLICKED,eventHandler);
     }
 
-    public void addCheckStateHandler() {
-
-        CheckState check = new CheckState(gameState);
-        check.start();
-    }
-
-    public void addProcessHandler()
-    {
-        ToDisplaySync process = new ToDisplaySync(display);
-        process.start();
-    }
-
-    private void reuseCheckState(CheckState checkState){
-        checkState.reset();
-        checkState.start();
-    }
-
-    public void addServicesHandlers(CheckState checkState, ToDisplaySync toDisplaySync){
-        checkState.setOnSucceeded(workerStateEvent -> {
-            GameState check = (GameState) workerStateEvent.getSource().getValue();
-
-
-            if(check==GameState.active) {
-                statusinfo.setText("W trakcie");
-                reuseCheckState(checkState);
-            }
-
-            else if(check==GameState.disconnected) {
-                statusinfo.setText("Utracono połączenie");
-                toDisplaySync.cancel();
-            }
-
-            else if(check==GameState.connected) {
-                statusinfo.setText("Połączono");
-                reuseCheckState(checkState);
-            }
-
-            else if(check==GameState.hostSetupFail) {
-                statusinfo.setText("Nieudana próba ustawienia serwera");
-                toDisplaySync.cancel();
-            }
-
-            else if(check==GameState.tryConnectToHost) {
-                statusinfo.setText("Próba nawiązania połączenia");
-                reuseCheckState(checkState);
-            }
-
-            else if(check==GameState.waitingForClient) {
-                statusinfo.setText("Oczekiwanie na klienta");
-                reuseCheckState(checkState);
-            }
-
-            else if (check==GameState.whiteWon) {
-                statusinfo.setText("Wygrana białych");
-                toDisplaySync.cancel();
-                AlertBox.display("Koniec gry", "Białe wygrały!");
-                MainStage.endGame();
-            }
-
-            else if (check==GameState.blackWon){
-                statusinfo.setText("Wygrana czarnych");
-                toDisplaySync.cancel();
-                AlertBox.display("Koniec gry", "Czarne wygraly!");
-                MainStage.endGame();
-            }
-
-            else if (check==GameState.draw){
-                statusinfo.setText("Remis");
-                toDisplaySync.cancel();
-                AlertBox.display("Koniec gry", "Remis!");
-                MainStage.endGame();
-            }
-        });
-    }
-
-    public void executeMove(Semaphore clickSemaphore, ArrayBlockingQueue<int[]> clickCommand)
+    public void addClickHandler()
     {
         EventHandler<MouseEvent> eventHandler = e -> {
             if(clickSemaphore.tryAcquire()){
@@ -303,11 +248,13 @@ public class Move {
                 int find_row;
                 find_col=(int)((e.getX()/50)+1);
                 find_row=(int)((e.getY()/50)+1);
+                System.out.println("PROBA WYSLANIA CLICK");
                 try {
                     clickCommand.put(new int[]{find_col - 1, 7 - (find_row - 1)});
                 }catch (InterruptedException exception){
                     exception.printStackTrace();
                 }
+                System.out.println("WYSLANO CLICK");
                 clickSemaphore.release();
             }
         };

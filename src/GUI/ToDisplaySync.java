@@ -258,8 +258,10 @@ public class ToDisplaySync extends Service<ToDisplay> {
                 try {
                     toDisplay = display.take();
                 }catch (InterruptedException e){
+                    System.out.println("TODISPLAY KONIEC DZIALANIA");
                     return null;
                 }
+                System.out.println("TODISPLAY KONIEC DZIALANIA");
                 return toDisplay;
             }
         };
