@@ -93,8 +93,6 @@ public class MainStage extends Application{
 
             initTools();
             structureTask = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
-            move.initMove(clickCommand, display , gameState, clickSemaphore, checkState, toDisplaySync);
-
             startThreads();
         });
 
@@ -113,8 +111,6 @@ public class MainStage extends Application{
                 initTools();
                 structureTask = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore,
                         activeThread);
-                move.initMove(clickCommand, display , gameState, clickSemaphore, checkState, toDisplaySync);
-
                 startThreads();
             }
         });
@@ -135,7 +131,6 @@ public class MainStage extends Application{
                 initTools();
                 structureTask = new StructureTaskClient(address.getString(), port.getAnInt(), clickCommand, display,
                         gameState, clickSemaphore, activeThread);
-
                 startThreads();
             }
         });
@@ -256,8 +251,8 @@ public class MainStage extends Application{
         toDisplaySync = new ToDisplaySync(display);
         gameState = new ArrayBlockingQueue<>(1);
         checkState = new CheckState(gameState, toDisplaySync);
-        move.initMove(clickCommand, display , gameState, clickSemaphore, checkState, toDisplaySync);
         clickSemaphore = new Semaphore(0);
+        move.initMove(clickCommand, display , gameState, clickSemaphore, checkState, toDisplaySync);
         activeThread = new MutableBoolean(true);
     }
 
