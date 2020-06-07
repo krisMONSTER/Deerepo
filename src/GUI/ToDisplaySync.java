@@ -9,9 +9,11 @@ import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static GUI.BoardInitialization.*;
+import static GUI.BoardMarkings.POSSIBLE_FIELD;
 import static GUI.MainStage.board;
 import static GUI.Move.*;
 
@@ -48,6 +50,12 @@ public class ToDisplaySync extends Service<ToDisplay> {
                 {
                     BoardInitialization.resetColors();
                     int[] pickpawn = todisplay.getCoordinates().get(0);
+                    List<int[]> dots = todisplay.getPossiblePositions();
+                    for(int i=0;i<dots.size();i++)
+                    {
+                        int[]dotsfield=dots.get(i);
+                        board[7 - (dotsfield[1])][dotsfield[0]].setStyle(POSSIBLE_FIELD);
+                    }
                     board[7 - (pickpawn[1])][pickpawn[0]].getGraphic().setEffect(light);
 
                 } else if (todisplay.getTypeOfAction() == TypeOfAction.repick) //kiedy podjeto decyzje o wyborze innego pionka
@@ -55,6 +63,12 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     BoardInitialization.resetColors();
                     int[] pickedpawn = todisplay.getCoordinates().get(0);
                     int[] newpawn = todisplay.getCoordinates().get(1);
+                    List<int[]> dots = todisplay.getPossiblePositions();
+                    for(int i=0;i<dots.size();i++)
+                    {
+                        int[]dotsfield=dots.get(i);
+                        board[7 - (dotsfield[1])][dotsfield[0]].setStyle(POSSIBLE_FIELD);
+                    }
                     board[7 - (pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
                     board[7 - (newpawn[1])][newpawn[0]].getGraphic().setEffect(light);
                 }

@@ -9,6 +9,7 @@ public class BoardMarkings {
 
     public static final String MARKINGS_COLOR="#6c5545";
     public static final String BROWN_FIELD="-fx-background-color:" + MARKINGS_COLOR +";-fx-padding: 0;-fx-border-color: black;-fx-text-fill: black";
+    public static final String POSSIBLE_FIELD="-fx-background-color:#fed48b;-fx-padding: 0;-fx-border-color: black;-fx-text-fill: black";
 
     //Dodaje obramowanie do planszy
     public static void Add_Fields_Markings()

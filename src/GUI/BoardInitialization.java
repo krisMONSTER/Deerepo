@@ -30,6 +30,7 @@ public class BoardInitialization {
     final static String BLACK_FIELD="#b6935e";
 
 
+
     public static void CreateListOfPawns(){
         WhitePawns[0]=PawnW;
         WhitePawns[1]=BishopW;
