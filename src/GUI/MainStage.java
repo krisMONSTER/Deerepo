@@ -48,7 +48,11 @@ public class MainStage extends Application{
     private Move move;
     private Semaphore clickSemaphore;
     private MutableBoolean activeThread;
+
+    //Watki
     private StructureTask structureTask;
+    private CheckState checkState;
+    private ToDisplaySync toDisplaySync;
 
     //CSS dla przyciskow
     static String whitebutton="-fx-background-color: white;-fx-border-color: black;-fx-font-family: FreeMono, monospace;";
@@ -81,17 +85,23 @@ public class MainStage extends Application{
         firstSceneButton[0]=new Button("Rozpocznij gre");
         firstSceneButton[0].setOnAction(e-> {
             window.setScene(scene2);
-            initExchangeTools();
-            structureTask = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
             AdditionsToSecondScene.netgamelabel.setText("Gra Offline");
             ShelvesForPawns.resetShelves();
-            //move.execute_move(t,clickSemaphore);
-            structureTask.start();  //tu tak zrobilem bo executeMove chyba bedziemy wykorzystywac do innych typow watkow (host, klient)
+
+            initExchangeTools();
+            structureTask = new StructureTaskOffline(clickCommand, display, gameState, clickSemaphore, activeThread);
+            checkState = new CheckState(gameState);
+            toDisplaySync = new ToDisplaySync(display);
             move.executeMove(clickSemaphore,clickCommand);
-            move.addCheckStateHandler();
-            move.addProcessHandler();
+            move.addServicesHandlers(checkState,toDisplaySync);
+
+            structureTask.start();
+            checkState.start();
+            toDisplaySync.start();
+            //move.addCheckStateHandler();
+            //move.addProcessHandler();
         });
 
         //Button Sieci - hostuj gre
@@ -101,16 +111,21 @@ public class MainStage extends Application{
             ConnectionMenuHost.display(port);
             if(port.isSet()){
                 window.setScene(scene2);
-                initExchangeTools();
-                structureTask = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
                 ShelvesForPawns.resetShelves();
-                structureTask.start();
+
+                initExchangeTools();
+                structureTask = new StructureTaskHost(port.getAnInt(), clickCommand, display, gameState, clickSemaphore, activeThread);
+                checkState = new CheckState(gameState);
+                toDisplaySync = new ToDisplaySync(display);
                 move.executeMove(clickSemaphore,clickCommand);
-                move.addCheckStateHandler();
-                move.addProcessHandler();
+                move.addServicesHandlers(checkState,toDisplaySync);
+
+                structureTask.start();
+                checkState.start();
+                toDisplaySync.start();
             }
         });
 
@@ -187,6 +202,8 @@ public class MainStage extends Application{
                 }catch (InterruptedException exception){
                     exception.printStackTrace();
                 }
+                checkState.cancel();
+                toDisplaySync.cancel();
                 window.setScene(scene1);
             }
         });

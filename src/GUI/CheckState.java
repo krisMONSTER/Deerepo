@@ -11,7 +11,7 @@ import static GUI.AdditionsToSecondScene.statusinfo;
 
 public class CheckState extends Service<GameState> {
 
-    private ArrayBlockingQueue<GameState> gameState;
+    private final ArrayBlockingQueue<GameState> gameState;
 
     private void reuse(){
         reset();
@@ -21,7 +21,7 @@ public class CheckState extends Service<GameState> {
     //Serwis do sprawdzania stanu gry oraz obsluzenie zmiany jej stanu
     public CheckState(ArrayBlockingQueue<GameState> gameState) {
         this.gameState = gameState;
-
+/*
         setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 
             @Override
@@ -73,20 +73,20 @@ public class CheckState extends Service<GameState> {
                     }
             }
 
-        });
+        });*/
     }
 
     protected Task<GameState> createTask() {
         return new Task<>() {
             public GameState call() {
-                GameState state = null;
+                GameState state;
 
                 do {
                     try {
                         state = gameState.take();
 
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        return null;
                     }
                 } while (state == GameState.active);
 

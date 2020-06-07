@@ -75,7 +75,6 @@ public class StructureTaskOffline extends StructureTask{
                     }
                 }
                 else { break outer; }
-                System.out.println("TU JESTEM");
                 clickResult = currentPlayer.performOnClick(Objects.requireNonNull(coordinates)[0], coordinates[1]);
                 switch (clickResult) {
                     case nothing -> {}

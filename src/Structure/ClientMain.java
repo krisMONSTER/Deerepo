@@ -14,7 +14,7 @@ public class ClientMain {
     private static ToDisplay toDisplay;
     private static GameState gameState;
     private static final Semaphore clickSemaphore = new Semaphore(0);
-    private static MutableBoolean isActive = new MutableBoolean(true);
+    private static final MutableBoolean isActive = new MutableBoolean(true);
 
     public static void main(String[] args) {
         StructureTaskClient t = new StructureTaskClient("localhost", 7172, clickCommand, display, gameStates, clickSemaphore, isActive);

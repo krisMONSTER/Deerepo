@@ -1,6 +1,7 @@
 package GUI;
 
 import Structure.*;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Lighting;
@@ -12,6 +13,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Semaphore;
 
 
+import static GUI.AdditionsToSecondScene.statusinfo;
 import static GUI.MainStage.board;
 
 public class Move {
@@ -230,6 +232,68 @@ public class Move {
         process.start();
     }
 
+    private void reuseCheckState(CheckState checkState){
+        checkState.reset();
+        checkState.start();
+    }
+
+    public void addServicesHandlers(CheckState checkState, ToDisplaySync toDisplaySync){
+        checkState.setOnSucceeded(workerStateEvent -> {
+            GameState check = (GameState) workerStateEvent.getSource().getValue();
+
+
+            if(check==GameState.active) {
+                statusinfo.setText("W trakcie");
+                reuseCheckState(checkState);
+            }
+
+            else if(check==GameState.disconnected) {
+                statusinfo.setText("Utracono połączenie");
+                toDisplaySync.cancel();
+            }
+
+            else if(check==GameState.connected) {
+                statusinfo.setText("Połączono");
+                reuseCheckState(checkState);
+            }
+
+            else if(check==GameState.hostSetupFail) {
+                statusinfo.setText("Nieudana próba ustawienia serwera");
+                toDisplaySync.cancel();
+            }
+
+            else if(check==GameState.tryConnectToHost) {
+                statusinfo.setText("Próba nawiązania połączenia");
+                reuseCheckState(checkState);
+            }
+
+            else if(check==GameState.waitingForClient) {
+                statusinfo.setText("Oczekiwanie na klienta");
+                reuseCheckState(checkState);
+            }
+
+            else if (check==GameState.whiteWon) {
+                statusinfo.setText("Wygrana białych");
+                toDisplaySync.cancel();
+                AlertBox.display("Koniec gry", "Białe wygrały!");
+                MainStage.endGame();
+            }
+
+            else if (check==GameState.blackWon){
+                statusinfo.setText("Wygrana czarnych");
+                toDisplaySync.cancel();
+                AlertBox.display("Koniec gry", "Czarne wygraly!");
+                MainStage.endGame();
+            }
+
+            else if (check==GameState.draw){
+                statusinfo.setText("Remis");
+                toDisplaySync.cancel();
+                AlertBox.display("Koniec gry", "Remis!");
+                MainStage.endGame();
+            }
+        });
+    }
 
     public void executeMove(Semaphore clickSemaphore, ArrayBlockingQueue<int[]> clickCommand)
     {

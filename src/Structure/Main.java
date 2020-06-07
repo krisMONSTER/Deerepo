@@ -23,78 +23,26 @@ import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Semaphore;
 
-public class Main extends Application{
-	private final ArrayBlockingQueue<int[]> clickCommand = new ArrayBlockingQueue<>(1);
-	private final ArrayBlockingQueue<ToDisplay> display = new ArrayBlockingQueue<>(1);
-	private final ArrayBlockingQueue<GameState> gameStates = new ArrayBlockingQueue<>(1);
-	private final MutableBoolean active = new MutableBoolean(true);
+public class Main {
+	private static final ArrayBlockingQueue<int[]> clickCommand = new ArrayBlockingQueue<>(1);
+	private static final ArrayBlockingQueue<ToDisplay> display = new ArrayBlockingQueue<>(1);
+	private static final ArrayBlockingQueue<GameState> gameStates = new ArrayBlockingQueue<>(1);
+	private static final MutableBoolean active = new MutableBoolean(true);
 	private static final Scanner sc = new Scanner(System.in);
 	private static ToDisplay toDisplay;
 	private static GameState gameState;
 	private static final Semaphore clickSemaphore = new Semaphore(0);
+	private static final MutableBoolean isActive = new MutableBoolean(true);
 
 	public static void main(String[] args) {
-		launch(args);
-	}
-
-	public void start(Stage primaryStage){
-		primaryStage.setTitle("aa");
-		StackPane layout = new StackPane();
-		Scene scene = new Scene(layout, 300, 250);
-		primaryStage.setScene(scene);
-		primaryStage.show();
-		Task<Void> task = new Task<>() {
-			@Override
-			protected Void call() throws Exception {
-				System.out.println("Zaczynaja biale!");
-				while(true){
-					try{
-						gameState = gameStates.take();
-					}catch (InterruptedException e){
-						e.printStackTrace();
-					}
-					System.out.println("stan gry:"+gameState);
-					Board.test();
-					if(gameState != GameState.active){
-						new Thread(() -> Platform.runLater(() -> AlertBox.display("KONIEC GRY","KONIEC GRY"))).start();
-						break;
-					}
-					int x,y;
-					try{
-						clickSemaphore.acquire();
-					}catch (InterruptedException e){
-						e.printStackTrace();
-					}
-					System.out.print("Podaj x:");
-					x = sc.nextInt();
-					sc.nextLine();
-					System.out.print("Podaj y:");
-					y = sc.nextInt();
-					try {
-						clickCommand.put(new int[]{x,y});
-					}catch (InterruptedException e){
-						e.printStackTrace();
-					}
-					clickSemaphore.release();
-					try {
-						toDisplay = display.take();
-					}catch (InterruptedException e){
-						e.printStackTrace();
-					}
-					System.out.println("typ akcji:"+toDisplay.getTypeOfAction());
-					for(int[] coordinates : toDisplay.getCoordinates()){
-						System.out.println("(x,y):"+coordinates[0]+" "+coordinates[1]);
-					}
-				}
-				return null;
-			}
-		};
-		StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameStates, clickSemaphore, active);
-		t.setDaemon(true);
+		StructureTaskOffline t = new StructureTaskOffline(clickCommand, display, gameStates, clickSemaphore, isActive);
 		t.start();
-		Thread thread = new Thread(task);
-		thread.setDaemon(true);
-		thread.start();
+		ClickSimulation clickSimulation = new ClickSimulation(clickSemaphore, clickCommand);
+		clickSimulation.start();
+		GameStateReceiveSimulation gameStateReceiveSimulation = new GameStateReceiveSimulation(gameStates);
+		gameStateReceiveSimulation.start();
+		ToDisplayReceiveSimulation toDisplayReceiveSimulation = new ToDisplayReceiveSimulation(display);
+		toDisplayReceiveSimulation.start();
 		/*try{
 			Thread.sleep(1000);
 		}catch (InterruptedException e){

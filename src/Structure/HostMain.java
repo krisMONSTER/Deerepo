@@ -14,11 +14,18 @@ public class HostMain {
     private static ToDisplay toDisplay;
     private static GameState gameState;
     private static final Semaphore clickSemaphore = new Semaphore(0);
-    private static MutableBoolean isActive = new MutableBoolean();
+    private static final MutableBoolean isActive = new MutableBoolean(true);
 
     public static void main(String[] args) {
         StructureTaskHost t = new StructureTaskHost(7172, clickCommand, display, gameStates, clickSemaphore, isActive);
         t.start();
+        ClickSimulation clickSimulation = new ClickSimulation(clickSemaphore, clickCommand);
+        clickSimulation.start();
+        GameStateReceiveSimulation gameStateReceiveSimulation = new GameStateReceiveSimulation(gameStates);
+        gameStateReceiveSimulation.start();
+        ToDisplayReceiveSimulation toDisplayReceiveSimulation = new ToDisplayReceiveSimulation(display);
+        toDisplayReceiveSimulation.start();
+        /*
         while(true){
             try{
                 gameState = gameStates.take();
@@ -76,6 +83,6 @@ public class HostMain {
             for(int[] coordinates : toDisplay.getCoordinates()){
                 System.out.println("(x,y):"+coordinates[0]+" "+coordinates[1]);
             }
-        }
+        }*/
     }
 }

@@ -240,9 +240,12 @@ public class ToDisplaySync extends Service<ToDisplay> {
     @Override
     protected Task<ToDisplay> createTask() {
         return new Task<>() {
-            @Override
-            protected ToDisplay call() throws Exception {
-                toDisplay = display.take();
+            protected ToDisplay call() {
+                try {
+                    toDisplay = display.take();
+                }catch (InterruptedException e){
+                    return null;
+                }
                 return toDisplay;
             }
         };
