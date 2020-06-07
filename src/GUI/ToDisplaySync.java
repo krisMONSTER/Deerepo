@@ -51,6 +51,7 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     BoardInitialization.resetColors();
                     int[] pickpawn = todisplay.getCoordinates().get(0);
                     List<int[]> dots = todisplay.getPossiblePositions();
+                    todisplay.getPossiblePositions();
                     for(int i=0;i<dots.size();i++)
                     {
                         int[]dotsfield=dots.get(i);
