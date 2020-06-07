@@ -6,6 +6,7 @@ import java.util.List;
 
 public class ToDisplay implements Serializable {
     List<int[]> coordinates = new ArrayList<>();
+    List<int[]> possiblePositions = new ArrayList<>();
     private TypeOfAction typeOfAction;
 
     public ToDisplay(){}
@@ -28,5 +29,13 @@ public class ToDisplay implements Serializable {
 
     public TypeOfAction getTypeOfAction(){
         return typeOfAction;
+    }
+
+    public List<int[]> getPossiblePositions() {
+        return possiblePositions;
+    }
+
+    public void setPossiblePositions(List<int[]> list) {
+        this.possiblePositions = list;
     }
 }

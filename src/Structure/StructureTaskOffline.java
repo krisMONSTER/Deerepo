@@ -83,6 +83,7 @@ public class StructureTaskOffline extends StructureTask{
                         storedX = currentPlayer.getPickedPiece().getX();
                         storedY = currentPlayer.getPickedPiece().getY();
                         toDisplay.addCoordinates(new int[]{storedX, storedY});
+                        toDisplay.setPossiblePositions(currentPlayer.getPickedPiece().getPossiblePositions());
                         if(!sendGUIDisplayData(toDisplay)){
                             break outer;
                         }
@@ -93,6 +94,7 @@ public class StructureTaskOffline extends StructureTask{
                         toDisplay.addCoordinates(new int[]{currentPlayer.getPickedPiece().getX(), currentPlayer.getPickedPiece().getY()});
                         storedX = currentPlayer.getPickedPiece().getX();
                         storedY = currentPlayer.getPickedPiece().getY();
+                        toDisplay.setPossiblePositions(currentPlayer.getPickedPiece().getPossiblePositions());
                         if(!sendGUIDisplayData(toDisplay)){
                             break outer;
                         }

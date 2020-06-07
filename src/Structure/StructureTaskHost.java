@@ -123,6 +123,7 @@ public class StructureTaskHost extends StructureTask{
                         storedX = player.getPickedPiece().getX();
                         storedY = player.getPickedPiece().getY();
                         toDisplay.addCoordinates(new int[]{storedX, storedY});
+                        toDisplay.setPossiblePositions(player.getPickedPiece().getPossiblePositions());
                         if(!sendGuiDisplayData(toDisplay)){
                             break outer;
                         }
@@ -133,6 +134,7 @@ public class StructureTaskHost extends StructureTask{
                         toDisplay.addCoordinates(new int[]{player.getPickedPiece().getX(), player.getPickedPiece().getY()});
                         storedX = player.getPickedPiece().getX();
                         storedY = player.getPickedPiece().getY();
+                        toDisplay.setPossiblePositions(player.getPickedPiece().getPossiblePositions());
                         if(!sendGuiDisplayData(toDisplay)){
                             break outer;
                         }

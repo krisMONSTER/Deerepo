@@ -1,5 +1,8 @@
 package Structure;
 
+import java.util.ArrayList;
+import java.util.List;
+
 abstract public class Piece {
 
 	protected int x; // position x
@@ -88,4 +91,20 @@ abstract public class Piece {
 		}
 		dataChanges.putAlteration(new Alteration(x, y, a, b));
 	}
+
+	public List<int[]> getPossiblePositions() {
+
+		List<int[]> ret = new ArrayList<>();
+
+		for(int x = 0; x < 8; x++) {
+			for(int y = 0; y < 8; y++) {
+				if (isMovePossible(x,y)) {
+					ret.add(new int[]{x,y});
+				}
+			}
+		}
+
+		return ret;
+	}
+
 }
