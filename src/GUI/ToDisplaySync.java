@@ -1,5 +1,6 @@
 package GUI;
 
+import Structure.Board;
 import Structure.ToDisplay;
 import Structure.TypeOfAction;
 import javafx.concurrent.Service;
@@ -46,6 +47,7 @@ public class ToDisplaySync extends Service<ToDisplay> {
 
                 if (todisplay.getTypeOfAction() == TypeOfAction.nothing) //kiedy kliknieto na puste pole
                 {
+
                 } else if (todisplay.getTypeOfAction() == TypeOfAction.pick) //kiedy wybrano po raz pierwszy pionka
                 {
                     BoardInitialization.resetColors();
@@ -55,7 +57,8 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     for(int i=0;i<dots.size();i++)
                     {
                         int[]dotsfield=dots.get(i);
-                        board[7 - (dotsfield[1])][dotsfield[0]].setStyle(POSSIBLE_FIELD);
+                        board[7 - (dotsfield[1])][dotsfield[0]].setEffect(glow);
+
                     }
                     board[7 - (pickpawn[1])][pickpawn[0]].getGraphic().setEffect(light);
 
@@ -68,7 +71,7 @@ public class ToDisplaySync extends Service<ToDisplay> {
                     for(int i=0;i<dots.size();i++)
                     {
                         int[]dotsfield=dots.get(i);
-                        board[7 - (dotsfield[1])][dotsfield[0]].setStyle(POSSIBLE_FIELD);
+                        board[7 - (dotsfield[1])][dotsfield[0]].setEffect(glow);
                     }
                     board[7 - (pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
                     board[7 - (newpawn[1])][newpawn[0]].getGraphic().setEffect(light);
@@ -77,6 +80,7 @@ public class ToDisplaySync extends Service<ToDisplay> {
                 {
                     int[] pickedpawn = todisplay.getCoordinates().get(0);
                     board[7 - (pickedpawn[1])][pickedpawn[0]].getGraphic().setEffect(null);
+                    BoardInitialization.resetColors();
 
                 }
                 else if (todisplay.getTypeOfAction() == TypeOfAction.move) //kiedy wybrano puste pole po wyborze pionka

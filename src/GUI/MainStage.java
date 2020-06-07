@@ -89,6 +89,7 @@ public class MainStage extends Application{
             BoardInitialization.BlankSpace(8);
             BoardInitialization.InitChessBoard();
             AdditionsToSecondScene.netgamelabel.setText("Gra Offline");
+            AdditionsToSecondScene.setGameState();
             ShelvesForPawns.resetShelves();
 
             initTools();
@@ -106,6 +107,7 @@ public class MainStage extends Application{
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
+                AdditionsToSecondScene.setGameState();
                 ShelvesForPawns.resetShelves();
 
                 initTools();
@@ -126,6 +128,7 @@ public class MainStage extends Application{
                 BoardInitialization.BlankSpace(8);
                 BoardInitialization.InitChessBoard();
                 AdditionsToSecondScene.netgamelabel.setText("Gra Sieciowa");
+                AdditionsToSecondScene.setGameState();
                 ShelvesForPawns.resetShelves();
 
                 initTools();

@@ -4,7 +4,7 @@ import Structure.*;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
-import javafx.scene.effect.Lighting;
+import javafx.scene.effect.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -21,7 +21,8 @@ public class Move {
     static boolean is_picked; //Info dla EventHandlera czy przypadkiem nie wybrano juz jakiegos pionka
     static Label piece;
     static ImageView piece_image; //Ikona wybranego pionka
-    static Lighting light = new Lighting();
+    static DropShadow light = new DropShadow();
+    static InnerShadow glow=new InnerShadow();
     static String RED_FIELD="-fx-background-color:#bf4040  ;-fx-border-color: black; -fx-padding: 0";
     static String GREEN_FIELD="-fx-background-color:#196F3D ;-fx-border-color: black; -fx-padding: 0";
     static String YELLOW_FIELD="-fx-background-color:#F7DD72;-fx-border-color: black; -fx-padding: 0";

@@ -120,6 +120,7 @@ public class BoardInitialization {
                 else color = BLACK_FIELD; //"czarne" pola
 
                 board[x][y].setStyle("-fx-background-color: " + color + ";-fx-border-color: black; -fx-padding: 0");
+                board[x][y].setEffect(null);
             }
         }
     }

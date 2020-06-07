@@ -40,4 +40,9 @@ public class AdditionsToSecondScene {
 
     }
 
+    public static void setGameState()
+    {
+        statusinfo.setText("Status info");
+    }
+
 }
